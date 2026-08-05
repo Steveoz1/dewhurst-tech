@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Value &amp; ROI Case Tool — Dewhurst.tech</title>
+<meta name="description" content="Build the whole-system value case for scaling robotics and novel technology into heavy-industry operations — the cost of the whole system, not just the kit.">
+<!-- ══════════════════════════════════════════════════════════════════════════
+     DEWHURST.TECH — VALUE & ROI CASE TOOL · v0.1 (review build) · 2026-07-21
+     ──────────────────────────────────────────────────────────────────────────
+     Self-contained single file. Brand palette + wordmark replicated from THE
+     PAGE (v2.1). No external assets, no browser storage — the "database" seed is
+     an on-page collected list plus JSON / CSV export. Drop-in as an extra page.
+     🔒 Lockup rule respected: heavy serif "Dewhurst" + thin light-blue ".tech".
+        Do not rebalance. The imbalance is the argument.
+     ══════════════════════════════════════════════════════════════════════════ -->
+<!-- GoatCounter website analytics - privacy-friendly, no cookies. Same snippet as index.html. -->
+<script data-goatcounter="https://dewhurst-tech.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+:root{
+  --ink:#0E1621; --tech:#5B9BD5; --paper:#FFFFFF; --mist:#F4F6F8; --band:#0E1621;
+  --hair:#DDE3E9; --grey:#5C6672; --good:#2E8B6F; --warn:#C0392B;
+  --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+a{color:var(--tech)}
+
+/* ---------- LOCKUP ---------- */
+.lockup{display:flex;align-items:baseline;gap:2px}
+/* Nav lockup is the LOCKED brand image (same asset as the main site) and doubles
+   as the link home. Do not rescale / re-space / balance it. */
+a.lockup{text-decoration:none;align-items:center}
+a.lockup img{display:block;height:auto;max-width:100%}
+.word{font-family:var(--serif);font-size:26px;letter-spacing:-.2px;line-height:1}
+.word b{font-weight:700;color:var(--ink)}
+.word span{font-family:var(--sans);font-weight:300;color:var(--tech)}
+
+/* ---------- NAV ---------- */
+nav{border-bottom:1px solid var(--hair);position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);z-index:20}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 28px}
+nav .tag{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:var(--grey)}
+
+/* ---------- HERO ---------- */
+.hero{border-bottom:1px solid var(--hair);padding:40px 0 34px;background:var(--mist)}
+.hero h1{font-family:var(--serif);font-size:38px;line-height:1.15;letter-spacing:-.4px;max-width:20ch}
+.hero .sub{font-size:17px;color:var(--grey);max-width:74ch;margin-top:14px}
+.hero .sub strong{color:var(--ink);font-weight:600}
+.strap{margin-top:16px;font-size:12px;letter-spacing:2.6px;text-transform:uppercase;color:var(--ink);font-weight:600}
+.strap em{font-style:normal;color:var(--tech);margin:0 6px}
+
+/* ---------- STEPS ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:22px}
+.step{background:var(--paper);border:1px solid var(--hair);border-radius:10px;padding:14px 16px}
+.step b{display:block;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tech);margin-bottom:4px}
+.step p{font-size:13.5px;color:var(--grey)}
+
+/* ---------- SECTION BLOCKS ---------- */
+.block{padding:30px 0;border-bottom:1px solid var(--hair)}
+.block h2{font-family:var(--serif);font-size:24px;margin-bottom:4px}
+.block .lead{font-size:14.5px;color:var(--grey);margin-bottom:18px;max-width:80ch}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 22px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 22px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 22px}
+label.fld{display:block;font-size:12px;letter-spacing:.3px;color:var(--grey);font-weight:600;margin-bottom:5px}
+label.fld .req{color:var(--tech)}
+input,select,textarea{font-family:var(--sans);font-size:14.5px;color:var(--ink);width:100%;padding:9px 11px;border:1px solid var(--hair);border-radius:8px;background:var(--paper)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--tech);box-shadow:0 0 0 3px rgba(91,155,213,.15)}
+textarea{resize:vertical;min-height:64px}
+.hint{font-size:12px;color:var(--grey);margin-top:4px}
+.assume input{text-align:right}
+
+/* ---------- SOLUTION TABS ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}
+.tab{border:1px solid var(--hair);background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:9px 9px 0 0;cursor:pointer;position:relative;top:1px}
+.tab.asis{color:var(--grey)}
+.tab.active{border-bottom-color:var(--paper);background:var(--paper);color:var(--ink);box-shadow:0 -2px 0 var(--tech) inset}
+.tab .pill{display:inline-block;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;background:var(--mist);color:var(--grey);border-radius:20px;padding:1px 7px;margin-left:7px;vertical-align:1px}
+.tab.asis .pill{background:#eaf1f8;color:var(--tech)}
+.addbtn{border:1px dashed var(--tech);background:none;color:var(--tech);font-weight:700;font-size:14px;padding:8px 14px;border-radius:9px;cursor:pointer}
+.addbtn:hover{background:#eaf1f8}
+.panel{border:1px solid var(--hair);border-radius:0 10px 10px 10px;padding:18px}
+.panel.hidden{display:none}
+.panel-head{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px}
+.panel-head .grow{flex:1 1 260px}
+.del-sol{border:none;background:none;color:var(--warn);font-size:12.5px;cursor:pointer;text-decoration:underline;padding:6px 0}
+
+/* ---------- BREAKDOWN ---------- */
+.sec{border:1px solid var(--hair);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.sec-h{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--mist);cursor:pointer;user-select:none}
+.sec-h .caret{transition:transform .15s;color:var(--grey);font-size:12px;width:12px}
+.sec.collapsed .caret{transform:rotate(-90deg)}
+.sec-h .nm{font-family:var(--serif);font-size:16.5px;flex:1}
+.sec-h .roll{font-size:12.5px;color:var(--grey);text-align:right;white-space:nowrap}
+.sec-h .roll b{color:var(--ink)}
+.sec-body{padding:6px 14px 12px}
+.sec.collapsed .sec-body{display:none}
+.grp{margin-top:10px}
+.grp-nm{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tech);font-weight:700;margin:8px 0 2px}
+.row{display:grid;grid-template-columns:1fr 130px 120px 118px 26px;gap:10px;align-items:center;padding:5px 0;border-bottom:1px dashed var(--hair)}
+.row.head{border-bottom:1px solid var(--hair);padding-bottom:8px}
+.row.head span{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--grey);font-weight:700}
+.row.head span.r{text-align:right}
+.row .lab{font-size:13.5px}
+.row input,.row select{padding:7px 9px;font-size:13.5px}
+.row .num{text-align:right}
+.row .rm{border:none;background:none;color:var(--warn);cursor:pointer;font-size:15px;line-height:1}
+.addrow{border:none;background:none;color:var(--tech);font-size:12.5px;font-weight:600;cursor:pointer;padding:8px 0 2px;margin-left:2px}
+.sol-total{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--ink);color:#fff;border-radius:10px;padding:14px 16px;margin-top:6px}
+.sol-total .t{font-size:12px;letter-spacing:.4px;color:#B9C4CF}
+.sol-total .v{font-family:var(--serif);font-size:20px;color:#fff}
+.sol-total .v.tech{color:var(--tech)}
+
+/* ---------- VALUE SUMMARY ---------- */
+.summary{background:var(--band);color:#fff;border-radius:12px;padding:24px 24px 8px}
+.summary h2{color:#fff}
+.summary .lead{color:#B9C4CF}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0 6px}
+.tile{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:14px 16px}
+.tile .t{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#9FB0C0}
+.tile .v{font-family:var(--serif);font-size:27px;margin-top:6px;line-height:1.1}
+.tile .v.tech{color:var(--tech)}
+.tile .v.good{color:#6FD3B0}
+.tile .s{font-size:12px;color:#9FB0C0;margin-top:4px}
+.summ-note{font-size:12.5px;color:#9FB0C0;padding:8px 0 14px;max-width:90ch}
+.pickrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px}
+.pickrow label{font-size:12px;color:#9FB0C0}
+.pickrow select{width:auto;min-width:160px;background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.2)}
+
+/* ---------- COMPARISON MATRIX ---------- */
+.matrix-wrap{overflow-x:auto}
+table.mx{border-collapse:collapse;width:100%;font-size:13.5px;min-width:640px}
+table.mx th,table.mx td{border:1px solid var(--hair);padding:9px 12px;text-align:right}
+table.mx th:first-child,table.mx td:first-child{text-align:left}
+table.mx thead th{background:var(--mist);font-size:12px;letter-spacing:.4px}
+table.mx thead th.asis{color:var(--tech)}
+table.mx tbody tr.group td{background:#fafbfc;font-family:var(--serif);font-size:14px}
+table.mx tbody tr.total td{font-weight:700;background:#f2f6fa}
+table.mx tbody tr.roi td{background:var(--ink);color:#fff}
+table.mx tbody tr.roi td.good{color:#6FD3B0}
+table.mx .muted{color:var(--grey)}
+
+/* ---------- ACTIONS ---------- */
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:6px}
+.btn{display:inline-block;background:var(--tech);color:#fff;border:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:13px 26px;border-radius:10px;cursor:pointer}
+.btn:hover{background:#4a8ac6}
+.btn.ghost{background:none;border:1px solid var(--hair);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--tech);color:var(--tech)}
+.msg{font-size:13.5px;padding:6px 0}
+.msg.err{color:var(--warn)}
+.msg.ok{color:var(--good)}
+
+/* ---------- COLLECTED ---------- */
+.collected table{border-collapse:collapse;width:100%;font-size:13px}
+.collected th,.collected td{border-bottom:1px solid var(--hair);padding:8px 10px;text-align:left;vertical-align:top}
+.collected th{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--grey)}
+.empty{font-size:13.5px;color:var(--grey);font-style:italic}
+
+/* ---------- FOOTER ---------- */
+footer{padding:30px 0;background:var(--ink);color:#B9C4CF}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+footer .word b{color:#fff}
+footer .fstrap{font-size:11px;letter-spacing:2.4px;text-transform:uppercase}
+footer .fstrap em{font-style:normal;color:var(--tech);margin:0 5px}
+footer .c{font-size:12px}
+
+@media(max-width:960px){
+  .steps,.grid4,.tiles{grid-template-columns:1fr 1fr}
+  .grid3{grid-template-columns:1fr 1fr}
+}
+@media(max-width:680px){
+  .hero h1{font-size:30px}
+  .steps,.grid2,.grid3,.grid4,.tiles{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr 1fr;gap:8px}
+  .row.head{display:none}
+  .row .lab{grid-column:1 / -1;font-weight:600}
+  .row .rm{position:absolute;right:14px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <!-- LOCKED BLOCK - the wordmark. Do not rescale / re-space / balance.
+         It is also the link back to the main site. -->
+    <a class="lockup" href="index.html" aria-label="Dewhurst.tech home"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech"></a>
+    <!-- END LOCKED BLOCK -->
+    <div class="tag">Value &amp; ROI Case Tool</div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Cost the whole system, not just the kit.</h1>
+    <p class="sub">A working tool for building the <strong>value case</strong> behind scaling robotics and novel technology into live operations — <strong>inspection, maintenance and surveillance robotics, and the OT infrastructure beneath them</strong>. It compares your current way of working (<strong>As-Is</strong>) against one or more proposed solutions, across the whole system: technology, process, people and performance. The return is shown in both <strong>money</strong> and in <strong>hours bought back</strong>.</p>
+    <div class="strap">Safe <em>·</em> Sustainable <em>·</em> Scalable</div>
+    <div class="steps">
+      <div class="step"><b>1 · Set up</b><p>Enter your details and the key assumptions (currency, operator cost, time horizon).</p></div>
+      <div class="step"><b>2 · Name the use case</b><p>Give the problem you are trying to scale a name and a short description.</p></div>
+      <div class="step"><b>3 · Build the states</b><p>Fill the As-Is baseline, then add Solution A, B, C. Expand each layer and enter cost and man-hours.</p></div>
+      <div class="step"><b>4 · Calculate</b><p>Read the value summary, then capture the use case and export it.</p></div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ SET-UP: IDENTITY ═══ -->
+<section class="block">
+  <div class="wrap">
+    <h2>Your details</h2>
+    <p class="lead">So the value case can be attributed and followed up. Nothing is sent anywhere from this page — it stays in your browser until you export it.</p>
+    <div class="grid3">
+      <div><label class="fld">Name <span class="req">*</span></label><input id="u_name" placeholder="Full name"></div>
+      <div><label class="fld">Company <span class="req">*</span></label><input id="u_company" placeholder="Organisation"></div>
+      <div><label class="fld">Email <span class="req">*</span></label><input id="u_email" type="email" placeholder="name@company.com"></div>
+      <div><label class="fld">Phone</label><input id="u_phone" placeholder="+.."></div>
+      <div style="grid-column:2 / -1"><label class="fld">The type of solution you are trying to scale</label><input id="u_soltype" placeholder="e.g. autonomous surveillance robot for routine operator rounds"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ KEY ASSUMPTIONS ═══ -->
+<section class="block assume">
+  <div class="wrap">
+    <h2>Key assumptions</h2>
+    <p class="lead">These drive the conversion between time and money. They are deliberately visible and editable — the model should never be a black box. Defaults below are illustrative placeholders; set your own.</p>
+    <div class="grid4">
+      <div>
+        <label class="fld">Currency</label>
+        <select id="a_ccy">
+          <option value="GBP">GBP £</option>
+          <option value="USD">USD $</option>
+          <option value="EUR">EUR €</option>
+          <option value="AUD">AUD $</option>
+          <option value="SGD">SGD $</option>
+          <option value="NOK">NOK kr</option>
+          <option value="AED">AED د.إ</option>
+        </select>
+      </div>
+      <div>
+        <label class="fld">Average daily operator cost</label>
+        <input id="a_daycost" type="number" min="0" step="50" value="1200">
+        <div class="hint">Per person, per day — fully loaded.</div>
+      </div>
+      <div>
+        <label class="fld">Working hours per day</label>
+        <input id="a_hrs" type="number" min="1" step="0.5" value="12">
+        <div class="hint">Used to derive the hourly rate.</div>
+      </div>
+      <div>
+        <label class="fld">Value time horizon (years)</label>
+        <input id="a_horizon" type="number" min="1" step="1" value="5">
+        <div class="hint">Period over which recurring value accrues.</div>
+      </div>
+    </div>
+    <div class="hint" id="rate_line" style="margin-top:10px"></div>
+  </div>
+</section>
+
+<!-- ═══ USE CASE ═══ -->
+<section class="block">
+  <div class="wrap">
+    <h2>The use case</h2>
+    <p class="lead">Each calculation is one use case. Naming it lets it roll up into a report — and, in a later version, into a shared library of the problems engineers are trying to solve.</p>
+    <div class="grid2">
+      <div><label class="fld">Use case name <span class="req">*</span></label><input id="uc_name" placeholder="e.g. Routine external corrosion rounds — North platform"></div>
+      <div><label class="fld">Use case description</label><input id="uc_desc" placeholder="What the work is, why it matters, what 'done' looks like"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VALUE SUMMARY (live) ═══ -->
+<section class="block">
+  <div class="wrap">
+    <div class="summary">
+      <h2>Value summary</h2>
+      <p class="lead">As-Is compared against a chosen solution. Updates live as you type.</p>
+      <div class="pickrow">
+        <label for="sum_pick">Comparing As-Is against:</label>
+        <select id="sum_pick"></select>
+      </div>
+      <div class="tiles" id="tiles"></div>
+      <div class="summ-note" id="summ_note"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SOLUTIONS / BREAKDOWN ═══ -->
+<section class="block">
+  <div class="wrap">
+    <h2>The states &amp; solutions</h2>
+    <p class="lead">Start with the <strong>As-Is</strong> — the cost of the work as it is done today (usually recurring man-hours, little or no capital). Then add each proposed solution and enter what it takes to stand it up and run it, layer by layer. Use the <strong>basis</strong> control on each line to mark a cost as a one-off (deployment) or annual (recurring).</p>
+    <div class="tabs" id="tabs"></div>
+    <div id="panels"></div>
+  </div>
+</section>
+
+<!-- ═══ COMPARISON MATRIX ═══ -->
+<section class="block">
+  <div class="wrap">
+    <h2>Side-by-side comparison</h2>
+    <p class="lead">Every state, alongside each other. Section subtotals roll up to a solution total; the ROI rows compare each solution against the As-Is baseline.</p>
+    <div class="matrix-wrap"><table class="mx" id="matrix"></table></div>
+  </div>
+</section>
+
+<!-- ═══ CALCULATE / CAPTURE ═══ -->
+<section class="block">
+  <div class="wrap">
+    <h2>Calculate &amp; capture</h2>
+    <p class="lead">Capturing the use case adds a dated snapshot to the list below (the seed of the future database) and lets you export it. Export gives you a report-ready JSON and a flat CSV.</p>
+    <div class="actions">
+      <button class="btn" id="calc">Calculate &amp; capture use case</button>
+      <button class="btn ghost" id="exp_json">Export JSON</button>
+      <button class="btn ghost" id="exp_csv">Export CSV</button>
+      <button class="btn ghost" id="reset_uc">New use case</button>
+    </div>
+    <div class="msg" id="calc_msg"></div>
+  </div>
+</section>
+
+<!-- ═══ COLLECTED ═══ -->
+<section class="block collected">
+  <div class="wrap">
+    <h2>Captured use cases <span class="muted" style="font-size:14px;color:var(--grey)" id="cap_count"></span></h2>
+    <div id="collected_body"><p class="empty">No use cases captured yet in this session.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="lockup"><span class="word"><b>Dewhurst</b><span>.tech</span></span></div>
+    <div class="fstrap">Safe <em>·</em> Sustainable <em>·</em> Scalable</div>
+    <div class="c">© 2026 Dewhurst.tech · Value &amp; ROI Case Tool v0.1 (review build)</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* ---------- Template: the whole-system breakdown ---------- */
+const TEMPLATE = [
+  { key:'technology', name:'Technology / Equipment', groups:[
+    { name:'Primary tooling', items:['Sensors','Robotics'] },
+    { name:'Access equipment', items:['Scaffolding'] },
+    { name:'OT infrastructure', items:['Connectivity / networks','OT / ICS security (IEC 62443)'] }
+  ]},
+  { key:'process', name:'Process', groups:[
+    { name:'', items:['Writing / updating procedures','Preparing work packs','Management of change','Planning','Activity execution'] }
+  ]},
+  { key:'people', name:'People', groups:[
+    { name:'', items:['Initial training','Continuous development','Competency &amp; qualification'] }
+  ]},
+  { key:'performance', name:'Performance', groups:[
+    { name:'', items:['Tooling to log / monitor / track result data','Reporting capability','Integration to digital twins','Automation of decision-outcome workflow'] }
+  ]}
+];
+
+const CCY = {GBP:'£',USD:'$',EUR:'€',AUD:'A$',SGD:'S$',NOK:'kr',AED:'AED '};
+
+/* ---------- State ---------- */
+let solSeq = 0;
+function blankItems(){
+  const items = [];
+  TEMPLATE.forEach(sec=>sec.groups.forEach(g=>g.items.forEach(label=>{
+    items.push({ id:'i'+(items.length), section:sec.key, group:g.name, label:label, cost:0, hours:0, basis:'oneoff', custom:false });
+  })));
+  return items;
+}
+function newSolution(type,label){
+  return { id:'s'+(solSeq++), type:type, label:label, items:blankItems() };
+}
+const state = {
+  solutions:[ newSolution('asis','As-Is'), newSolution('solution','Solution A') ],
+  collected:[]
+};
+let activeTab = state.solutions[0].id;
+const SOL_LETTERS = ['A','B','C','D','E','F','G','H'];
+
+/* ---------- Helpers ---------- */
+const $ = s=>document.querySelector(s);
+function assumptions(){
+  const ccy = $('#a_ccy').value;
+  const day = Math.max(0, parseFloat($('#a_daycost').value)||0);
+  const hrs = Math.max(0.01, parseFloat($('#a_hrs').value)||0.01);
+  const horizon = Math.max(1, parseFloat($('#a_horizon').value)||1);
+  return { ccy, day, hrs, horizon, rate: day/hrs };
+}
+function money(v){
+  const a = assumptions();
+  const sym = CCY[a.ccy]||'';
+  const n = (Math.round((v||0)*100)/100);
+  return sym + n.toLocaleString('en-GB',{maximumFractionDigits:0});
+}
+function hoursFmt(v){ return (Math.round((v||0)*10)/10).toLocaleString('en-GB',{maximumFractionDigits:1}) + ' h'; }
+function ratio(v){ return (Math.round((v||0)*10)/10).toLocaleString('en-GB',{maximumFractionDigits:1}) + ' : 1'; }
+
+/* ---------- Compute a single solution ---------- */
+function computeSol(sol){
+  const a = assumptions();
+  const secTot = {};
+  TEMPLATE.forEach(s=>secTot[s.key]={oneCap:0,oneHrs:0,annCap:0,annHrs:0});
+  let oneCap=0,oneHrs=0,annCap=0,annHrs=0;
+  sol.items.forEach(it=>{
+    const c = parseFloat(it.cost)||0, h = parseFloat(it.hours)||0;
+    if(it.basis==='annual'){ annCap+=c; annHrs+=h; secTot[it.section].annCap+=c; secTot[it.section].annHrs+=h; }
+    else { oneCap+=c; oneHrs+=h; secTot[it.section].oneCap+=c; secTot[it.section].oneHrs+=h; }
+  });
+  const oneTime = oneHrs*a.rate, annTime = annHrs*a.rate;
+  Object.values(secTot).forEach(t=>{
+    t.oneTotal = t.oneCap + t.oneHrs*a.rate;
+    t.annTotal = t.annCap + t.annHrs*a.rate;
+  });
+  return {
+    secTot,
+    oneCap, oneHrs, oneTime, oneTotal:oneCap+oneTime,
+    annCap, annHrs, annTime, annTotal:annCap+annTime
+  };
+}
+
+/* ---------- RENDER: solution tabs + panels ---------- */
+function renderTabs(){
+  const tabs = $('#tabs'); tabs.innerHTML='';
+  state.solutions.forEach(sol=>{
+    const b = document.createElement('button');
+    b.className = 'tab'+(sol.type==='asis'?' asis':'')+(sol.id===activeTab?' active':'');
+    b.innerHTML = escapeHtml(sol.label)+'<span class="pill">'+(sol.type==='asis'?'Baseline':'Solution')+'</span>';
+    b.onclick = ()=>{ activeTab=sol.id; renderTabs(); renderPanels(); };
+    tabs.appendChild(b);
+  });
+  const add = document.createElement('button');
+  add.className='addbtn'; add.textContent='+ Add solution';
+  add.onclick = addSolution;
+  tabs.appendChild(add);
+}
+
+function renderPanels(){
+  const host = $('#panels'); host.innerHTML='';
+  state.solutions.forEach(sol=>{
+    const p = document.createElement('div');
+    p.className='panel'+(sol.id===activeTab?'':' hidden');
+
+    // panel head: label + delete
+    const head = document.createElement('div'); head.className='panel-head';
+    const g = document.createElement('div'); g.className='grow';
+    g.innerHTML = '<label class="fld">'+(sol.type==='asis'?'Baseline label':'Solution label')+'</label>';
+    const inp = document.createElement('input'); inp.value=sol.label;
+    inp.oninput = e=>{ sol.label=e.target.value; renderTabs(); renderSummaryPicker(); renderMatrix(); renderSummary(); };
+    g.appendChild(inp); head.appendChild(g);
+    if(sol.type!=='asis'){
+      const del = document.createElement('button'); del.className='del-sol'; del.textContent='Remove this solution';
+      del.onclick = ()=>removeSolution(sol.id);
+      head.appendChild(del);
+    }
+    p.appendChild(head);
+
+    // sections
+    TEMPLATE.forEach(sec=>{
+      p.appendChild(renderSection(sol,sec));
+    });
+
+    // solution total
+    const c = computeSol(sol);
+    const tot = document.createElement('div'); tot.className='sol-total';
+    tot.innerHTML =
+      block('One-off cost', money(c.oneTotal), true) +
+      block('One-off man-hours', hoursFmt(c.oneHrs), false) +
+      block('Annual cost', money(c.annTotal), true) +
+      block('Annual man-hours', hoursFmt(c.annHrs), false);
+    p.appendChild(tot);
+
+    host.appendChild(p);
+  });
+}
+function block(t,v,tech){ return '<div><div class="t">'+t+'</div><div class="v'+(tech?' tech':'')+'">'+v+'</div></div>'; }
+
+function renderSection(sol,sec){
+  const wrap = document.createElement('div');
+  const collapsed = sol._open && sol._open[sec.key] ? '' : ' collapsed';
+  wrap.className='sec'+collapsed;
+  const c = computeSol(sol).secTot[sec.key];
+
+  const h = document.createElement('div'); h.className='sec-h';
+  h.innerHTML = '<span class="caret">▼</span><span class="nm">'+sec.name+'</span>'+
+    '<span class="roll">One-off <b>'+money(c.oneTotal)+'</b> · '+hoursFmt(c.oneHrs)+
+    ' &nbsp;|&nbsp; Annual <b>'+money(c.annTotal)+'</b> · '+hoursFmt(c.annHrs)+'</span>';
+  h.onclick = ()=>{ sol._open=sol._open||{}; sol._open[sec.key]=!(sol._open[sec.key]); renderPanels(); };
+  wrap.appendChild(h);
+
+  const body = document.createElement('div'); body.className='sec-body';
+  const head = document.createElement('div'); head.className='row head';
+  head.innerHTML='<span class="lab">Element</span><span class="r">Cost</span><span class="r">Man-hours</span><span>Basis</span><span></span>';
+  body.appendChild(head);
+
+  sec.groups.forEach(grp=>{
+    if(grp.name){ const gn=document.createElement('div'); gn.className='grp-nm'; gn.innerHTML=grp.name; body.appendChild(gn); }
+    sol.items.filter(it=>it.section===sec.key && it.group===grp.name).forEach(it=>{
+      body.appendChild(renderRow(sol,it));
+    });
+  });
+  // custom items for this section (group '')
+  const addWrap = document.createElement('button'); addWrap.className='addrow'; addWrap.textContent='+ add element';
+  addWrap.onclick = ()=>{
+    sol.items.push({ id:'i'+Date.now()+Math.floor(Math.random()*1000), section:sec.key, group:(sec.groups[sec.groups.length-1].name||''), label:'', cost:0, hours:0, basis:'oneoff', custom:true });
+    sol._open=sol._open||{}; sol._open[sec.key]=true; renderPanels();
+  };
+  body.appendChild(addWrap);
+  wrap.appendChild(body);
+  return wrap;
+}
+
+function renderRow(sol,it){
+  const r = document.createElement('div'); r.className='row';
+  // label
+  const lab = document.createElement('div'); lab.className='lab';
+  if(it.custom){
+    const li=document.createElement('input'); li.value=it.label; li.placeholder='Describe this element';
+    li.oninput=e=>{ it.label=e.target.value; };
+    lab.appendChild(li);
+  } else { lab.innerHTML = it.label; }
+  r.appendChild(lab);
+  // cost
+  const c=document.createElement('input'); c.type='number'; c.min='0'; c.step='100'; c.className='num'; c.value=it.cost||''; c.placeholder='0';
+  c.oninput=e=>{ it.cost=parseFloat(e.target.value)||0; recalcLive(); };
+  r.appendChild(c);
+  // hours
+  const h=document.createElement('input'); h.type='number'; h.min='0'; h.step='1'; h.className='num'; h.value=it.hours||''; h.placeholder='0';
+  h.oninput=e=>{ it.hours=parseFloat(e.target.value)||0; recalcLive(); };
+  r.appendChild(h);
+  // basis
+  const b=document.createElement('select');
+  b.innerHTML='<option value="oneoff">One-off</option><option value="annual">Annual</option>';
+  b.value=it.basis;
+  b.onchange=e=>{ it.basis=e.target.value; recalcLive(); };
+  r.appendChild(b);
+  // remove
+  const rm=document.createElement('button'); rm.className='rm'; rm.title='Remove';
+  if(it.custom){ rm.textContent='×'; rm.onclick=()=>{ sol.items=sol.items.filter(x=>x!==it); renderPanels(); recalcLive(); }; }
+  else { rm.textContent=''; }
+  r.appendChild(rm);
+  return r;
+}
+
+/* recalc only the light views (keep focus in inputs — don't re-render panels) */
+function recalcLive(){
+  // update the active panel's section rollups + totals without rebuilding inputs
+  renderSectionRollups();
+  renderSolTotals();
+  renderSummary();
+  renderMatrix();
+}
+function renderSectionRollups(){
+  document.querySelectorAll('#panels .panel').forEach((p,idx)=>{
+    const sol = state.solutions[idx]; if(!sol) return;
+    const comp = computeSol(sol);
+    p.querySelectorAll('.sec').forEach((secEl,si)=>{
+      const sec = TEMPLATE[si]; if(!sec) return;
+      const c = comp.secTot[sec.key];
+      const roll = secEl.querySelector('.roll');
+      if(roll) roll.innerHTML='One-off <b>'+money(c.oneTotal)+'</b> · '+hoursFmt(c.oneHrs)+
+        ' &nbsp;|&nbsp; Annual <b>'+money(c.annTotal)+'</b> · '+hoursFmt(c.annHrs);
+    });
+  });
+}
+function renderSolTotals(){
+  document.querySelectorAll('#panels .panel').forEach((p,idx)=>{
+    const sol = state.solutions[idx]; if(!sol) return;
+    const c = computeSol(sol);
+    const tot = p.querySelector('.sol-total');
+    if(tot) tot.innerHTML =
+      block('One-off cost', money(c.oneTotal), true) +
+      block('One-off man-hours', hoursFmt(c.oneHrs), false) +
+      block('Annual cost', money(c.annTotal), true) +
+      block('Annual man-hours', hoursFmt(c.annHrs), false);
+  });
+}
+
+/* ---------- Solutions add/remove ---------- */
+function addSolution(){
+  const used = state.solutions.filter(s=>s.type==='solution').length;
+  const letter = SOL_LETTERS[used] || String(used+1);
+  const sol = newSolution('solution','Solution '+letter);
+  state.solutions.push(sol);
+  activeTab = sol.id;
+  renderAll();
+}
+function removeSolution(id){
+  const sols = state.solutions.filter(s=>s.type==='solution');
+  if(sols.length<=1){ flash('Keep at least one solution to compare against As-Is.','err'); return; }
+  state.solutions = state.solutions.filter(s=>s.id!==id);
+  if(activeTab===id) activeTab = state.solutions[0].id;
+  renderAll();
+}
+
+/* ---------- Summary ---------- */
+function renderSummaryPicker(){
+  const sel = $('#sum_pick'); const prev = sel.value;
+  sel.innerHTML='';
+  state.solutions.filter(s=>s.type==='solution').forEach(s=>{
+    const o=document.createElement('option'); o.value=s.id; o.textContent=s.label; sel.appendChild(o);
+  });
+  if([...sel.options].some(o=>o.value===prev)) sel.value=prev;
+}
+function pair(){
+  const asis = state.solutions.find(s=>s.type==='asis');
+  const selId = $('#sum_pick').value;
+  const sol = state.solutions.find(s=>s.id===selId) || state.solutions.find(s=>s.type==='solution');
+  return {asis, sol};
+}
+function compare(asis, sol){
+  const A = computeSol(asis), S = computeSol(sol), a = assumptions();
+  // Current cost = As-Is annual running cost. Solution running cost = solution annual.
+  const currentAnnual = A.annTotal, solAnnual = S.annTotal;
+  const annualSaving = currentAnnual - solAnnual;                 // money/yr freed
+  const annualHrsSaved = A.annHrs - S.annHrs;                     // hours/yr bought back
+  const deploy = S.oneTotal - A.oneTotal;                         // one-off to switch
+  const horizonValue = annualSaving * a.horizon;
+  const netValue = horizonValue - deploy;
+  const payback = annualSaving>0 ? deploy/annualSaving : null;    // years
+  const roiRatio = deploy>0 ? horizonValue/deploy : null;         // value:invest over horizon
+  const costRatio = solAnnual>0 ? currentAnnual/solAnnual : null; // running-cost ratio
+  const timeRatio = S.annHrs>0 ? A.annHrs/S.annHrs : null;        // running-hours ratio
+  return {A,S,currentAnnual,solAnnual,annualSaving,annualHrsSaved,deploy,horizonValue,netValue,payback,roiRatio,costRatio,timeRatio};
+}
+function renderSummary(){
+  const {asis,sol}=pair(); if(!asis||!sol){ return; }
+  const a=assumptions(); const r=compare(asis,sol);
+  const goodMoney = r.annualSaving>=0;
+  const goodHrs = r.annualHrsSaved>=0;
+  const tiles=$('#tiles');
+  tiles.innerHTML =
+    tile('Current cost (As-Is)', money(r.currentAnnual)+' /yr', hoursFmt(asis===null?0:r.A.annHrs)+' /yr', '') +
+    tile('Solution running cost', money(r.solAnnual)+' /yr', 'one-off '+money(r.deploy), 'tech') +
+    tile('Annual saving', (goodMoney?'+':'')+money(r.annualSaving)+' /yr', (goodHrs?'+':'')+hoursFmt(r.annualHrsSaved)+' bought back', goodMoney?'good':'') +
+    tile('ROI over '+a.horizon+' yrs', r.roiRatio!=null?ratio(r.roiRatio):'—', r.payback!=null?('payback '+r.payback.toFixed(1)+' yrs'):'no payback', r.roiRatio!=null&&r.roiRatio>=1?'good':'');
+  const note=$('#summ_note');
+  const bits=[];
+  bits.push('<b style="color:#fff">Reading:</b> against the As-Is baseline, '+escapeHtml(sol.label)+' costs <b style="color:#fff">'+money(r.deploy)+'</b> one-off to stand up and <b style="color:#fff">'+money(r.solAnnual)+'/yr</b> to run.');
+  if(r.annualSaving>0){
+    bits.push('It frees <b style="color:#6FD3B0">'+money(r.annualSaving)+'</b> and <b style="color:#6FD3B0">'+hoursFmt(r.annualHrsSaved)+'</b> of operator time every year');
+    bits.push(r.payback!=null?('paying back in <b style="color:#fff">'+r.payback.toFixed(1)+' years</b>, and returning <b style="color:#fff">'+ratio(r.roiRatio)+'</b> on the one-off spend over '+a.horizon+' years ('+money(r.netValue)+' net).'):'.');
+  } else if(r.annualSaving<0){
+    bits.push('It currently costs <b style="color:#fff">'+money(-r.annualSaving)+'/yr more</b> to run than the As-Is — the case is not yet positive on running cost.');
+  } else {
+    bits.push('Enter the As-Is running cost and the solution costs to see the return.');
+  }
+  bits.push('<br><span style="opacity:.8">Time is valued at '+money(a.rate)+'/hour ('+money(a.day)+'/day ÷ '+a.hrs+'h). Man-hours bought back are the real prize where beds on the asset — not money — are the hard ceiling.</span>');
+  note.innerHTML=bits.join(' ');
+}
+function tile(t,v,s,cls){ return '<div class="tile"><div class="t">'+t+'</div><div class="v'+(cls?' '+cls:'')+'">'+v+'</div><div class="s">'+s+'</div></div>'; }
+
+/* ---------- Comparison matrix ---------- */
+function renderMatrix(){
+  const t=$('#matrix'); const a=assumptions();
+  const cols = state.solutions;
+  let html='<thead><tr><th>Element / measure</th>';
+  cols.forEach(s=>{ html+='<th class="'+(s.type==='asis'?'asis':'')+'">'+escapeHtml(s.label)+'</th>'; });
+  html+='</tr></thead><tbody>';
+  const comps = cols.map(computeSol);
+  // section rows (one-off total then annual total)
+  TEMPLATE.forEach(sec=>{
+    html+='<tr class="group"><td>'+sec.name+'</td>'+cols.map(()=>'<td></td>').join('')+'</tr>';
+    html+='<tr><td class="muted">— one-off</td>'+comps.map(c=>'<td>'+money(c.secTot[sec.key].oneTotal)+'</td>').join('')+'</tr>';
+    html+='<tr><td class="muted">— annual</td>'+comps.map(c=>'<td>'+money(c.secTot[sec.key].annTotal)+'</td>').join('')+'</tr>';
+  });
+  // totals
+  html+='<tr class="total"><td>One-off cost (deploy)</td>'+comps.map(c=>'<td>'+money(c.oneTotal)+'</td>').join('')+'</tr>';
+  html+='<tr class="total"><td>One-off man-hours</td>'+comps.map(c=>'<td>'+hoursFmt(c.oneHrs)+'</td>').join('')+'</tr>';
+  html+='<tr class="total"><td>Annual running cost</td>'+comps.map(c=>'<td>'+money(c.annTotal)+'</td>').join('')+'</tr>';
+  html+='<tr class="total"><td>Annual man-hours</td>'+comps.map(c=>'<td>'+hoursFmt(c.annHrs)+'</td>').join('')+'</tr>';
+  // ROI rows vs As-Is
+  const asis = state.solutions.find(s=>s.type==='asis');
+  html+='<tr class="roi"><td>Annual saving vs As-Is</td>'+cols.map(s=>{
+    if(s.type==='asis') return '<td>baseline</td>';
+    const r=compare(asis,s); return '<td class="'+(r.annualSaving>=0?'good':'')+'">'+(r.annualSaving>=0?'+':'')+money(r.annualSaving)+'</td>';
+  }).join('')+'</tr>';
+  html+='<tr class="roi"><td>Man-hours bought back /yr</td>'+cols.map(s=>{
+    if(s.type==='asis') return '<td>baseline</td>';
+    const r=compare(asis,s); return '<td class="'+(r.annualHrsSaved>=0?'good':'')+'">'+(r.annualHrsSaved>=0?'+':'')+hoursFmt(r.annualHrsSaved)+'</td>';
+  }).join('')+'</tr>';
+  html+='<tr class="roi"><td>Payback (years)</td>'+cols.map(s=>{
+    if(s.type==='asis') return '<td>—</td>';
+    const r=compare(asis,s); return '<td>'+(r.payback!=null?r.payback.toFixed(1):'—')+'</td>';
+  }).join('')+'</tr>';
+  html+='<tr class="roi"><td>ROI over '+a.horizon+' yrs (value : invest)</td>'+cols.map(s=>{
+    if(s.type==='asis') return '<td>—</td>';
+    const r=compare(asis,s); return '<td class="'+(r.roiRatio!=null&&r.roiRatio>=1?'good':'')+'">'+(r.roiRatio!=null?ratio(r.roiRatio):'—')+'</td>';
+  }).join('')+'</tr>';
+  html+='</tbody>';
+  t.innerHTML=html;
+}
+
+/* ---------- Rate line ---------- */
+function renderRate(){
+  const a=assumptions();
+  $('#rate_line').innerHTML='Derived hourly operator cost: <b>'+money(a.rate)+' / hour</b> &nbsp;(&nbsp;'+money(a.day)+' per day ÷ '+a.hrs+' hours&nbsp;). Money and time are linked through this figure.';
+}
+
+/* ---------- Validation + capture ---------- */
+function validate(){
+  const errs=[];
+  if(!$('#u_name').value.trim()) errs.push('your name');
+  if(!$('#u_company').value.trim()) errs.push('company');
+  const em=$('#u_email').value.trim();
+  if(!em) errs.push('email'); else if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) errs.push('a valid email');
+  if(!$('#uc_name').value.trim()) errs.push('a use case name');
+  return errs;
+}
+function snapshot(){
+  const a=assumptions();
+  const asis=state.solutions.find(s=>s.type==='asis');
+  const sols=state.solutions.filter(s=>s.type==='solution');
+  return {
+    captured_at: new Date().toISOString(),
+    user:{ name:$('#u_name').value.trim(), company:$('#u_company').value.trim(), email:$('#u_email').value.trim(), phone:$('#u_phone').value.trim(), solution_type:$('#u_soltype').value.trim() },
+    assumptions:{ currency:a.ccy, daily_operator_cost:a.day, hours_per_day:a.hrs, hourly_rate:Math.round(a.rate*100)/100, horizon_years:a.horizon },
+    use_case:{ name:$('#uc_name').value.trim(), description:$('#uc_desc').value.trim() },
+    states: state.solutions.map(s=>{
+      const c=computeSol(s);
+      return {
+        label:s.label, type:s.type,
+        totals:{ oneoff_cost:round(c.oneTotal), oneoff_manhours:round(c.oneHrs), annual_cost:round(c.annTotal), annual_manhours:round(c.annHrs) },
+        sections:TEMPLATE.map(sec=>({ section:sec.name, oneoff_cost:round(c.secTot[sec.key].oneTotal), annual_cost:round(c.secTot[sec.key].annTotal), oneoff_manhours:round(c.secTot[sec.key].oneHrs), annual_manhours:round(c.secTot[sec.key].annHrs) })),
+        line_items:s.items.filter(it=>(it.label||'').trim()).map(it=>({ section:it.section, group:it.group, label:stripTags(it.label), cost:round(it.cost), man_hours:round(it.hours), basis:it.basis }))
+      };
+    }),
+    roi: sols.map(s=>{ const r=compare(asis,s); return {
+      solution:s.label,
+      current_annual_cost:round(r.currentAnnual), solution_annual_cost:round(r.solAnnual),
+      annual_saving:round(r.annualSaving), annual_manhours_saved:round(r.annualHrsSaved),
+      oneoff_deployment:round(r.deploy),
+      payback_years: r.payback!=null?round(r.payback):null,
+      roi_ratio_over_horizon: r.roiRatio!=null?round(r.roiRatio):null,
+      running_cost_ratio: r.costRatio!=null?round(r.costRatio):null,
+      running_time_ratio: r.timeRatio!=null?round(r.timeRatio):null
+    };})
+  };
+}
+const round=v=>Math.round((v||0)*100)/100;
+function capture(){
+  const errs=validate();
+  const msg=$('#calc_msg');
+  if(errs.length){ msg.className='msg err'; msg.textContent='Please complete: '+errs.join(', ')+'.'; return; }
+  const snap=snapshot();
+  state.collected.push(snap);
+  renderCollected();
+  msg.className='msg ok';
+  const best = snap.roi[0];
+  msg.textContent='Captured "'+snap.use_case.name+'". '+(best&&best.annual_saving>0?('Headline: '+best.solution+' frees '+money(best.annual_saving)+' and '+hoursFmt(best.annual_manhours_saved)+' per year.'):'Snapshot saved — export it below.');
+}
+function renderCollected(){
+  const host=$('#collected_body'); $('#cap_count').textContent = state.collected.length?('· '+state.collected.length+' this session'):'';
+  if(!state.collected.length){ host.innerHTML='<p class="empty">No use cases captured yet in this session.</p>'; return; }
+  let h='<table><thead><tr><th>#</th><th>Use case</th><th>Company</th><th>Best solution</th><th>Annual saving</th><th>Hours / yr</th><th>Payback</th><th>Captured</th></tr></thead><tbody>';
+  state.collected.forEach((s,i)=>{
+    const best = s.roi.slice().sort((a,b)=>(b.annual_saving||0)-(a.annual_saving||0))[0]||{};
+    h+='<tr><td>'+(i+1)+'</td><td><b>'+escapeHtml(s.use_case.name)+'</b><br><span class="muted" style="color:var(--grey)">'+escapeHtml(s.use_case.description||'')+'</span></td><td>'+escapeHtml(s.user.company)+'</td><td>'+escapeHtml(best.solution||'—')+'</td><td>'+money(best.annual_saving||0)+'</td><td>'+hoursFmt(best.annual_manhours_saved||0)+'</td><td>'+(best.payback_years!=null?best.payback_years.toFixed(1)+' yr':'—')+'</td><td>'+new Date(s.captured_at).toLocaleString('en-GB')+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  host.innerHTML=h;
+}
+
+/* ---------- Export ---------- */
+function download(name,text,type){
+  const blob=new Blob([text],{type:type}); const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+function exportJSON(){
+  const data = state.collected.length ? state.collected : [snapshot()];
+  download('dewhurst-roi-usecases.json', JSON.stringify(data,null,2), 'application/json');
+}
+function exportCSV(){
+  const data = state.collected.length ? state.collected : [snapshot()];
+  const rows=[['captured_at','name','company','email','phone','solution_type','currency','hourly_rate','horizon_years','use_case','use_case_desc','solution','current_annual_cost','solution_annual_cost','annual_saving','annual_manhours_saved','oneoff_deployment','payback_years','roi_ratio_over_horizon']];
+  data.forEach(s=>{
+    (s.roi.length?s.roi:[{}]).forEach(r=>{
+      rows.push([s.captured_at,s.user.name,s.user.company,s.user.email,s.user.phone,s.user.solution_type,s.assumptions.currency,s.assumptions.hourly_rate,s.assumptions.horizon_years,s.use_case.name,s.use_case.description,r.solution||'',r.current_annual_cost,r.solution_annual_cost,r.annual_saving,r.annual_manhours_saved,r.oneoff_deployment,r.payback_years,r.roi_ratio_over_horizon]);
+    });
+  });
+  const csv=rows.map(r=>r.map(cell=>{ const v=(cell==null?'':String(cell)); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }).join(',')).join('\n');
+  download('dewhurst-roi-usecases.csv', csv, 'text/csv');
+}
+
+/* ---------- Utils ---------- */
+function escapeHtml(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function stripTags(s){ const d=document.createElement('div'); d.innerHTML=s||''; return d.textContent||''; }
+function flash(t,cls){ const m=$('#calc_msg'); m.className='msg '+(cls||''); m.textContent=t; }
+
+/* ---------- Reset ---------- */
+function resetUseCase(){
+  solSeq=0;
+  state.solutions=[ newSolution('asis','As-Is'), newSolution('solution','Solution A') ];
+  activeTab=state.solutions[0].id;
+  ['uc_name','uc_desc'].forEach(id=>$('#'+id).value='');
+  renderAll(); flash('Cleared — ready for a new use case. Your details and assumptions were kept.','ok');
+}
+
+/* ---------- Wire up ---------- */
+function renderAll(){ renderTabs(); renderPanels(); renderSummaryPicker(); renderSummary(); renderMatrix(); renderRate(); }
+['a_ccy','a_daycost','a_hrs','a_horizon'].forEach(id=>$('#'+id).addEventListener('input',()=>{ renderRate(); recalcLive(); }));
+$('#sum_pick').addEventListener('change',renderSummary);
+$('#calc').addEventListener('click',capture);
+$('#exp_json').addEventListener('click',exportJSON);
+$('#exp_csv').addEventListener('click',exportCSV);
+$('#reset_uc').addEventListener('click',resetUseCase);
+renderAll();
+</script>
+</body>
+</html>
