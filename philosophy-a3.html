@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>A warning is only as good as the room it lands in - Dewhurst.tech</title>
+        <meta name="description" content="Article 3 of 6 in the Dewhurst.tech series on the three elements: Integrated Signal Intelligence.">
+        <script data-goatcounter="https://dewhurst-tech.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+        <style>:root { --ink: #0E1621;  /* Dewhurst — dark, heavy, serif */ --tech: #5B9BD5;  /* .tech — light blue, thin */ --paper: #FFFFFF; --mist: #F4F6F8; --band: #0E1621; --hair: #DDE3E9; --grey: #5C6672; --serif: Georgia,'Times New Roman',serif; --sans: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; } * { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: var(--sans); color: var(--ink); background: var(--paper); line-height: 1.6; -webkit-font-smoothing: antialiased; } .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; } /* ═══════ SECTION SHELL — the self-contained block every section uses ═══════ *//* .sec        = the section itself: relative + clips its own background *//* .sec-bg     = the background layer, locked to this section, auto-resizing *//* .sec-body   = the content, sitting above the background, in normal flow */.sec { position: relative; overflow: hidden; padding: var(--pad-y,88px) 0; border-top: 1px solid var(--hair); } .sec-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; background-image: url('backgrounds/Background-1.png'); background-size: auto 100%; background-position: var(--bg-pos,center); background-repeat: no-repeat; opacity: var(--bg-opacity,0.5); background-attachment: fixed; } /* ---------- BELIEF SECTION own background: Background-14, cropped to fill just this section (cover) and locked to it (scroll) — independent of the main fixed background behind the rest of the page. Swap the filename to try another; lower opacity to blend it into the dark band. ---------- */.belief .sec-bg { background-image: url('backgrounds/Background-14.png'); background-size: cover; background-position: center; background-attachment: scroll; opacity: 0.85; filter: saturate(0.5) brightness(1.05); } .sec-body { position: relative; z-index: 1; } .hero-sec { position: relative; overflow: hidden; padding: 104px 0 92px; border-top: none; } /* ═══════ EMBLEM BOX — hammerhead inside a semi-transparent bordered shape ═══ *//* Drop this anywhere inside a section. Drag it in Pinegrow, or set the knobs. *//* It is a DECORATION layer: it floats above content, scoped to its section, *//* and does NOT affect reflow. See the ready-to-use template inside §6 ABOUT. */.emblem-box { position: absolute; z-index: 2; pointer-events: none; top: var(--eb-top,40px); right: var(--eb-right,40px); left: var(--eb-left,auto); bottom: var(--eb-bottom,auto); width: var(--eb-size,130px); height: var(--eb-size,130px); border: 1px solid var(--eb-border,rgba(14,40,65,.35)); border-radius: var(--eb-radius,10px); background: 231px; -webkit-backdrop-filter: blur(2px); backdrop-filter: 285px; display: flex; align-items: center; justify-content: center; } .emblem-box img { width: var(--eb-emblem,66%); height: auto; opacity: var(--eb-emblem-op,1); } .hide-mobile { } /* ---------- LOCKUP ---------- */.lockup { display: flex; align-items: center; gap: 14px; } .mark { width: 44px; height: 44px; flex: 0 0 44px; border: 1px dashed var(--tech); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--tech); text-align: center; line-height: 1.1; font-family: var(--sans); } .word { font-family: var(--serif); font-size: 27px; letter-spacing: -.2px; line-height: 1; } .word b { font-weight: 700; color: var(--ink); } .word span { font-family: var(--sans); font-weight: 300; color: var(--tech); } .three { font-family: var(--sans); font-size: 9.5px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--grey); margin-top: 5px; } /* ---------- NAV ---------- */nav { border-bottom: 1px solid var(--hair); position: sticky; top: 0; background: rgba(255,255,255,.94); backdrop-filter: blur(6px); z-index: 10; } nav .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 18px; padding-bottom: 18px; } nav ul { display: flex; gap: 30px; list-style: none; font-size: 14px; } nav a { color: var(--ink); text-decoration: none; opacity: .75; } nav a:hover { opacity: 1; color: var(--tech); } /* ---------- MOBILE MENU: burger hidden on desktop, shown ≤900px. Tapping toggles the 'open' class on <nav> via inline onclick — no separate script. ---------- */.burger { display: none; background: none; border: none; cursor: pointer; color: var(--ink); padding: 6px; line-height: 0; } /* ---------- NAV-OVERLAP FIX: menu jumps stop 130px short so the sticky nav doesn't cover the heading. Raise/lower 130px to taste. ---------- */:target { scroll-margin-top: 130px; } /* ---------- HERO ---------- */h1 { font-family: var(--serif); font-size: 70px; line-height: 1.13; letter-spacing: -.6px; max-width: 16ch; } .sub { font-size: 20px; color: var(--grey); max-width: 60ch; margin-top: 30px; line-height: 1.55; } .sub strong { color: var(--ink); font-weight: 600; } .measure { font-size: 30px; margin-top: 20px; max-width: 60ch; font-weight: 600; } .triad { margin-top: 42px; font-size: 20px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--ink); font-weight: 600; } .triad em { font-style: normal; color: var(--tech); margin: 0 8px; font-weight: 400; } .cta { display: inline-block; margin-top: 38px; background: #5b9bd5; color: #ffffff; text-decoration: none; font-size: 19px; padding: 17px 32px; border-radius: 10px; letter-spacing: .2px; } .cta:hover { background: var(--tech); } /* ---------- SECTION TYPE ---------- */h2 { font-family: var(--serif); font-size: 32px; margin-bottom: 10px; letter-spacing: -.3px; } .cols3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 44px; } .cols4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 36px; } .pillar h3 { font-family: var(--serif); font-size: 21px; margin-bottom: 12px; } .pillar p { color: var(--grey); font-size: 15.5px; } .rule { width: 40px; height: 2px; background: var(--tech); margin: 0 auto 16px; } /* ---------- ELEMENT ICONS: size + hide the off-white square via multiply blend. Change width:60px to resize all icons at once. ---------- */.el-icon { display: block; width: 60px; height: auto; margin: 0 auto 14px; mix-blend-mode: multiply; } /* Centre the icon-card content (icon, rule, heading, text) in System / Services / How-I-Work. */.pillar, .svc, .how > div { text-align: center; } .svc h3 { font-size: 12px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--tech); margin-bottom: 14px; font-weight: 600; } .svc .hl { font-family: var(--serif); font-size: 19px; line-height: 1.35; margin-bottom: 12px; } .svc p { color: var(--grey); font-size: 14.5px; } /* ---------- BELIEF BAND ---------- */.belief { background: var(--band); color: #fff; border-top: none; } .belief h2 { font-family: var(--serif); font-size: 42px; line-height: 1.2; margin-bottom: 6px; max-width: 22ch; } .belief .h2b { font-family: var(--serif); font-size: 42px; line-height: 1.2; color: var(--tech); margin-bottom: 34px; } .belief p { font-size: 18px; color: #B9C4CF; max-width: 70ch; line-height: 1.6; } .belief p strong { color: #fff; font-weight: 600; } .mantra { margin-top: 42px; font-family: var(--serif); font-size: 23px; color: #fff; padding-left: 20px; border-left: 3px solid var(--tech); } /* ---------- BELIEF-BAND HAMMERHEAD: (1) white shark via filter; (2) hexagon shape via clip-path. Scoped to the dark Belief section ONLY, so the hero shark is untouched. To fit the shark inside the hexagon, lower the belief emblem's --eb-emblem knob; to make the hexagon tile more/less visible, change its --eb-fill alpha. ---------- */.belief .emblem-box { height: 285px; clip-path: none; background: none; border: none; -webkit-backdrop-filter: none; backdrop-filter: none; overflow: visible; } /* LAYER 3 (back): slightly larger frosted hexagon — this is where the blur lives. inset:-16px = how much bigger than the outline hexagon. */.belief .emblem-box::after { content: ""; position: absolute; inset: -16px; z-index: -1; background: rgba(255,255,255,.03); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); } /* LAYER 2 (middle): the thin-outline hexagon. stroke = outline colour/opacity; stroke-width = thickness. */.belief .emblem-box .hexframe { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; } .belief .emblem-box .hexframe polygon { fill: none; stroke: rgba(255,255,255,.6); stroke-width: 2; vector-effect: non-scaling-stroke; } /* LAYER 1 (front): the white hammerhead, above the outline and the frost. */.belief .emblem-box img { position: relative; z-index: 1; filter: brightness(0) invert(1); } /* ---------- VALUE & ROI TEASER (section 5b, after the Belief band) ----------
+   Reuses the site's .sec / .cols3 / .rule / .cta furniture so it reads as native.
+   Knobs: .roi-lead max-width = line length; .roi-cards margin-top = gap under the lead. */.roi h2 { text-align: center; } .roi-lead { color: var(--grey); font-size: 17px; max-width: 76ch; margin: 14px auto 0; text-align: center; } .roi-cards { margin-top: 44px; } .roi-cards > div { text-align: center; } .roi-cards h3 { font-family: var(--serif); font-size: 19px; margin-bottom: 10px; } .roi-cards h3 em { font-style: italic; color: var(--tech); } .roi-cards p { color: var(--grey); font-size: 15.5px; } .roi-act { text-align: center; margin-top: 46px; } .roi-act .cta { margin-top: 0; } .roi-note { font-size: 13.5px; color: var(--grey); margin-top: 14px; } /* ---------- ABOUT — BYLINE under the portrait (added 2026-08-05).
+   Name in the serif of the wordmark; role in the small blue caps already
+   used by the service headings, so it reads as part of the system. ---------- */.byline { margin-top: 16px; } .byline b { display: block; font-family: var(--serif); font-size: 20px; font-weight: 700; letter-spacing: -.2px; color: var(--ink); } .byline b .post { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: .6px; color: var(--grey); white-space: nowrap; } .byline span { display: block; font-size: 11px; letter-spacing: 1.7px; text-transform: uppercase; color: var(--tech); font-weight: 600; margin-top: 6px; } /* ---------- ABOUT (3 columns) ---------- */.about { display: grid; grid-template-columns: 0.85fr 1.35fr 1fr; gap: 48px; align-items: start; } .portrait { width: 100%; aspect-ratio: 4/5; background: var(--mist); border: 1px dashed var(--hair); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--grey); font-size: 12px; text-align: center; padding: 20px; } .voice p { margin-bottom: 18px; font-size: 16px; } .voice strong { font-weight: 600; } .evidence { border-left: 1px solid var(--hair); padding-left: 30px; } .evidence dl { font-size: 14px; } .evidence dt { font-size: 10.5px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--tech); font-weight: 600; margin-top: 20px; } .evidence dt:first-child { margin-top: 0; } .evidence dd { color: var(--grey); margin-top: 4px; line-height: 1.5; } .evidence dd b { color: var(--ink); font-weight: 600; } /* ---------- HOW I WORK ---------- */.opener { font-family: var(--serif); font-size: 34px; line-height: 1.25; max-width: 24ch; margin-bottom: 52px; } .how h3 { font-family: var(--serif); font-size: 19px; margin-bottom: 10px; } .how p { color: var(--grey); font-size: 15.5px; } /* ---------- CONTACT ---------- */.contact { text-align: center; } .contact h2 { font-family: var(--serif); font-size: 38px; margin-bottom: 20px; } .contact p { color: var(--grey); font-size: 18px; max-width: 60ch; margin: 0 auto 38px; } .contact strong { color: var(--ink); font-weight: 600; } /* ---------- FOOTER ---------- */footer { border-top: 1px solid var(--hair); padding: 40px 0; } footer .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; } footer .c { font-size: 13px; color: var(--grey); } /* ---------- HERO SHARK · RESPONSIVE WATERMARK: on windows narrower than 1200px the floating hammerhead re-centres BEHIND the hero text as a faint watermark, so it never collides with the words (matters most on mobile). Tune: 1200px = when it switches; opacity 0.12 = fainter/stronger; 62vh / 460px = size. ---------- */@media (max-width: 1200px){ .hero-sec .emblem-box {  top: 50%;  left: 50%;  right: auto;  bottom: auto;  transform: translate(-50%,-50%);  width: auto;  height: auto;  z-index: 0;  opacity: 0.3;  border: none;  background: none;  -webkit-backdrop-filter: none;  backdrop-filter: none; }  /* Belief emblem gets the same treatment as the hero: on narrow screens it re-centres, drops behind the text and fades to a watermark. */ .belief .emblem-box {  top: 50%;  left: 50%;  right: auto;  bottom: auto;  transform: translate(-50%,-50%);  z-index: 0;  opacity: 0.4; }  .hero-sec .emblem-box img {  width: auto;  height: 62vh;  max-height: 460px; } } @media (max-width:900px){ h1 {  font-size: 36px; }  .cols3, .cols4 {  grid-template-columns: 1fr;  gap: 34px; }  .about {  grid-template-columns: 1fr;  gap: 34px; }  .evidence {  border-left: none;  padding-left: 0;  border-top: 1px solid var(--hair);  padding-top: 26px; }  .portrait {  aspect-ratio: 3/2; }  .burger {  display: block; }  nav ul {  display: none;  position: absolute;  top: 100%;  left: 0;  right: 0;  flex-direction: column;  gap: 0;  background: rgba(255,255,255,.98);  backdrop-filter: blur(6px);  border-bottom: 1px solid var(--hair);  padding: 8px 28px 14px; }  nav.open ul {  display: flex; }  nav ul li {  border-top: 1px solid var(--hair); }  nav ul li a {  display: block;  padding: 12px 0; }  .belief h2, .belief .h2b {  font-size: 29px; }  .opener {  font-size: 25px; }  .hide-mobile {  display: none; }  /* hide decorative emblem boxes on phones if they crowd text */ }@media (max-width:900px){html{background:#FFFFFF;}body{background:transparent;}body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url('backgrounds/Background-1.png') right top / auto 100% no-repeat;opacity:0.4;}.hero-sec .sec-bg,.sec:not(.belief) .sec-bg{display:none;}.sec:not(.belief){background:rgba(255,255,255,0.62);}}</style>
+        <style>
+/* ---------- PHILOSOPHY: sub-menu (desktop drops down on hover/focus; phone shows it indented inside the menu) ---------- */
+nav ul li.has-sub { position: relative; }
+nav ul li.has-sub::after { content: ""; position: absolute; left: -16px; right: -16px; top: 100%; height: 44px; } /* invisible bridge so the mouse can reach the sub-menu */
+nav ul ul.sub { display: none; position: absolute; top: 100%; margin-top: 0; left: -16px; min-width: 330px; flex-direction: column; gap: 0; background: rgba(255,255,255,.98); border: 1px solid var(--hair); border-radius: 8px; padding: 8px 16px; box-shadow: 0 10px 30px rgba(14,22,33,.08); z-index: 20; }
+nav ul li.has-sub:hover > ul.sub, nav ul li.has-sub:focus-within > ul.sub { display: flex; }
+nav ul ul.sub li { border: none; }
+nav ul ul.sub a { display: block; padding: 7px 0; font-size: 13.5px; opacity: .8; }
+nav a[aria-current="page"] { opacity: 1; color: var(--tech); }
+@media (max-width:900px){
+  nav ul li.has-sub::after { display: none; }
+  nav ul ul.sub { display: flex; position: static; min-width: 0; border: none; box-shadow: none; background: none; padding: 0 0 8px 14px; border-radius: 0; }
+  nav ul ul.sub li { border-top: none; }
+  nav ul ul.sub a { padding: 6px 0; font-size: 13.5px; }
+}
+</style>
+        <style>
+/* ---------- PHILOSOPHY PAGE ---------- */
+:root { --venn-navy:#0E2841; --venn-blue:#0066CC; --venn-grey:#737373; }
+.ph-sec { position: relative; padding: 64px 0; background: rgba(255,255,255,0.62); }
+.ph-sec.alt { background: rgba(244,246,248,0.85); }
+.ph-eyebrow { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--tech); font-weight: 600; margin-bottom: 14px; }
+.ph-hero { padding: 80px 0 40px; }
+.ph-hero h1 { max-width: none; }
+nav .wrap > a:first-child { opacity: 1; } /* the locked lockup is never faded */
+.ph-hero h1 span { color: var(--tech); }
+.ph-band { margin-top: 26px; font-family: var(--serif); font-size: 24px; color: var(--ink); max-width: 46ch; padding-left: 18px; border-left: 3px solid var(--tech); }
+.ph-lead { font-size: 18px; color: var(--grey); max-width: 66ch; margin-top: 22px; }
+.ph-sec h2 { margin-bottom: 8px; }
+.ph-intro { color: var(--grey); max-width: 68ch; margin-bottom: 30px; font-size: 16.5px; }
+.ph-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.ph-card { background: #fff; border: 1px solid var(--hair); border-radius: 12px; padding: 24px; }
+.ph-card h3 { font-family: var(--serif); font-size: 20px; margin-bottom: 8px; }
+.ph-card p { color: var(--grey); font-size: 15px; }
+.ph-card .tag { font-size: 11.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--tech); font-weight: 600; margin-bottom: 8px; }
+.ph-earns { margin-top: 26px; background: var(--band); color: #fff; border-radius: 12px; padding: 26px 30px; }
+.ph-earns h3 { font-family: var(--serif); font-size: 21px; margin-bottom: 10px; }
+.ph-earns ol { margin-left: 20px; color: #C9D3DD; }
+.ph-earns ol li { margin: 4px 0; }
+/* diagram */
+.ph-venn { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
+.ph-venn svg { width: 100%; height: auto; display: block; }
+.ph-venn .rg { cursor: pointer; transition: filter .15s; }
+.ph-venn .rg:hover, .ph-venn .rg.on { filter: brightness(.93); }
+.ph-venn .rg.centre:hover, .ph-venn .rg.centre.on { filter: brightness(1.35); }
+.ph-venn .rg:focus { outline: none; }
+.ph-venn .rg:focus-visible { filter: brightness(.88); }
+.ph-venn text { pointer-events: none; }
+.v-name { font-family: var(--serif); font-weight: 700; font-size: 27px; fill: var(--venn-navy); }
+.v-line { font-family: var(--sans); font-weight: 600; font-size: 22px; fill: var(--venn-blue); }
+.v-sub { font-family: var(--sans); font-size: 17px; fill: var(--venn-grey); }
+.v-pair { font-family: var(--sans); font-weight: 700; font-size: 20px; letter-spacing: 2.5px; fill: var(--venn-navy); }
+.v-but { font-family: var(--serif); font-style: italic; font-size: 19px; fill: var(--venn-navy); }
+.ph-panel { background: #fff; border: 1px solid var(--hair); border-radius: 14px; padding: 30px; min-height: 330px; box-shadow: 0 10px 30px rgba(14,22,33,.05); }
+.ph-panel .k { font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--tech); font-weight: 600; }
+.ph-panel h3 { font-family: var(--serif); font-size: 26px; margin: 6px 0 4px; }
+.ph-panel .line { color: var(--venn-blue); font-weight: 600; font-size: 18px; }
+.ph-panel .grey { color: var(--grey); font-size: 14.5px; margin-bottom: 14px; }
+.ph-panel .q { font-family: var(--serif); font-style: italic; font-size: 18px; margin: 14px 0 10px; }
+.ph-panel p { color: var(--ink); font-size: 15.5px; }
+.ph-btn { display: inline-block; margin-top: 18px; background: #5b9bd5; color: #fff; text-decoration: none; font-size: 15.5px; padding: 11px 20px; border-radius: 9px; }
+.ph-btn:hover { background: var(--ink); }
+.ph-btn.ghost { background: none; color: var(--ink); border: 1px solid var(--hair); }
+.ph-btn.ghost:hover { border-color: var(--tech); color: var(--tech); }
+.ph-btn.off { background: #C8D0D8; pointer-events: none; }
+.ph-hint { color: var(--grey); font-size: 14px; margin-top: 12px; text-align: center; }
+/* V00.04: the hammerhead sits in its own layer above the Venn (was an SVG <image>, which could paint under the regions after scrolling or navigating back) */
+.ph-vwrap { position: relative; }
+.ph-shark { position: absolute; left: 44.95%; top: 37.19%; width: 10.09%; height: 22.29%; object-fit: contain; pointer-events: none; z-index: 2; }
+/* V00.04: section heading = the centre's own wording */
+.ph-apex-h { margin-bottom: 4px; }
+.ph-apex-l { font-family: var(--serif); font-size: 24px; color: var(--venn-blue); }
+.ph-apex-g { color: var(--grey); font-size: 16px; margin: 4px 0 30px; }
+/* V00.04: the six articles, always in the panel */
+.ph-arts { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--hair); }
+.ph-arts .k2 { font-size: 11.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--grey); font-weight: 600; margin-bottom: 6px; }
+.ph-arts ol { list-style: none; margin: 0; padding: 0; }
+.ph-arts a { display: flex; gap: 10px; align-items: center; padding: 5px 0; text-decoration: none; color: var(--grey); opacity: .45; transition: opacity .15s, color .15s; }
+.ph-arts a .n { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--hair); background: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 12.5px; }
+.ph-arts a .t { font-size: 14px; line-height: 1.3; }
+.ph-arts a.lit { opacity: 1; color: var(--tech); }
+.ph-arts a.lit .n { background: var(--venn-navy); border-color: var(--venn-navy); color: #fff; }
+.ph-arts a:hover { opacity: 1; }
+.ph-arts a:hover .t { text-decoration: underline; }
+/* V00.05: the gap, by where you sit (sketches adapted from the ADRF26 short-review proposals, graphics.py V00.02) */
+.ph-gap { background: #fff; border: 1px solid var(--hair); border-radius: 14px; padding: 22px 26px 26px; margin-bottom: 26px; }
+.ph-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.ph-tabs button { font: inherit; font-size: 14.5px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--hair); background: #fff; color: var(--ink); cursor: pointer; }
+.ph-tabs button[aria-selected="true"] { background: var(--venn-navy); border-color: var(--venn-navy); color: #fff; }
+.ph-tabs button:hover { border-color: var(--tech); }
+.gp { display: none; } .gp.on { display: block; }
+.gp .cap { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--venn-blue); margin-bottom: 14px; }
+.gp .note { background: #EEF5FC; border-left: 4px solid var(--venn-blue); padding: 10px 14px; font-size: 15.5px; line-height: 1.45; margin-top: 14px; }
+.gp .note b { color: var(--venn-navy); }
+.gp svg { display: block; width: 100%; height: auto; }
+.gp-row { display: flex; align-items: center; gap: 12px; }
+.gp-arrow { font-size: 28px; color: var(--venn-navy); flex: none; }
+.gv-trial { width: 190px; flex: none; background: #E9F6F1; border: 2px solid #159A6E; border-radius: 8px; padding: 16px 12px; text-align: center; }
+.gv-k { font-size: 12px; letter-spacing: .1em; font-weight: 700; }
+.gv-q { font-size: 18px; font-weight: 700; color: var(--venn-navy); margin-top: 4px; line-height: 1.25; }
+.gv-s { font-size: 13.5px; color: var(--grey); margin-top: 4px; }
+.gv-gate { flex: 1; background: #EAEFF5; border-radius: 8px; padding: 10px 12px 12px; border-top: 5px solid var(--venn-navy); }
+.gv-doors { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 8px; margin-top: 4px; }
+.gv-door { background: #fff; border: 1.5px solid var(--venn-navy); border-radius: 6px; padding: 7px 10px; }
+.gv-door b { display: block; font-size: 14.5px; color: var(--venn-navy); } .gv-door span { font-size: 13px; color: var(--grey); }
+.gv-fleet { width: 160px; flex: none; background: var(--venn-navy); border-radius: 8px; padding: 16px 12px; text-align: center; color: #fff; }
+.go-site { width: 150px; flex: none; text-align: center; } .go-mid { flex: 1; text-align: center; } .go-ten { width: 330px; flex: none; text-align: center; }
+.go-lab { font-size: 14.5px; font-weight: 700; color: var(--venn-navy); margin-top: 6px; } .go-q { font-size: 14px; color: var(--grey); margin-top: 4px; }
+.gi-v { flex: 1; text-align: center; }
+@media (max-width:900px){
+  .ph-gap { padding: 18px 16px 20px; }
+  .gp-row { flex-direction: column; align-items: stretch; }
+  .gp-arrow { transform: rotate(90deg); align-self: center; }
+  .gv-trial, .gv-fleet, .go-site, .go-ten { width: auto; }
+  .go-site svg { max-width: 110px; margin: 0 auto; } .go-ten svg { max-width: 300px; margin: 0 auto; }
+  .gv-doors { grid-template-columns: 1fr; }
+}
+/* V00.04: the problem statement */
+.ph-ps { background: #fff; border: 1px solid var(--hair); border-left: 4px solid var(--tech); border-radius: 12px; padding: 24px 28px; margin-bottom: 26px; }
+.ph-ps .tag { font-size: 11.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--tech); font-weight: 600; margin-bottom: 8px; }
+.ph-ps p { font-family: var(--serif); font-size: 21px; line-height: 1.45; color: var(--ink); max-width: 62ch; }
+/* overlaps */
+.ph-ov .ph-card .miss { margin-top: 12px; font-size: 14px; color: var(--ink); }
+.ph-ov .ph-card .miss strong { color: var(--ink); }
+/* centre ladder */
+.ph-ladder { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; margin-top: 10px; }
+.ph-step { padding: 26px 24px; border: 1px solid var(--hair); background: #fff; position: relative; }
+.ph-step:nth-child(2) { background: #E3EEF9; }
+.ph-step:nth-child(3) { background: var(--venn-navy); color: #fff; border-color: var(--venn-navy); }
+.ph-step:nth-child(3) p { color: #C9D3DD; }
+.ph-step .num { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--tech); }
+.ph-step h3 { font-family: var(--serif); font-size: 21px; margin: 6px 0 8px; }
+.ph-step p { font-size: 14.5px; color: var(--grey); }
+.ph-step:not(:last-child)::after { content: "→"; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; line-height: 26px; text-align: center; background: #fff; border: 1px solid var(--hair); border-radius: 50%; z-index: 2; color: var(--tech); font-size: 15px; }
+.ph-quote { margin-top: 26px; font-family: var(--serif); font-size: 22px; padding-left: 18px; border-left: 3px solid var(--tech); }
+/* series flow */
+.ph-flow { position: relative; display: grid; grid-template-columns: repeat(6,1fr); gap: 18px; margin-top: 10px; }
+.ph-flow::before { content: ""; position: absolute; left: 6%; right: 6%; top: 21px; height: 2px; background: linear-gradient(90deg, var(--tech), var(--venn-navy)); z-index: 0; }
+.ph-art { position: relative; z-index: 1; display: flex; flex-direction: column; text-decoration: none; color: var(--ink); }
+.ph-art .dot { width: 44px; height: 44px; border-radius: 50%; background: var(--venn-navy); color: #fff; font-family: var(--serif); font-size: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; border: 4px solid #fff; box-shadow: 0 0 0 1px var(--hair); }
+.ph-art.soon .dot { background: #fff; color: var(--grey); }
+.ph-art .box { background: #fff; border: 1px solid var(--hair); border-radius: 12px; overflow: hidden; flex: 1; display: flex; flex-direction: column; transition: transform .15s, box-shadow .15s; }
+.ph-art:hover .box { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(14,22,33,.09); }
+.ph-art img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+.ph-art .ph-ph { width: 100%; aspect-ratio: 16/9; background: repeating-linear-gradient(45deg,#F4F6F8,#F4F6F8 10px,#EDF1F5 10px,#EDF1F5 20px); display: flex; align-items: center; justify-content: center; color: var(--grey); font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; }
+.ph-art .in { padding: 14px; display: flex; flex-direction: column; flex: 1; }
+.ph-art .el { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--tech); font-weight: 600; }
+.ph-art h3 { font-family: var(--serif); font-size: 16px; line-height: 1.3; margin: 6px 0 10px; }
+.ph-art .go { margin-top: auto; font-size: 13.5px; color: var(--tech); font-weight: 600; }
+.ph-art.soon .go { color: var(--grey); font-weight: 400; }
+/* book arc */
+.ph-arc { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
+.ph-arc .stage { border-radius: 12px; padding: 22px; background: #fff; border: 1px solid var(--hair); cursor: pointer; transition: transform .15s, box-shadow .15s, border-color .15s; }
+.ph-arc .stage:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(14,22,33,.09); border-color: var(--tech); }
+.ph-arc .stage.now { border: 2px solid var(--tech); }
+.ph-arc .stage .k { font-size: 11.5px; letter-spacing: 1.6px; text-transform: uppercase; font-weight: 600; color: var(--grey); }
+.ph-arc .stage.now .k { color: var(--tech); }
+.ph-arc .stage h3 { font-family: var(--serif); font-size: 19px; margin: 6px 0 6px; }
+.ph-arc .stage p { font-size: 14.5px; color: var(--grey); }
+.ph-arc .stage svg { width: 100%; height: 70px; margin-bottom: 10px; }
+.ph-close { background: var(--band); color: #fff; text-align: center; padding: 70px 0; }
+.ph-close p { font-family: var(--serif); font-size: 28px; max-width: 30ch; margin: 0 auto; line-height: 1.3; }
+.ph-close .cta { margin-top: 30px; }
+/* article page */
+.ar-hero { padding: 60px 0 20px; }
+.ar-hero h1 { font-size: 46px; max-width: 24ch; }
+.ar-cover { width: 100%; border-radius: 14px; border: 1px solid var(--hair); margin-top: 26px; display: block; }
+.ar-body { display: grid; grid-template-columns: 290px minmax(0,1fr); gap: 56px; align-items: start; }
+.ar-series { position: sticky; top: 150px; max-height: calc(100vh - 170px); overflow-y: auto; background: #fff; border: 1px solid var(--hair); border-radius: 14px; padding: 18px; }
+.ar-series summary { font-size: 11.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--tech); font-weight: 600; cursor: pointer; list-style: none; }
+.ar-series summary::-webkit-details-marker { display: none; }
+.ar-series ol { list-style: none; margin: 12px 0 6px; padding: 0; position: relative; }
+.ar-series ol::before { content: ""; position: absolute; left: 14px; top: 14px; bottom: 14px; width: 2px; background: var(--hair); }
+.ar-series li { position: relative; }
+.ar-series li a, .ar-series li.cur { display: flex; gap: 12px; align-items: flex-start; padding: 7px 0; text-decoration: none; color: var(--ink); }
+.ar-series .n { flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--hair); background: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 14px; position: relative; z-index: 1; }
+.ar-series li.cur .n { background: var(--venn-navy); color: #fff; border-color: var(--venn-navy); }
+.ar-series .t { font-size: 14px; line-height: 1.35; padding-top: 5px; }
+.ar-series li.cur .t { font-weight: 600; }
+.ar-series li a:hover .t { color: var(--tech); }
+.ar-series .t em { color: var(--grey); font-style: normal; }
+.ar-series .el { display: block; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--grey); margin-top: 3px; font-weight: 400; }
+.ar-all { display: block; font-size: 13.5px; color: var(--tech); text-decoration: none; margin-top: 8px; }
+.ar-all:hover { text-decoration: underline; }
+.ar-text { max-width: 68ch; }
+.ar-text p, .ar-text li { font-size: 18px; line-height: 1.65; margin-bottom: 18px; color: var(--ink); }
+.ar-text ul { margin: 0 0 18px 22px; }
+.ar-text li { margin-bottom: 8px; }
+.ar-text h2 { font-family: var(--serif); font-size: 27px; margin: 40px 0 14px; }
+.ar-text > p:first-of-type:not(.draftflag) { font-family: var(--serif); font-size: 23px; line-height: 1.45; }
+.ar-text a { color: var(--tech); }
+.ar-fig { margin: 26px 0 30px; background: #fff; border: 1px solid var(--hair); border-radius: 12px; padding: 14px; }
+.ar-fig img { width: 100%; display: block; border-radius: 6px; }
+.ar-text p.ar-li { margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--hair); font-size: 15.5px; color: var(--grey); }
+.ar-pn { display: flex; justify-content: space-between; gap: 20px; margin-top: 10px; flex-wrap: wrap; }
+.ar-pn a { flex: 1; min-width: 240px; text-decoration: none; color: var(--ink); border: 1px solid var(--hair); border-radius: 12px; padding: 16px 20px; background: #fff; }
+.ar-pn a:hover { border-color: var(--tech); }
+.ar-pn .k { font-size: 11.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--tech); font-weight: 600; }
+.ar-pn .t { font-family: var(--serif); font-size: 17px; margin-top: 4px; }
+.ar-pn .next { text-align: right; }
+.draftflag { background: #FFF4CC; border: 1px solid #E8C547; color: #6B5300; font-size: 13px; padding: 6px 10px; border-radius: 6px; display: inline-block; margin-top: 10px; }
+@media (max-width:900px){
+  .ph-cards, .ph-venn, .ph-ladder, .ph-arc, .ar-body { grid-template-columns: 1fr; }
+  .ar-body { gap: 28px; }
+  .ar-series { position: static; }
+  .ar-text p, .ar-text li { font-size: 17px; }
+  .ar-text > p:first-of-type:not(.draftflag) { font-size: 20px; }
+  .ph-step:not(:last-child)::after { content: "↓"; right: 50%; top: auto; bottom: -14px; transform: translateX(50%); }
+  .ph-flow { grid-template-columns: 1fr; gap: 14px; }
+  .ph-flow::before { left: 21px; right: auto; top: 10px; bottom: 10px; width: 2px; height: auto; background: linear-gradient(180deg, var(--tech), var(--venn-navy)); }
+  .ph-art { flex-direction: row; gap: 14px; align-items: stretch; }
+  .ph-art .dot { margin: 0; flex: none; }
+  .ph-art img, .ph-art .ph-ph { display: none; }
+  .ar-hero h1 { font-size: 32px; }
+  .ph-close p { font-size: 23px; }
+  .ph-band { font-size: 20px; }
+}
+</style>
+    </head>
+    <body>
+        <nav>
+            <div class="wrap">
+                <!-- 🔒 LOCKED BLOCK — the wordmark. Do not rescale / re-space / balance. -->
+                <a href="index.html" aria-label="Dewhurst.tech home"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech"></a>
+                <!-- 🔒 END LOCKED BLOCK -->
+                <button type="button" class="burger" aria-label="Menu" onclick="this.closest('nav').classList.toggle('open')">
+                    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <ul>
+                    <li><a href="index.html#system">System</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li class="has-sub"><a href="philosophy.html" aria-current="page">Philosophy</a>
+                        <ul class="sub"><li><a href="philosophy-a1.html">1 · Why good operations still get caught out</a></li><li><a href="philosophy-a2.html">2 · Two hundred years of experience, but not a complete team</a></li><li><a href="philosophy-a3.html">3 · A warning is only as good as the room it lands in</a></li><li><a href="philosophy-a4.html">4 · Three captains asked for a light - and the ship still capsized</a></li><li><a href="philosophy-a5.html">5 · Two out of three feels like success. That's the problem.</a></li><li><a href="philosophy-a6.html">6 · The man who believed the old stories</a></li></ul>
+                    </li>
+                    <li><a href="roi-tool.html" target="_blank" rel="noopener">Value &amp; ROI Calculator</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+        <header class="ph-sec ar-hero">
+            <div class="wrap">
+                <div class="ph-eyebrow"><a href="philosophy.html" style="color:inherit;text-decoration:none">Philosophy</a> · Article 3 of 6 · Integrated Signal Intelligence</div>
+                <h1>A warning is only as good as the room it lands in</h1>
+                <img class="ar-cover" src="philosophy/cover-a3.jpg" alt="">
+            </div>
+        </header>
+        <section class="ph-sec">
+            <div class="wrap ar-body">
+                <nav class="ar-series" aria-label="The six articles"><details open><summary>The series · article 3 of 6</summary><ol><li><a href="philosophy-a1.html"><span class="n">1</span><span class="t">Why good operations still get caught out<span class="el">The whole picture</span></span></a></li><li><a href="philosophy-a2.html"><span class="n">2</span><span class="t">Two hundred years of experience, but not a complete team<span class="el">Total Awareness</span></span></a></li><li class="cur" aria-current="page"><span class="n">3</span><span class="t">A warning is only as good as the room it lands in<span class="el">Integrated Signal Intelligence</span></span></li><li><a href="philosophy-a4.html"><span class="n">4</span><span class="t">Three captains asked for a light - and the ship still capsized<span class="el">Evolutionary Transformation</span></span></a></li><li><a href="philosophy-a5.html"><span class="n">5</span><span class="t">Two out of three feels like success. That's the problem.<span class="el">The three overlaps</span></span></a></li><li><a href="philosophy-a6.html"><span class="n">6</span><span class="t">The man who believed the old stories<span class="el">Operational Apex</span></span></a></li></ol></details><a class="ar-all" href="philosophy.html#series">All six on one page</a><a class="ar-all" href="philosophy.html#diagram">Explore the three elements</a></nav><script>if(window.innerWidth<900){var d=document.querySelector(".ar-series details");if(d)d.removeAttribute("open");}</script>
+                <article class="ar-text">
+                    <p>The radar saw the attack coming more than 130 miles out. The warning went to one officer, in an almost empty room - and the bombs still fell.</p>
+                    <p>Sunday 7 December 1941, two minutes past seven in the morning: On a hill at the northern tip of Oahu, two young privates were still sitting at their radar set because the truck to take them to breakfast hadn't turned up. Their shift had ended at seven. They kept the set running for practice.</p>
+                    <p>Then the biggest blip either of them had ever seen appeared on the screen.</p>
+                    <p>They checked the equipment. It was working, so they phoned it in.</p>
+                    <h2>Where we are</h2>
+                    <p><a href="philosophy-a2.html">Last time</a> was about looking in every direction: a gas plant where two hundred years of experience stood around a frozen heat exchanger yet nobody standing round it knew what the cold was doing to the steel. This one is about the step after that, because seeing something isn't the same as understanding it. Now let's take a look at the second element: Integrated Signal Intelligence - from the sensor to the decision.</p>
+                    <figure class="ar-fig"><img src="philosophy/venn-integrated-signal-intelligence.jpg" alt="The three elements with Integrated Signal Intelligence highlighted."></figure>
+                    <h2>From sensor to decision</h2>
+                    <p><strong>Integrated Signal Intelligence - from sensor to decision.</strong> The idea in a nutshell? Signals with purpose. The right sensors give the right signals, joined end to end, from the plant to the person deciding, where they become intelligence. A signal that can't get through that chain is no signal at all.</p>
+                    <p>A working operation throws off signals all day. Instrument readings; inspection results; near-miss reports; the shift handover; the operator who says a pump doesn't sound right. On their own, most of them aren't alarming. The warning that matters is usually spread across several of them, sitting in different systems with different teams, so nobody sees the whole story until afterwards. <em>Integrated</em> is the word doing the work. An organisation that keeps its signals in separate boxes will keep being surprised by things it technically knew.</p>
+                    <p><em>Intelligence</em> means contextual judgement: not just analysis, but knowing which signals carry weight and which are noise.</p>
+                    <p>Although it's tempting to think the answer is to connect everything, I'd caution on that. A modern control room can, in theory, put thousands of readings and alarms an hour in front of the person on shift. But if they can't tell the few that matter from the many that don't, more connection means more noise... and noise hides a warning as surely as a missing sensor does. The humans in the loop are part of the system and who sees which signal, in what form, at what moment is a design decision.</p>
+                    <h2>Fit for purpose, fit for service</h2>
+                    <p>This is also where my own technical discipline trips over itself most often (and I've done my share of the tripping!). The radar set on that hill was fit for purpose: it did exactly what its specification said it would. Whether Oahu's air defence was fit for service on a quiet Sunday morning was a different question - and that was the question that hadn't been asked.</p>
+                    <p>A vendor answers the first question with a certificate. Only the operator can answer the second, using a risk assessment built for that asset, those conditions and that shift pattern. Part of this element is the discipline of never mistaking one for the other. A certificate is one input to that decision, never the decision itself.</p>
+                    <h2>Same radar, two endings</h2>
+                    <p>Everyone in this story was doing the best they could with what they had. Two privates stayed on past the end of their shift to practise on a set that had only been with them for a couple of weeks. A switchboard operator asked whether something ought to be done - and a lieutenant on his second shift, with a brief orientation and no real training, gave the answer the expected bombers pointed to.</p>
+                    <p><strong>Where it went wrong.</strong> The call from Opana Point reached the information centre at Fort Shafter. The plotters had worked the same four-to-seven shift as the radar crew, so they'd gone. The switchboard operator found the one officer still in the building: a fighter pilot on his second shift, posted there mainly for training, with no controller and no staff.</p>
+                    <p>He had a reasonable explanation. A flight of American bombers was due in from California that morning and the blip sat on almost exactly that bearing. He told the radar crew not to worry about it. The bombs started falling just before eight.</p>
+                    <p>The signal was received, recognised as strange and reported by the right route. It then stopped dead, because the room it reached wasn't joined to fighters, to the Navy, or even to its own plotters. The chain ran from a working sensor to a room - and the room went nowhere. Swap him for any other untrained officer on his second shift and I believe the morning goes the same way. When the Navy's board cleared him the following year, it found he had been left with little or no training, no supervision and nobody to work with.</p>
+                    <p><strong>Where it went right.</strong> In the summer of 1940, Britain's radar was no better than anyone else's. Every radar report went to one filter room, where people decided what was one raid and what was two, what was friend and what was foe, then gave each track a number. Only then did the plot go out - down the chain, onto a table where plotters pushed markers with long rakes. In front of that table sat a controller who had the authority to send fighters up and had drilled for exactly that moment. The tables were staffed day and night. This version didn't require luck to have the right person in the room.</p>
+                    <p>To be fair to Hawaii, Britain had been at war for ten months by then and was expecting raids every day. The British system wasn't born good either. In its first week at war, a radar fault showed the Royal Air Force's own aircraft as an incoming raid; the fighters sent up to meet it appeared on the plot as more raiders; RAF Spitfires shot down two of their own Hurricanes over Essex - one pilot was killed. The court martial cleared the two Spitfire pilots and called it an unfortunate accident. As I see it, everyone had done what the system told them to do. So it was the system that changed. By the following summer the RAF had greatly improved how it sorted and identified what its radar showed - and it had ways of tracking its own fighters from the ground.</p>
+                    <p><strong>What made the difference.</strong> Same technology, on both sides of the world. The radar did its job at Opana Point and it did its job on the English coast. Only one side had built the whole chain, from the set on the hill to the person who could send fighters up - and fixed that chain when it broke. That's this whole series in one story.</p>
+                    <h2>Three mistakes I keep seeing</h2>
+                    <p>The first is to be tricked into thinking that a dashboard is intelligence (I've built a few of those myself!). A dashboard simply puts signals side by side; integration means someone, or something, has actually connected them and drawn a conclusion that will stand up on Monday morning. The second mistake is assuming that connecting more signals always helps. Past a certain point it only helps if the person receiving them has a way to tell signal from noise. The third is treating a certificate as the end of a question rather than the start of one.</p>
+                    <h2>Three questions for your operation</h2>
+                    <p>Where does each signal about this change end up - and does anyone see them all together?</p>
+                    <p>On a bad night, how many alarms would the person on shift face - and how would they know which one mattered?</p>
+                    <p>If the most senior person in the room disagreed with the evidence, which would win?</p>
+                    <h2>Over to you</h2>
+                    <p>Next time we reach the third element, Evolutionary Transformation - being systematic and in control, so the change outlasts whoever championed it. Understanding a warning still isn't the same as staying in control of what happens next. The story? A ferry, its bow doors and the man whose job it was to shut them.</p>
+                    <p>From my perspective, a warning lost in the noise is far more common than a warning that was never there. Whether you run the control room or you're the one who picks up the phone at seven on a Sunday, I'd love your perspective on one thing:</p>
+                    <p>What's the most important warning you've seen get lost in the noise?</p>
+                    <p class="ar-li">This article first appeared on LinkedIn, where the conversation carries on: <a href="https://www.linkedin.com/pulse/warning-only-good-room-lands-steve-smith-ch8ue/" target="_blank" rel="noopener">join it there</a>.</p>
+                </article>
+            </div>
+        </section>
+        <section class="ph-sec alt">
+            <div class="wrap"><div class="ar-pn"><a href="philosophy-a2.html"><div class="k">← Previous · article 2</div><div class="t">Two hundred years of experience, but not a complete team</div></a><a class="next" href="philosophy-a4.html"><div class="k">Next · article 4 →</div><div class="t">Three captains asked for a light - and the ship still capsized</div></a></div></div>
+        </section>
+        <section class="ph-close">
+            <div class="wrap">
+                <p>If your signals are joined up on paper but not in the control room, let's talk.</p>
+                <a class="cta" href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a>
+            </div>
+        </section>
+        <footer>
+            <div class="wrap">
+                <!-- 🔒 LOCKED BLOCK — the wordmark. Do not rescale / re-space / balance. -->
+                <div class="lockup"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech"></div>
+                <!-- 🔒 END LOCKED BLOCK -->
+                <div class="c" style="text-align:right;">© 2026 Dewhurst.tech &middot; <a href="privacy.html" style="color:var(--grey);">Privacy</a><div class="ver" style="font-size:11px;color:#AAB2BB;margin-top:4px;letter-spacing:.3px;">Version:2026.10.09.01</div></div>
+            </div>
+        </footer>
+    </body>
+</html>

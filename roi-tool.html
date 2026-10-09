@@ -153,6 +153,47 @@ table.mx .muted{color:var(--grey)}
 .msg.err{color:var(--warn)}
 .msg.ok{color:var(--good)}
 
+/* ---------- CONSENT / PRIVACY (added 2026-08-05) ---------- */
+.consent{margin-top:20px;padding:14px 16px;border:1px solid var(--hair);border-radius:10px;background:var(--mist)}
+.consent .chk{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;cursor:pointer;margin:0}
+.consent .chk input[type=checkbox]{width:17px;height:17px;flex:0 0 17px;margin-top:2px;padding:0;accent-color:var(--tech);cursor:pointer}
+.consent .hint{margin-top:10px;padding-left:28px}
+.privacy{font-size:12.5px;color:var(--grey);margin-top:14px;line-height:1.6;max-width:90ch}
+.exchange{margin-top:20px;padding:14px 17px;border-left:3px solid var(--tech);background:var(--mist);border-radius:0 10px 10px 0;font-size:14px;line-height:1.6;max-width:90ch}
+.exchange b{color:var(--ink);font-weight:600}
+.sendmsg{font-size:13.5px;padding:4px 0;color:var(--grey)}
+.sendmsg.ok{color:var(--good)}
+.sendmsg.err{color:var(--warn)}
+.hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden}
+
+/* ---------- PRINT / PDF REPORT (added 2026-08-05) ----------
+   No library, no CDN: the page builds a clean report block and calls the
+   browser's own print dialog, where "Save as PDF" is the destination.
+   Everything else on the page is hidden for print. ---------- */
+#report{display:none}
+@media print{
+  nav,header.hero,.block,footer{display:none!important}
+  #report{display:block!important}
+  html,body{background:#fff!important;color:#000}
+  #report .rep-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10mm}
+  #report .rep-logo{height:19mm;width:auto;display:block}
+  #report .rep-title{font-family:var(--serif);font-size:16pt;font-weight:700;text-align:right;line-height:1.15}
+  #report .meta{font-size:8.5pt;color:#444;letter-spacing:.4px;text-transform:uppercase;border-top:1px solid #999;padding-top:2.5mm;margin-top:3mm;margin-bottom:5mm}
+  #report h2{font-family:var(--serif);font-size:12.5pt;margin:6mm 0 1.5mm}
+  #report table{width:100%;border-collapse:collapse;font-size:9pt}
+  #report th,#report td{border:1px solid #bbb;padding:3px 6px;text-align:right;vertical-align:top}
+  #report th:first-child,#report td:first-child{text-align:left}
+  #report thead th{background:#eee!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #report tr.group td,#report tr.total td,#report tr.roi td{font-weight:700}
+  #report table.kv td{border:none;padding:1.5px 0}
+  #report table.kv td:first-child{width:34%;color:#444;font-weight:400}
+  #report .note{font-size:9pt;color:#222;margin-top:3mm;line-height:1.55;border-left:2px solid #888;padding-left:3mm}
+  #report .rep-foot{margin-top:8mm;border-top:1px solid #999;padding-top:2mm;font-size:8pt;color:#444}
+  #report table,#report tr{page-break-inside:avoid}
+  #report h2{page-break-after:avoid}
+  @page{size:A4;margin:14mm}
+}
+
 /* ---------- COLLECTED ---------- */
 .collected table{border-collapse:collapse;width:100%;font-size:13px}
 .collected th,.collected td{border-bottom:1px solid var(--hair);padding:8px 10px;text-align:left;vertical-align:top}
@@ -199,25 +240,22 @@ footer .c{font-size:12px}
     <p class="sub">A working tool for building the <strong>value case</strong> behind scaling robotics and novel technology into live operations — <strong>inspection, maintenance and surveillance robotics, and the OT infrastructure beneath them</strong>. It compares your current way of working (<strong>As-Is</strong>) against one or more proposed solutions, across the whole system: technology, process, people and performance. The return is shown in both <strong>money</strong> and in <strong>hours bought back</strong>.</p>
     <div class="strap">Safe <em>·</em> Sustainable <em>·</em> Scalable</div>
     <div class="steps">
-      <div class="step"><b>1 · Set up</b><p>Enter your details and the key assumptions (currency, operator cost, time horizon).</p></div>
-      <div class="step"><b>2 · Name the use case</b><p>Give the problem you are trying to scale a name and a short description.</p></div>
+      <div class="step"><b>1 · Name the use case</b><p>Give the problem you are trying to scale a name and a short description.</p></div>
+      <div class="step"><b>2 · Set the assumptions</b><p>Currency, operator cost, working hours and the value time horizon.</p></div>
       <div class="step"><b>3 · Build the states</b><p>Fill the As-Is baseline, then add Solution A, B, C. Expand each layer and enter cost and man-hours.</p></div>
-      <div class="step"><b>4 · Calculate</b><p>Read the value summary, then capture the use case and export it.</p></div>
+      <div class="step"><b>4 · Capture &amp; export</b><p>Read the value summary, add your details, then capture and export the case as a PDF, JSON or CSV.</p></div>
     </div>
   </div>
 </header>
 
-<!-- ═══ SET-UP: IDENTITY ═══ -->
+<!-- ═══ USE CASE  (moved above Key assumptions, 2026-08-05) ═══ -->
 <section class="block">
   <div class="wrap">
-    <h2>Your details</h2>
-    <p class="lead">So the value case can be attributed and followed up. Nothing is sent anywhere from this page — it stays in your browser until you export it.</p>
-    <div class="grid3">
-      <div><label class="fld">Name <span class="req">*</span></label><input id="u_name" placeholder="Full name"></div>
-      <div><label class="fld">Company <span class="req">*</span></label><input id="u_company" placeholder="Organisation"></div>
-      <div><label class="fld">Email <span class="req">*</span></label><input id="u_email" type="email" placeholder="name@company.com"></div>
-      <div><label class="fld">Phone</label><input id="u_phone" placeholder="+.."></div>
-      <div style="grid-column:2 / -1"><label class="fld">The type of solution you are trying to scale</label><input id="u_soltype" placeholder="e.g. autonomous surveillance robot for routine operator rounds"></div>
+    <h2>Use case</h2>
+    <p class="lead">Each calculation is one use case. Naming it lets it roll up into a report — and, in a later version, into a shared library of the problems engineers are trying to solve.</p>
+    <div class="grid2">
+      <div><label class="fld">Use case name <span class="req">*</span></label><input id="uc_name" placeholder="e.g. Routine external corrosion rounds — North platform"></div>
+      <div><label class="fld">Use case description</label><input id="uc_desc" placeholder="What the work is, why it matters, what 'done' looks like"></div>
     </div>
   </div>
 </section>
@@ -260,18 +298,6 @@ footer .c{font-size:12px}
   </div>
 </section>
 
-<!-- ═══ USE CASE ═══ -->
-<section class="block">
-  <div class="wrap">
-    <h2>The use case</h2>
-    <p class="lead">Each calculation is one use case. Naming it lets it roll up into a report — and, in a later version, into a shared library of the problems engineers are trying to solve.</p>
-    <div class="grid2">
-      <div><label class="fld">Use case name <span class="req">*</span></label><input id="uc_name" placeholder="e.g. Routine external corrosion rounds — North platform"></div>
-      <div><label class="fld">Use case description</label><input id="uc_desc" placeholder="What the work is, why it matters, what 'done' looks like"></div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ VALUE SUMMARY (live) ═══ -->
 <section class="block">
   <div class="wrap">
@@ -307,18 +333,49 @@ footer .c{font-size:12px}
   </div>
 </section>
 
+<!-- ═══ YOUR DETAILS  (moved down to sit beside Capture, 2026-08-05) ═══ -->
+<section class="block">
+  <div class="wrap">
+    <h2>Your details</h2>
+    <p class="lead">You have the numbers — these attach your name to them, so the case can be attributed and, if you want it, discussed.</p>
+    <div class="grid3">
+      <div><label class="fld">Name <span class="req">*</span></label><input id="u_name" placeholder="Full name"></div>
+      <div><label class="fld">Company <span class="req">*</span></label><input id="u_company" placeholder="Organisation"></div>
+      <div><label class="fld">Email <span class="req">*</span></label><input id="u_email" type="email" placeholder="name@company.com"></div>
+      <div><label class="fld">Phone</label><input id="u_phone" placeholder="+.."></div>
+      <div style="grid-column:2 / -1"><label class="fld">The type of solution you are trying to scale</label><input id="u_soltype" placeholder="e.g. autonomous surveillance robot for routine operator rounds"></div>
+    </div>
+
+    <div class="exchange" id="exchange_note">
+      <b>Export and your data.</b> In requesting this free export, <b>Dewhurst.tech will hold a copy of this data</b> &mdash; the case as entered, together with the details above. It will not be used for any purpose beyond attributing the case and, where you have asked for it, discussing it with you; it will not be passed to a third party, and it will not be used for anything further without your consent. Please see the <a href="privacy.html">privacy notice</a> for detail. Nothing is transmitted until you choose to export.
+    </div>
+
+    <div class="consent">
+      <label class="chk" for="u_contact"><input type="checkbox" id="u_contact"><span>Separately &mdash; I&rsquo;d like Steve Smith to get in touch about this use case. <b>No obligation</b> &mdash; one conversation about the opportunity, not a marketing list.</span></label>
+      <div class="hint" id="contact_note" style="display:none"></div>
+    </div>
+
+    <!-- honeypot: real people never fill this in; bots usually do -->
+    <div class="hp" aria-hidden="true"><label>Leave this field empty <input id="u_hp" tabindex="-1" autocomplete="off"></label></div>
+
+    <p class="privacy"><b>How your details are handled.</b> Your name, company and email travel with the case when you export it, so it can be attributed and, if you have asked for it, discussed. They are held and processed in line with the UK GDPR, kept no longer than that conversation needs, and never sold or passed to a third party for marketing. To have your details and your case deleted at any point, email <a href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a> and it will be done. Full detail: <a href="privacy.html">privacy notice</a>.</p>
+  </div>
+</section>
+
 <!-- ═══ CALCULATE / CAPTURE ═══ -->
 <section class="block">
   <div class="wrap">
     <h2>Calculate &amp; capture</h2>
-    <p class="lead">Capturing the use case adds a dated snapshot to the list below (the seed of the future database) and lets you export it. Export gives you a report-ready JSON and a flat CSV.</p>
+    <p class="lead">Capturing the use case adds a dated snapshot to the list below and lets you export it. <strong>Export PDF report</strong> gives you a clean, printable one-file summary to circulate; JSON and CSV give you the underlying data. Every export is emailed to you as well as downloaded, and a copy is retained by Dewhurst.tech as set out above.</p>
     <div class="actions">
       <button class="btn" id="calc">Calculate &amp; capture use case</button>
+      <button class="btn ghost" id="exp_pdf">Export PDF report</button>
       <button class="btn ghost" id="exp_json">Export JSON</button>
       <button class="btn ghost" id="exp_csv">Export CSV</button>
       <button class="btn ghost" id="reset_uc">New use case</button>
     </div>
     <div class="msg" id="calc_msg"></div>
+    <div class="sendmsg" id="send_msg"></div>
   </div>
 </section>
 
@@ -330,11 +387,14 @@ footer .c{font-size:12px}
   </div>
 </section>
 
+<!-- ═══ PRINT-ONLY REPORT SURFACE — populated by buildReport() ═══ -->
+<div id="report" aria-hidden="true"></div>
+
 <footer>
   <div class="wrap">
     <div class="lockup"><span class="word"><b>Dewhurst</b><span>.tech</span></span></div>
     <div class="fstrap">Safe <em>·</em> Sustainable <em>·</em> Scalable</div>
-    <div class="c">© 2026 Dewhurst.tech · Value &amp; ROI Case Tool v0.1 (review build)</div>
+    <div class="c">© 2026 Dewhurst.tech · Value &amp; ROI Case Tool v0.3 (review build) · <a href="privacy.html" style="color:#B9C4CF;text-decoration:underline">Privacy</a></div>
   </div>
 </footer>
 
@@ -360,6 +420,21 @@ const TEMPLATE = [
 ];
 
 const CCY = {GBP:'£',USD:'$',EUR:'€',AUD:'A$',SGD:'S$',NOK:'kr',AED:'AED '};
+
+/* ══════════════════════════════════════════════════════════════════
+   BACKEND — email delivery of the report
+   ------------------------------------------------------------------
+   Paste the Google Apps Script deployment URL into ENDPOINT to switch
+   email delivery ON. Leave it as an empty string and the tool behaves
+   exactly as it did before: local download only, nothing transmitted.
+   TOKEN must match SHARED_TOKEN in the Apps Script.
+   ══════════════════════════════════════════════════════════════════ */
+const BACKEND = {
+  ENDPOINT: '',
+  TOKEN: 'dewtech-roi-2026'
+};
+const SITE = 'https://www.dewhurst.tech';
+function backendOn(){ return !!(BACKEND.ENDPOINT && BACKEND.ENDPOINT.indexOf('http')===0); }
 
 /* ---------- State ---------- */
 let solSeq = 0;
@@ -715,7 +790,11 @@ function snapshot(){
   const sols=state.solutions.filter(s=>s.type==='solution');
   return {
     captured_at: new Date().toISOString(),
-    user:{ name:$('#u_name').value.trim(), company:$('#u_company').value.trim(), email:$('#u_email').value.trim(), phone:$('#u_phone').value.trim(), solution_type:$('#u_soltype').value.trim() },
+    user:{ name:$('#u_name').value.trim(), company:$('#u_company').value.trim(), email:$('#u_email').value.trim(), phone:$('#u_phone').value.trim(), solution_type:$('#u_soltype').value.trim(),
+           contact_opt_in: !!$('#u_contact').checked },
+    consent:{ contact_opt_in: !!$('#u_contact').checked,
+              statement: 'Details used only to attribute this value case and, where opted in, to discuss it. Processed in line with UK GDPR. Not sold, not shared with third parties.',
+              given_at: !!$('#u_contact').checked ? new Date().toISOString() : null },
     assumptions:{ currency:a.ccy, daily_operator_cost:a.day, hours_per_day:a.hrs, hourly_rate:Math.round(a.rate*100)/100, horizon_years:a.horizon },
     use_case:{ name:$('#uc_name').value.trim(), description:$('#uc_desc').value.trim() },
     states: state.solutions.map(s=>{
@@ -770,19 +849,192 @@ function download(name,text,type){
   document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 function exportJSON(){
-  const data = state.collected.length ? state.collected : [snapshot()];
-  download('dewhurst-roi-usecases.json', JSON.stringify(data,null,2), 'application/json');
+  withExport('json', function(snap){
+    const data = state.collected.length ? state.collected : [snap];
+    download('dewhurst-roi-usecases.json', JSON.stringify(data,null,2), 'application/json');
+  });
 }
-function exportCSV(){
-  const data = state.collected.length ? state.collected : [snapshot()];
-  const rows=[['captured_at','name','company','email','phone','solution_type','currency','hourly_rate','horizon_years','use_case','use_case_desc','solution','current_annual_cost','solution_annual_cost','annual_saving','annual_manhours_saved','oneoff_deployment','payback_years','roi_ratio_over_horizon']];
+function csvText(data){
+  const rows=[['captured_at','name','company','email','phone','solution_type','contact_opt_in','currency','hourly_rate','horizon_years','use_case','use_case_desc','solution','current_annual_cost','solution_annual_cost','annual_saving','annual_manhours_saved','oneoff_deployment','payback_years','roi_ratio_over_horizon']];
   data.forEach(s=>{
     (s.roi.length?s.roi:[{}]).forEach(r=>{
-      rows.push([s.captured_at,s.user.name,s.user.company,s.user.email,s.user.phone,s.user.solution_type,s.assumptions.currency,s.assumptions.hourly_rate,s.assumptions.horizon_years,s.use_case.name,s.use_case.description,r.solution||'',r.current_annual_cost,r.solution_annual_cost,r.annual_saving,r.annual_manhours_saved,r.oneoff_deployment,r.payback_years,r.roi_ratio_over_horizon]);
+      rows.push([s.captured_at,s.user.name,s.user.company,s.user.email,s.user.phone,s.user.solution_type,(s.user.contact_opt_in?'yes':'no'),s.assumptions.currency,s.assumptions.hourly_rate,s.assumptions.horizon_years,s.use_case.name,s.use_case.description,r.solution||'',r.current_annual_cost,r.solution_annual_cost,r.annual_saving,r.annual_manhours_saved,r.oneoff_deployment,r.payback_years,r.roi_ratio_over_horizon]);
     });
   });
-  const csv=rows.map(r=>r.map(cell=>{ const v=(cell==null?'':String(cell)); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }).join(',')).join('\n');
-  download('dewhurst-roi-usecases.csv', csv, 'text/csv');
+  return rows.map(r=>r.map(cell=>{ const v=(cell==null?'':String(cell)); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }).join(',')).join('\n');
+}
+function exportCSV(){
+  withExport('csv', function(snap){
+    download('dewhurst-roi-usecases.csv', csvText(state.collected.length ? state.collected : [snap]), 'text/csv');
+  });
+}
+
+/* ---------- PDF report ----------
+   Deliberately library-free. buildReport() writes a clean, print-only block
+   into #report; window.print() then lets the visitor choose "Save as PDF".
+   Works offline, adds no third-party script, and keeps the page self-contained. */
+function repRow(k,v){ return '<tr><td>'+k+'</td><td><b>'+v+'</b></td></tr>'; }
+function buildReport(snap){
+  const a = assumptions();
+  const when = new Date(snap.captured_at);
+  let h = '';
+  h += '<div class="rep-head">' +
+       '<img class="rep-logo" src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech">' +
+       '<div class="rep-title">Value &amp; ROI Case</div></div>';
+  h += '<div class="meta">Generated ' + when.toLocaleString('en-GB') + '</div>';
+
+  h += '<h2>Use case</h2><table class="kv">';
+  h += repRow('Use case', escapeHtml(snap.use_case.name || '—'));
+  h += repRow('Description', escapeHtml(snap.use_case.description || '—'));
+  h += repRow('Solution type being scaled', escapeHtml(snap.user.solution_type || '—'));
+  h += '</table>';
+
+  h += '<h2>Prepared by</h2><table class="kv">';
+  h += repRow('Name', escapeHtml(snap.user.name || '—'));
+  h += repRow('Company', escapeHtml(snap.user.company || '—'));
+  h += repRow('Email', escapeHtml(snap.user.email || '—'));
+  h += repRow('Phone', escapeHtml(snap.user.phone || '—'));
+  h += '</table>';
+
+  h += '<h2>Key assumptions</h2><table class="kv">';
+  h += repRow('Currency', snap.assumptions.currency);
+  h += repRow('Average daily operator cost', money(snap.assumptions.daily_operator_cost) + ' / day');
+  h += repRow('Working hours per day', snap.assumptions.hours_per_day + ' h');
+  h += repRow('Derived hourly operator cost', money(snap.assumptions.hourly_rate) + ' / hour');
+  h += repRow('Value time horizon', snap.assumptions.horizon_years + ' years');
+  h += '</table>';
+
+  h += '<h2>Value summary — each solution against the As-Is baseline</h2>';
+  h += '<table><thead><tr><th>Measure</th>' + snap.roi.map(r=>'<th>'+escapeHtml(r.solution)+'</th>').join('') + '</tr></thead><tbody>';
+  const R = [
+    ['Current annual cost (As-Is)', r=>money(r.current_annual_cost)],
+    ['Solution annual running cost', r=>money(r.solution_annual_cost)],
+    ['One-off deployment', r=>money(r.oneoff_deployment)],
+    ['Annual saving', r=>(r.annual_saving>=0?'+':'')+money(r.annual_saving)],
+    ['Man-hours bought back / yr', r=>(r.annual_manhours_saved>=0?'+':'')+hoursFmt(r.annual_manhours_saved)],
+    ['Payback (years)', r=>(r.payback_years!=null?r.payback_years.toFixed(1):'—')],
+    ['ROI over '+snap.assumptions.horizon_years+' yrs (value : invest)', r=>(r.roi_ratio_over_horizon!=null?ratio(r.roi_ratio_over_horizon):'—')]
+  ];
+  R.forEach(row=>{ h += '<tr><td>'+row[0]+'</td>' + snap.roi.map(r=>'<td>'+row[1](r)+'</td>').join('') + '</tr>'; });
+  h += '</tbody></table>';
+
+  h += '<h2>Whole-system breakdown — every state side by side</h2>';
+  h += '<table>' + $('#matrix').innerHTML + '</table>';
+
+  h += '<div class="note"><b>How to read this.</b> Time is valued at ' + money(a.rate) + ' per hour (' +
+       money(a.day) + ' per day ÷ ' + a.hrs + ' hours). Payback is the one-off deployment divided by the annual saving. ' +
+       'ROI is the saving accumulated over the ' + snap.assumptions.horizon_years + '-year horizon set against that one-off spend, shown as value : invest. ' +
+       'Man-hours bought back are stated separately on purpose — on a live asset the hard ceiling is beds and POB, not budget.</div>';
+
+  if(snap.user.contact_opt_in){
+    h += '<div class="note"><b>Contact requested.</b> ' + escapeHtml(snap.user.name || 'The author of this case') +
+         ' has asked to discuss this use case with Steve Smith. Reply to ' + escapeHtml(snap.user.email || '—') + '.</div>';
+  }
+
+  h += '<div class="rep-foot">© 2026 Dewhurst.tech · Value &amp; ROI Case Tool v0.3 (review build) · dewhurst.tech<br>' +
+       'Figures are the author\'s own inputs and assumptions. This report is a decision aid, not an assurance opinion.</div>';
+
+  $('#report').innerHTML = h;
+}
+/* ---------- A standalone, self-contained copy of the report ----------
+   Same content as the print view, but with ordinary (non-print-scoped) CSS and
+   an absolute logo URL, so it survives being emailed and converted to PDF
+   server-side. This is what gets posted to the backend. */
+const REPORT_CSS =
+  'body{font-family:Helvetica,Arial,sans-serif;color:#0E1621;margin:0;padding:24px;background:#fff;line-height:1.5}' +
+  '.rep-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}' +
+  '.rep-logo{height:64px;width:auto;display:block}' +
+  '.rep-title{font-family:Georgia,serif;font-size:22px;font-weight:700;text-align:right}' +
+  '.meta{font-size:11px;color:#444;letter-spacing:.4px;text-transform:uppercase;border-top:1px solid #999;padding-top:8px;margin-top:10px;margin-bottom:18px}' +
+  'h2{font-family:Georgia,serif;font-size:16px;margin:22px 0 5px}' +
+  'table{width:100%;border-collapse:collapse;font-size:12px}' +
+  'th,td{border:1px solid #bbb;padding:4px 7px;text-align:right;vertical-align:top}' +
+  'th:first-child,td:first-child{text-align:left}' +
+  'thead th{background:#eee}' +
+  'tr.group td,tr.total td,tr.roi td{font-weight:700}' +
+  'table.kv td{border:none;padding:2px 0}' +
+  'table.kv td:first-child{width:34%;color:#444;font-weight:400}' +
+  '.note{font-size:12px;color:#222;margin-top:12px;line-height:1.55;border-left:2px solid #888;padding-left:10px}' +
+  '.rep-foot{margin-top:28px;border-top:1px solid #999;padding-top:8px;font-size:11px;color:#444}';
+
+function reportStandaloneHtml(snap){
+  buildReport(snap);
+  const inner = $('#report').innerHTML.replace(
+    /src="brand-lockup-2\.w338-h84-c0\.jpg"/g, 'src="' + SITE + '/brand-lockup-2.w338-h84-c0.jpg"');
+  return '<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8">' +
+         '<title>Dewhurst.tech — Value &amp; ROI Case</title><style>' + REPORT_CSS + '</style></head>' +
+         '<body>' + inner + '</body></html>';
+}
+
+/* ---------- Post the case to the backend ----------
+   Tries a normal fetch first so we can read the result; if the browser blocks
+   reading the response (CORS), it retries fire-and-forget so the send still
+   happens. Either way the visitor also gets their local file, so a failure
+   here never leaves them empty-handed. */
+function sendCase(snap, kind){
+  if(!backendOn()) return Promise.resolve({ok:false, off:true});
+  const payload = {
+    token: BACKEND.TOKEN,
+    hp: ($('#u_hp') ? $('#u_hp').value : ''),
+    kind: kind,
+    snapshot: snap,
+    report_html: reportStandaloneHtml(snap),
+    json_text: JSON.stringify(state.collected.length ? state.collected : [snap], null, 2),
+    csv_text: csvText(state.collected.length ? state.collected : [snap])
+  };
+  const body = JSON.stringify(payload);
+  const opts = { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: body };
+  return fetch(BACKEND.ENDPOINT, opts)
+    .then(function(r){
+      if(!r.ok) throw new Error('http '+r.status);
+      return r.text().then(function(t){ try{ return JSON.parse(t); }catch(e){ return {ok:true}; } });
+    })
+    .catch(function(){
+      const o2 = { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: body };
+      return fetch(BACKEND.ENDPOINT, o2).then(function(){ return {ok:true, opaque:true}; })
+                                        .catch(function(){ return {ok:false}; });
+    });
+}
+
+/* Every export routes through here: check the details, fire the email, report back. */
+function withExport(kind, done){
+  const msg = $('#calc_msg'), send = $('#send_msg');
+  const errs = validate();
+  if(errs.length){
+    msg.className='msg err';
+    msg.textContent='Before exporting, please complete: '+errs.join(', ')+'. These details are held with the case so it can be attributed.';
+    return;
+  }
+  msg.className='msg'; msg.textContent='';
+  const snap = snapshot();
+  done(snap);
+  if(!backendOn()){
+    send.className='sendmsg';
+    send.innerHTML='Downloaded. Email delivery is not switched on yet &mdash; to share this case, attach the file to an email to <a href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a>.';
+    return;
+  }
+  send.className='sendmsg'; send.textContent='Sending a copy to '+snap.user.email+'…';
+  sendCase(snap, kind).then(function(res){
+    if(res && res.ok){
+      send.className='sendmsg ok';
+      send.textContent='Sent. A copy of this case is on its way to '+snap.user.email+' (please check your spam folder if it does not arrive). A copy has been retained by Dewhurst.tech.';
+    } else {
+      send.className='sendmsg err';
+      send.innerHTML='The email could not be sent just now &mdash; but your download worked, so nothing is lost. Please attach it to an email to <a href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a>.';
+    }
+  });
+}
+
+function exportPDF(){
+  withExport('pdf', function(snap){
+    buildReport(snap);
+    const oldTitle = document.title;
+    document.title = 'Dewhurst.tech Value and ROI Case — ' + (snap.use_case.name || 'use case');
+    const m=$('#calc_msg'); m.className='msg ok';
+    m.textContent='Report ready. In the print dialog, choose "Save as PDF" as the destination.';
+    window.print();
+    setTimeout(function(){ document.title = oldTitle; }, 1500);
+  });
 }
 
 /* ---------- Utils ---------- */
@@ -804,9 +1056,17 @@ function renderAll(){ renderTabs(); renderPanels(); renderSummaryPicker(); rende
 ['a_ccy','a_daycost','a_hrs','a_horizon'].forEach(id=>$('#'+id).addEventListener('input',()=>{ renderRate(); recalcLive(); }));
 $('#sum_pick').addEventListener('change',renderSummary);
 $('#calc').addEventListener('click',capture);
+$('#exp_pdf').addEventListener('click',exportPDF);
 $('#exp_json').addEventListener('click',exportJSON);
 $('#exp_csv').addEventListener('click',exportCSV);
 $('#reset_uc').addEventListener('click',resetUseCase);
+$('#u_contact').addEventListener('change',function(e){
+  const n=$('#contact_note');
+  if(e.target.checked){
+    n.style.display='block';
+    n.innerHTML='Noted, thank you &mdash; your request to be contacted is recorded with the case. Export it below and Steve will be in touch.';
+  } else { n.style.display='none'; n.innerHTML=''; }
+});
 renderAll();
 </script>
 </body>
