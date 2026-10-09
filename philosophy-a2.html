@@ -29,6 +29,14 @@ nav a[aria-current="page"] { opacity: 1; color: var(--tech); }
 </style>
         <style>
 /* ---------- PHILOSOPHY PAGE ---------- */
+/* V00.09: the same fixed background as the home page on desktop (home: .sec-bg, Background-1.png, auto 100%, centre, 50%, fixed).
+   Phones already get it from the home page's own <=900px rule (body::before at 40%). */
+@media (min-width:901px){
+  html { background: #FFFFFF; } body { background: transparent; }
+  body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: url('backgrounds/Background-1.png') center / auto 100% no-repeat; opacity: 0.5; }
+  body .ph-sec { background: transparent; }
+  body .ph-sec.alt { background: rgba(244,246,248,0.55); }
+}
 :root { --venn-navy:#0E2841; --venn-blue:#0066CC; --venn-grey:#737373; }
 .ph-sec { position: relative; padding: 64px 0; background: rgba(255,255,255,0.62); }
 .ph-sec.alt { background: rgba(244,246,248,0.85); }
@@ -319,7 +327,7 @@ nav .wrap > a:first-child { opacity: 1; } /* the locked lockup is never faded */
                 <!-- 🔒 LOCKED BLOCK — the wordmark. Do not rescale / re-space / balance. -->
                 <div class="lockup"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech"></div>
                 <!-- 🔒 END LOCKED BLOCK -->
-                <div class="c" style="text-align:right;">© 2026 Dewhurst.tech &middot; <a href="privacy.html" style="color:var(--grey);">Privacy</a><div class="ver" style="font-size:11px;color:#AAB2BB;margin-top:4px;letter-spacing:.3px;">Version:2026.10.09.01</div></div>
+                <div class="c" style="text-align:right;">© 2026 Dewhurst.tech &middot; <a href="privacy.html" style="color:var(--grey);">Privacy</a><div class="ver" style="font-size:11px;color:#AAB2BB;margin-top:4px;letter-spacing:.3px;">Version:2026.10.09.02</div></div>
             </div>
         </footer>
     </body>
