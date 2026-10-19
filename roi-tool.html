@@ -3,1071 +3,591 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Value &amp; ROI Case Tool — Dewhurst.tech</title>
-<meta name="description" content="Build the whole-system value case for scaling robotics and novel technology into heavy-industry operations — the cost of the whole system, not just the kit.">
-<!-- ══════════════════════════════════════════════════════════════════════════
-     DEWHURST.TECH — VALUE & ROI CASE TOOL · v0.1 (review build) · 2026-07-21
-     ──────────────────────────────────────────────────────────────────────────
-     Self-contained single file. Brand palette + wordmark replicated from THE
-     PAGE (v2.1). No external assets, no browser storage — the "database" seed is
-     an on-page collected list plus JSON / CSV export. Drop-in as an extra page.
-     🔒 Lockup rule respected: heavy serif "Dewhurst" + thin light-blue ".tech".
-        Do not rebalance. The imbalance is the argument.
-     ══════════════════════════════════════════════════════════════════════════ -->
-<!-- GoatCounter website analytics - privacy-friendly, no cookies. Same snippet as index.html. -->
-<script data-goatcounter="https://dewhurst-tech.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+<title>Value &amp; ROI Calculator - Dewhurst.tech</title>
+<link rel="canonical" href="https://www.dewhurst.tech/roi-tool.html">
+<meta property="og:title" content="Value &amp; ROI Calculator - Dewhurst.tech">
+<meta property="og:description" content="A free, step-by-step calculator for the value case behind scaling robotics and novel technology into live operations - costing the whole system, not just the kit.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.dewhurst.tech/roi-tool.html">
+<meta name="description" content="A free, step-by-step calculator for the value case behind scaling robotics and novel technology into live operations - costing the whole system, not just the kit.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/site.css">
 <style>
-:root{
-  --ink:#0E1621; --tech:#5B9BD5; --paper:#FFFFFF; --mist:#F4F6F8; --band:#0E1621;
-  --hair:#DDE3E9; --grey:#5C6672; --good:#2E8B6F; --warn:#C0392B;
-  --serif:Georgia,'Times New Roman',serif;
-  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
-a{color:var(--tech)}
 
-/* ---------- LOCKUP ---------- */
-.lockup{display:flex;align-items:baseline;gap:2px}
-/* Nav lockup is the LOCKED brand image (same asset as the main site) and doubles
-   as the link home. Do not rescale / re-space / balance it. */
-a.lockup{text-decoration:none;align-items:center}
-a.lockup img{display:block;height:auto;max-width:100%}
-.word{font-family:var(--serif);font-size:26px;letter-spacing:-.2px;line-height:1}
-.word b{font-weight:700;color:var(--ink)}
-.word span{font-family:var(--sans);font-weight:300;color:var(--tech)}
-
-/* ---------- NAV ---------- */
-nav{border-bottom:1px solid var(--hair);position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);z-index:20}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 28px}
-nav .tag{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:var(--grey)}
-
-/* ---------- HERO ---------- */
-.hero{border-bottom:1px solid var(--hair);padding:40px 0 34px;background:var(--mist)}
-.hero h1{font-family:var(--serif);font-size:38px;line-height:1.15;letter-spacing:-.4px;max-width:20ch}
-.hero .sub{font-size:17px;color:var(--grey);max-width:74ch;margin-top:14px}
-.hero .sub strong{color:var(--ink);font-weight:600}
-.strap{margin-top:16px;font-size:12px;letter-spacing:2.6px;text-transform:uppercase;color:var(--ink);font-weight:600}
-.strap em{font-style:normal;color:var(--tech);margin:0 6px}
-
-/* ---------- STEPS ---------- */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:22px}
-.step{background:var(--paper);border:1px solid var(--hair);border-radius:10px;padding:14px 16px}
-.step b{display:block;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tech);margin-bottom:4px}
-.step p{font-size:13.5px;color:var(--grey)}
-
-/* ---------- SECTION BLOCKS ---------- */
-.block{padding:30px 0;border-bottom:1px solid var(--hair)}
-.block h2{font-family:var(--serif);font-size:24px;margin-bottom:4px}
-.block .lead{font-size:14.5px;color:var(--grey);margin-bottom:18px;max-width:80ch}
-.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 22px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 22px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 22px}
-label.fld{display:block;font-size:12px;letter-spacing:.3px;color:var(--grey);font-weight:600;margin-bottom:5px}
-label.fld .req{color:var(--tech)}
-input,select,textarea{font-family:var(--sans);font-size:14.5px;color:var(--ink);width:100%;padding:9px 11px;border:1px solid var(--hair);border-radius:8px;background:var(--paper)}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--tech);box-shadow:0 0 0 3px rgba(91,155,213,.15)}
-textarea{resize:vertical;min-height:64px}
-.hint{font-size:12px;color:var(--grey);margin-top:4px}
-.assume input{text-align:right}
-
-/* ---------- SOLUTION TABS ---------- */
-.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}
-.tab{border:1px solid var(--hair);background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13.5px;font-weight:600;padding:9px 16px;border-radius:9px 9px 0 0;cursor:pointer;position:relative;top:1px}
-.tab.asis{color:var(--grey)}
-.tab.active{border-bottom-color:var(--paper);background:var(--paper);color:var(--ink);box-shadow:0 -2px 0 var(--tech) inset}
-.tab .pill{display:inline-block;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;background:var(--mist);color:var(--grey);border-radius:20px;padding:1px 7px;margin-left:7px;vertical-align:1px}
-.tab.asis .pill{background:#eaf1f8;color:var(--tech)}
-.addbtn{border:1px dashed var(--tech);background:none;color:var(--tech);font-weight:700;font-size:14px;padding:8px 14px;border-radius:9px;cursor:pointer}
-.addbtn:hover{background:#eaf1f8}
-.panel{border:1px solid var(--hair);border-radius:0 10px 10px 10px;padding:18px}
-.panel.hidden{display:none}
-.panel-head{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px}
-.panel-head .grow{flex:1 1 260px}
-.del-sol{border:none;background:none;color:var(--warn);font-size:12.5px;cursor:pointer;text-decoration:underline;padding:6px 0}
-
-/* ---------- BREAKDOWN ---------- */
-.sec{border:1px solid var(--hair);border-radius:10px;margin-bottom:12px;overflow:hidden}
-.sec-h{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--mist);cursor:pointer;user-select:none}
-.sec-h .caret{transition:transform .15s;color:var(--grey);font-size:12px;width:12px}
-.sec.collapsed .caret{transform:rotate(-90deg)}
-.sec-h .nm{font-family:var(--serif);font-size:16.5px;flex:1}
-.sec-h .roll{font-size:12.5px;color:var(--grey);text-align:right;white-space:nowrap}
-.sec-h .roll b{color:var(--ink)}
-.sec-body{padding:6px 14px 12px}
-.sec.collapsed .sec-body{display:none}
-.grp{margin-top:10px}
-.grp-nm{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tech);font-weight:700;margin:8px 0 2px}
-.row{display:grid;grid-template-columns:1fr 130px 120px 118px 26px;gap:10px;align-items:center;padding:5px 0;border-bottom:1px dashed var(--hair)}
-.row.head{border-bottom:1px solid var(--hair);padding-bottom:8px}
-.row.head span{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--grey);font-weight:700}
-.row.head span.r{text-align:right}
-.row .lab{font-size:13.5px}
-.row input,.row select{padding:7px 9px;font-size:13.5px}
-.row .num{text-align:right}
-.row .rm{border:none;background:none;color:var(--warn);cursor:pointer;font-size:15px;line-height:1}
-.addrow{border:none;background:none;color:var(--tech);font-size:12.5px;font-weight:600;cursor:pointer;padding:8px 0 2px;margin-left:2px}
-.sol-total{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--ink);color:#fff;border-radius:10px;padding:14px 16px;margin-top:6px}
-.sol-total .t{font-size:12px;letter-spacing:.4px;color:#B9C4CF}
-.sol-total .v{font-family:var(--serif);font-size:20px;color:#fff}
-.sol-total .v.tech{color:var(--tech)}
-
-/* ---------- VALUE SUMMARY ---------- */
-.summary{background:var(--band);color:#fff;border-radius:12px;padding:24px 24px 8px}
-.summary h2{color:#fff}
-.summary .lead{color:#B9C4CF}
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0 6px}
-.tile{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:14px 16px}
-.tile .t{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#9FB0C0}
-.tile .v{font-family:var(--serif);font-size:27px;margin-top:6px;line-height:1.1}
-.tile .v.tech{color:var(--tech)}
-.tile .v.good{color:#6FD3B0}
-.tile .s{font-size:12px;color:#9FB0C0;margin-top:4px}
-.summ-note{font-size:12.5px;color:#9FB0C0;padding:8px 0 14px;max-width:90ch}
-.pickrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px}
-.pickrow label{font-size:12px;color:#9FB0C0}
-.pickrow select{width:auto;min-width:160px;background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.2)}
-
-/* ---------- COMPARISON MATRIX ---------- */
-.matrix-wrap{overflow-x:auto}
-table.mx{border-collapse:collapse;width:100%;font-size:13.5px;min-width:640px}
-table.mx th,table.mx td{border:1px solid var(--hair);padding:9px 12px;text-align:right}
-table.mx th:first-child,table.mx td:first-child{text-align:left}
-table.mx thead th{background:var(--mist);font-size:12px;letter-spacing:.4px}
-table.mx thead th.asis{color:var(--tech)}
-table.mx tbody tr.group td{background:#fafbfc;font-family:var(--serif);font-size:14px}
-table.mx tbody tr.total td{font-weight:700;background:#f2f6fa}
-table.mx tbody tr.roi td{background:var(--ink);color:#fff}
-table.mx tbody tr.roi td.good{color:#6FD3B0}
-table.mx .muted{color:var(--grey)}
-
-/* ---------- ACTIONS ---------- */
-.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:6px}
-.btn{display:inline-block;background:var(--tech);color:#fff;border:none;font-family:var(--sans);font-size:15px;font-weight:600;padding:13px 26px;border-radius:10px;cursor:pointer}
-.btn:hover{background:#4a8ac6}
-.btn.ghost{background:none;border:1px solid var(--hair);color:var(--ink)}
-.btn.ghost:hover{border-color:var(--tech);color:var(--tech)}
-.msg{font-size:13.5px;padding:6px 0}
-.msg.err{color:var(--warn)}
-.msg.ok{color:var(--good)}
-
-/* ---------- CONSENT / PRIVACY (added 2026-08-05) ---------- */
-.consent{margin-top:20px;padding:14px 16px;border:1px solid var(--hair);border-radius:10px;background:var(--mist)}
-.consent .chk{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;cursor:pointer;margin:0}
-.consent .chk input[type=checkbox]{width:17px;height:17px;flex:0 0 17px;margin-top:2px;padding:0;accent-color:var(--tech);cursor:pointer}
-.consent .hint{margin-top:10px;padding-left:28px}
-.privacy{font-size:12.5px;color:var(--grey);margin-top:14px;line-height:1.6;max-width:90ch}
-.exchange{margin-top:20px;padding:14px 17px;border-left:3px solid var(--tech);background:var(--mist);border-radius:0 10px 10px 0;font-size:14px;line-height:1.6;max-width:90ch}
-.exchange b{color:var(--ink);font-weight:600}
-.sendmsg{font-size:13.5px;padding:4px 0;color:var(--grey)}
-.sendmsg.ok{color:var(--good)}
-.sendmsg.err{color:var(--warn)}
-.hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden}
-
-/* ---------- PRINT / PDF REPORT (added 2026-08-05) ----------
-   No library, no CDN: the page builds a clean report block and calls the
-   browser's own print dialog, where "Save as PDF" is the destination.
-   Everything else on the page is hidden for print. ---------- */
-#report{display:none}
-@media print{
-  nav,header.hero,.block,footer{display:none!important}
-  #report{display:block!important}
-  html,body{background:#fff!important;color:#000}
-  #report .rep-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10mm}
-  #report .rep-logo{height:19mm;width:auto;display:block}
-  #report .rep-title{font-family:var(--serif);font-size:16pt;font-weight:700;text-align:right;line-height:1.15}
-  #report .meta{font-size:8.5pt;color:#444;letter-spacing:.4px;text-transform:uppercase;border-top:1px solid #999;padding-top:2.5mm;margin-top:3mm;margin-bottom:5mm}
-  #report h2{font-family:var(--serif);font-size:12.5pt;margin:6mm 0 1.5mm}
-  #report table{width:100%;border-collapse:collapse;font-size:9pt}
-  #report th,#report td{border:1px solid #bbb;padding:3px 6px;text-align:right;vertical-align:top}
-  #report th:first-child,#report td:first-child{text-align:left}
-  #report thead th{background:#eee!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  #report tr.group td,#report tr.total td,#report tr.roi td{font-weight:700}
-  #report table.kv td{border:none;padding:1.5px 0}
-  #report table.kv td:first-child{width:34%;color:#444;font-weight:400}
-  #report .note{font-size:9pt;color:#222;margin-top:3mm;line-height:1.55;border-left:2px solid #888;padding-left:3mm}
-  #report .rep-foot{margin-top:8mm;border-top:1px solid #999;padding-top:2mm;font-size:8pt;color:#444}
-  #report table,#report tr{page-break-inside:avoid}
-  #report h2{page-break-after:avoid}
-  @page{size:A4;margin:14mm}
-}
-
-/* ---------- COLLECTED ---------- */
-.collected table{border-collapse:collapse;width:100%;font-size:13px}
-.collected th,.collected td{border-bottom:1px solid var(--hair);padding:8px 10px;text-align:left;vertical-align:top}
-.collected th{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--grey)}
-.empty{font-size:13.5px;color:var(--grey);font-style:italic}
-
-/* ---------- FOOTER ---------- */
-footer{padding:30px 0;background:var(--ink);color:#B9C4CF}
-footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-footer .word b{color:#fff}
-footer .fstrap{font-size:11px;letter-spacing:2.4px;text-transform:uppercase}
-footer .fstrap em{font-style:normal;color:var(--tech);margin:0 5px}
-footer .c{font-size:12px}
-
-@media(max-width:960px){
-  .steps,.grid4,.tiles{grid-template-columns:1fr 1fr}
-  .grid3{grid-template-columns:1fr 1fr}
-}
-@media(max-width:680px){
-  .hero h1{font-size:30px}
-  .steps,.grid2,.grid3,.grid4,.tiles{grid-template-columns:1fr}
-  .row{grid-template-columns:1fr 1fr;gap:8px}
-  .row.head{display:none}
-  .row .lab{grid-column:1 / -1;font-weight:600}
-  .row .rm{position:absolute;right:14px}
-}
+.tool-hero{padding:64px 0 40px;background:var(--mist);border-bottom:1px solid var(--hair)}
+.tool-hero h1{font-size:46px;line-height:1.1;max-width:20ch}
+.tool-hero .lede{margin-top:18px}
+.tool-hero .facts{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:22px;font-size:14.5px;color:var(--grey)}
+.tool-hero .facts span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:2px;background:var(--tech);margin-right:9px;vertical-align:middle}
+.shell{display:grid;grid-template-columns:270px minmax(0,1fr);gap:48px;padding:48px var(--gut) 80px}
+.shell>*{min-width:0}
+.rail{position:sticky;top:104px;align-self:start}
+.steps{list-style:none;display:grid;gap:4px;counter-reset:s}
+.steps button{width:100%;text-align:left;background:none;border:0;cursor:pointer;display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:10px;font:inherit;color:var(--grey);font-size:15px;line-height:1.35}
+.steps button:hover{background:var(--mist)}
+.steps .n{flex:0 0 26px;height:26px;border-radius:50%;border:1.5px solid var(--hair);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--grey);background:#fff}
+.steps .t small{display:block;font-size:12.5px;color:var(--grey2);margin-top:2px}
+.steps li.done .n{background:var(--mist2);border-color:var(--tech);color:var(--tech-ink)}
+.steps li.done .n::after{content:"✓"}.steps li.done .n span{display:none}
+.steps li.on button{background:var(--mist);color:var(--ink);font-weight:600}
+.steps li.on .n{background:var(--navy);border-color:var(--navy);color:#fff}
+.sofar{margin-top:22px;border:1px solid var(--hair);border-radius:12px;padding:16px 16px 14px;background:#fff}
+.sofar .k{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tech-ink);font-weight:700;margin-bottom:8px}
+.sofar .row{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;border-top:1px dashed var(--hair)}
+.sofar .row:first-of-type{border-top:0}
+.sofar .row b{font-variant-numeric:tabular-nums}
+.sofar .tagline{font-size:12.5px;color:var(--grey);margin-top:8px}
+.panel{display:none}.panel.on{display:block}
+body.compact .tool-hero{padding:22px 0 18px}body.compact .tool-hero .lede,body.compact .tool-hero .facts{display:none}body.compact .tool-hero h1{font-size:28px}
+.panel h2{font-size:34px;margin-bottom:10px}
+.panel .why{font-size:17.5px;color:var(--grey);max-width:64ch;margin-bottom:26px}
+.stepno{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--tech-ink);font-weight:700;margin-bottom:10px}
+.navrow{display:flex;justify-content:space-between;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid var(--hair)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--hair)}
+.btn.ghost:hover{background:var(--mist)}
+.btn.sm{font-size:14.5px;padding:10px 16px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+details.more{margin:6px 0 22px;border:1px solid var(--hair);border-radius:10px;background:#fff}
+details.more summary{cursor:pointer;padding:12px 16px;font-size:15px;font-weight:600;color:var(--tech-ink)}
+details.more>div{padding:0 16px 14px;font-size:15px;color:var(--grey)}
+details.more>div p{margin-bottom:8px}
+label.f{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.hint{font-size:13px;color:var(--grey);margin-top:5px}
+input[type=text],input[type=email],input[type=number],input[type=tel],select,textarea{width:100%;font:inherit;font-size:15.5px;padding:11px 12px;border:1px solid #CBD3DC;border-radius:8px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(91,155,213,.45);border-color:var(--tech)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.ag{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(4,minmax(0,1fr));gap:16px;align-items:start}
+.ag>div{display:grid;grid-template-rows:2.9em 46px auto;row-gap:6px}
+.ag label.f{margin:0;align-self:end;line-height:1.3}
+.ag input,.ag select{height:46px}
+.ag .hint{margin-top:0}
+@media (max-width:1100px){.ag{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.ag{grid-template-columns:1fr}.ag>div{grid-template-rows:auto 46px auto}}
+.callout{background:var(--mist);border-left:3px solid var(--tech);border-radius:0 10px 10px 0;padding:14px 18px;font-size:15px;color:var(--ink);margin:18px 0}
+.callout.warn{border-left-color:#C68A1D;background:#FBF6EC}
+.legal{border:1px solid var(--hair);border-radius:12px;padding:20px 22px;background:#fff;font-size:14.5px;color:var(--grey)}
+.legal h3{font-size:17px;margin-bottom:8px}
+.legal ul{margin:6px 0 0 18px;display:grid;gap:5px}
+.choice{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:6px}
+.ex{border:1px solid var(--hair);border-radius:12px;padding:20px;background:#fff;display:flex;flex-direction:column;gap:8px}
+.ex .kind{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--tech-ink)}
+.ex h3{font-size:18px;margin:0}
+.ex p{font-size:14.5px;color:var(--grey)}
+.ex .rng{font-size:13.5px;background:var(--mist);border-radius:8px;padding:10px 12px;color:var(--ink);display:grid;gap:3px}
+.ex .rng b{font-variant-numeric:tabular-nums}
+.ex .btn{margin-top:auto;align-self:flex-start}
+.ack{display:flex;gap:12px;align-items:flex-start;font-size:15px;margin:18px 0 6px;padding:14px 16px;border:1px solid var(--hair);border-radius:10px;background:#fff}
+.ack input{margin-top:4px;width:18px;height:18px;flex:0 0 18px}
+.sec-ed{border:1px solid var(--hair);border-radius:12px;margin-bottom:12px;background:#fff;overflow:hidden}
+.sec-ed>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;align-items:center;padding:15px 18px;font-family:var(--serif);font-size:18px;font-weight:700}
+.sec-ed>summary::-webkit-details-marker{display:none}
+.sec-ed>summary .sub{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--grey);text-align:right}
+.sec-ed>summary>span:first-child::before{content:"▸";color:var(--tech-ink);margin-right:10px;font-size:14px;font-family:var(--sans)}
+.sec-ed[open]>summary>span:first-child::before{content:"▾"}
+.sec-ed .inner{padding:4px 18px 16px;border-top:1px solid var(--hair)}
+.sec-ed .what{font-size:14px;color:var(--grey);margin:12px 0 6px}
+.line-hd,.line{display:grid;grid-template-columns:minmax(0,2.4fr) 1fr .8fr 1.1fr 34px;gap:10px;align-items:center}
+.line-hd{font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--grey2);font-weight:700;padding:10px 0 4px}
+.line{padding:7px 0;border-top:1px solid var(--mist2)}
+.line .lab{font-size:15px}.line .lab small{display:block;font-size:12.5px;color:var(--grey2)}
+.line input,.line select{padding:8px 9px;font-size:14.5px}
+.line input[type=number]{text-align:right}
+.ml span{display:none}.ml{display:block}
+.x{background:none;border:0;color:var(--grey2);cursor:pointer;font-size:18px}
+.x:hover{color:#B3261E}
+.addl{margin-top:10px;font-size:14px;background:none;border:1px dashed var(--tech);color:var(--tech-ink);border-radius:8px;padding:7px 12px;cursor:pointer}
+.tot{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;background:var(--navy);color:#fff;border-radius:12px;padding:16px 18px;margin-top:14px}
+.tot div{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#AFC0D2}
+.tot b{display:block;font-family:var(--serif);font-size:22px;letter-spacing:0;text-transform:none;color:#fff;margin-top:4px;font-variant-numeric:tabular-nums}
+.soltabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.soltabs button{font:inherit;font-size:14.5px;padding:9px 14px;border-radius:999px;border:1px solid var(--hair);background:#fff;cursor:pointer}
+.soltabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tile{border:1px solid var(--hair);border-radius:12px;padding:18px;background:#fff}
+.tile .t{font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--grey);font-weight:700}
+.tile .v{font-family:var(--serif);font-size:28px;margin-top:6px;font-variant-numeric:tabular-nums}
+.tile .s{font-size:13.5px;color:var(--grey);margin-top:4px}
+.tile.hi{background:var(--navy);border-color:var(--navy)}.tile.hi .t,.tile.hi .s{color:#AFC0D2}.tile.hi .v{color:#fff}
+.reading{font-size:17px;margin:22px 0;max-width:68ch}
+.chartcard{border:1px solid var(--hair);border-radius:12px;background:#fff;padding:18px 18px 14px;margin-top:16px}
+.ch-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.ch-ctl{display:flex;gap:10px;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--hair);border-radius:999px;overflow:hidden}
+.seg button{font:inherit;font-size:13.5px;border:0;background:#fff;padding:7px 13px;cursor:pointer;color:var(--ink)}
+.seg button.on{background:var(--navy);color:#fff}
+.ch-stats{display:flex;gap:26px;flex-wrap:wrap;margin:12px 0 4px;font-size:14px;color:var(--grey)}
+.ch-stats b{display:block;font-family:var(--serif);font-size:20px;color:var(--ink);font-variant-numeric:tabular-nums}
+.ch-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13.5px;color:var(--ink);margin:8px 0 2px}
+.ch-legend span{display:inline-flex;align-items:center;gap:7px}
+.ch-legend i{display:inline-block;width:18px;height:3px;border-radius:2px}
+.ch-legend i.dash{background:repeating-linear-gradient(90deg,#6B7684 0 5px,transparent 5px 8px)!important}
+.ch-wrap{position:relative}
+#chart{width:100%;height:340px;display:block}
+.ch-tip{position:absolute;pointer-events:none;background:#fff;border:1px solid var(--hair);box-shadow:var(--shadow);border-radius:8px;padding:8px 10px;font-size:13px;display:none;min-width:170px;z-index:5}
+.ch-tip div{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.rangebox{border:1px solid var(--tech);background:#F3F8FD;border-radius:12px;padding:16px 18px;margin:18px 0;font-size:15px}
+.rangebox b{font-variant-numeric:tabular-nums}
+table.mx{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:10px}
+.mx th,.mx td{border-bottom:1px solid var(--hair);padding:9px 10px;text-align:right;font-variant-numeric:tabular-nums}
+.mx th:first-child,.mx td:first-child{text-align:left}
+.mx thead th{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--grey);background:var(--mist)}
+.mx tr.sec td{font-family:var(--serif);font-weight:700;background:#FAFBFC}
+.mx tr.big td{font-weight:700}
+.wrapx{overflow-x:auto}
+.fx{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:8px}
+.fx td,.fx th{border-bottom:1px solid var(--hair);padding:7px 8px;text-align:left}
+.fx input{max-width:140px;padding:6px 8px}
+.tool-foot{font-size:13px;color:var(--grey);border-top:1px solid var(--hair);padding:18px 0;margin-top:0}
+.toast{position:fixed;right:24px;bottom:24px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:10px;font-size:14.5px;box-shadow:var(--shadow);display:none;z-index:60;max-width:90vw}
+.consent{border:1px solid var(--hair);border-radius:12px;padding:6px 16px 10px;background:var(--mist);margin-top:6px}
+.consent .ack{background:#fff}
+.gated.off{opacity:.45}
+.gated.off button,.gated.off label.btn{pointer-events:none}
+.cap{border:1px solid var(--hair);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:14.5px;margin-top:8px;background:#fff}
+@media (max-width:1000px){.shell{grid-template-columns:1fr;gap:20px}.rail{position:static}.steps{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;padding-bottom:6px}.steps .t small{display:none}.sofar{display:none}.choice,.tiles,.g4{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.steps .t{display:none}.steps li.on .t{display:inline}.tool-hero h1{font-size:32px}.choice,.tiles,.g4,.g2,.tot{grid-template-columns:1fr}.line-hd{display:none}.line{grid-template-columns:1fr 1fr;row-gap:6px}.line .lab{grid-column:1 / -1}.ml span{display:block;font-size:11.5px;color:var(--grey2);font-weight:600;margin-bottom:2px}.line .x{justify-self:end}.panel h2{font-size:27px}}
+@media print{.nav,.rail,.navrow,.tool-hero,.foot,.tool-foot,.toast{display:none!important}}
 </style>
+
+<script data-goatcounter="https://dewhurst-tech.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
-
-<nav>
+<a class="skip" href="#tool">Skip to the calculator</a>
+<nav class="nav">
   <div class="wrap">
-    <!-- LOCKED BLOCK - the wordmark. Do not rescale / re-space / balance.
-         It is also the link back to the main site. -->
-    <a class="lockup" href="index.html" aria-label="Dewhurst.tech home"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech"></a>
-    <!-- END LOCKED BLOCK -->
-    <div class="tag">Value &amp; ROI Case Tool</div>
+    <a class="brand" href="index.html"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech" width="279" height="84"></a>
+    <button type="button" class="burger" aria-label="Menu" onclick="this.closest('nav').classList.toggle('open')"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <ul>
+      <li><a href="index.html#elements">Three elements</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="engagement.html">Engagement</a></li>
+      <li><a href="philosophy.html">Philosophy</a></li>
+      <li><a href="roi-tool.html" aria-current="page">Value &amp; ROI Calculator</a></li>
+      <li><a href="index.html#founder">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
   </div>
 </nav>
 
-<header class="hero">
+<header class="tool-hero">
   <div class="wrap">
+    <div class="eyebrow">Value &amp; ROI Calculator</div>
     <h1>Cost the whole system, not just the kit.</h1>
-    <p class="sub">A working tool for building the <strong>value case</strong> behind scaling robotics and novel technology into live operations — <strong>inspection, maintenance and surveillance robotics, and the OT infrastructure beneath them</strong>. It compares your current way of working (<strong>As-Is</strong>) against one or more proposed solutions, across the whole system: technology, process, people and performance. The return is shown in both <strong>money</strong> and in <strong>hours bought back</strong>.</p>
-    <div class="strap">Safe <em>·</em> Sustainable <em>·</em> Scalable</div>
-    <div class="steps">
-      <div class="step"><b>1 · Name the use case</b><p>Give the problem you are trying to scale a name and a short description.</p></div>
-      <div class="step"><b>2 · Set the assumptions</b><p>Currency, operator cost, working hours and the value time horizon.</p></div>
-      <div class="step"><b>3 · Build the states</b><p>Fill the As-Is baseline, then add Solution A, B, C. Expand each layer and enter cost and man-hours.</p></div>
-      <div class="step"><b>4 · Capture &amp; export</b><p>Read the value summary, add your details, then capture and export the case as a PDF, JSON or CSV.</p></div>
-    </div>
+    <p class="lede">Build the value case for scaling inspection, maintenance and surveillance robotics - and the OT infrastructure beneath them - from a pilot into live operations. Seven short steps compare the way the work is done today with one or more proposed solutions, across technology, process, people and performance. The return is shown in money and in hours freed.</p>
+    <div class="facts"><span>Free, no sign-up</span><span>Runs in your browser - nothing is shared until you save, open or print, and then only anonymised figures</span><span>About 15 minutes with your own figures</span><span>Move between steps at any time without losing your work</span></div>
   </div>
 </header>
 
-<!-- ═══ USE CASE  (moved above Key assumptions, 2026-08-05) ═══ -->
-<section class="block">
-  <div class="wrap">
-    <h2>Use case</h2>
-    <p class="lead">Each calculation is one use case. Naming it lets it roll up into a report — and, in a later version, into a shared library of the problems engineers are trying to solve.</p>
-    <div class="grid2">
-      <div><label class="fld">Use case name <span class="req">*</span></label><input id="uc_name" placeholder="e.g. Routine external corrosion rounds — North platform"></div>
-      <div><label class="fld">Use case description</label><input id="uc_desc" placeholder="What the work is, why it matters, what 'done' looks like"></div>
+<div class="wrap shell" id="tool">
+  <aside class="rail">
+    <ol class="steps" id="steps"></ol>
+    <div class="sofar" id="sofar"></div>
+  </aside>
+
+  <main>
+  
+  <section class="panel" id="p1">
+    <div class="stepno">Step 1 of 7</div>
+    <h2>Choose where to start</h2>
+    <p class="why">If this is your first time, the tutorial fills every step with simple round numbers so you can see how the tool behaves before you enter anything real. You can also start from a worked example, or from a blank page.</p>
+
+    <div class="legal">
+      <h3>Before you use an example</h3>
+      <p>The examples are here to show how the tool works. They are not benchmarks, quotes or advice - and no example should be relied on for a decision.</p>
+      <ul>
+        <li>The tutorial uses invented round numbers.</li>
+        <li>The two worked examples are indicative only. Their time and effort figures are modelled from openly published case studies and conference papers from more than one organisation, then rounded. A record of the public sources is kept, but not published, because naming them would identify suppliers. How the ranges are worked out is explained with the results. Their money figures are illustrative modelling assumptions on the basis shown, not any supplier's prices.</li>
+        <li>No organisation, supplier, site or person is named - and no figure is any organisation's actual result. Results are shown as ranges for that reason.</li>
+        <li>Nothing here is, or should be used as, a price, a price recommendation or a basis for agreeing prices.</li>
+        <li><b>You are responsible for every figure you enter or keep - and for any decision you base on the results.</b> Replace every example figure with your own.</li>
+        <li>Dewhurst.tech is a separate business from SPRINT Robotics, where Steve Smith serves as a board director. This calculator is not a SPRINT product. Its examples use only publicly available case studies and conference papers; no confidential SPRINT or member information was used.</li>
+      </ul>
     </div>
-  </div>
-</section>
+    <label class="ack"><input type="checkbox" id="ack"><span>I understand that the examples are for learning how the tool works - and that I am responsible for the figures I use and the conclusions I draw.</span></label>
+    <p class="hint" id="ackhint">Tick the box to unlock the worked examples. The tutorial and a blank start don't need it.</p>
 
-<!-- ═══ KEY ASSUMPTIONS ═══ -->
-<section class="block assume">
-  <div class="wrap">
-    <h2>Key assumptions</h2>
-    <p class="lead">These drive the conversion between time and money. They are deliberately visible and editable — the model should never be a black box. Defaults below are illustrative placeholders; set your own.</p>
-    <div class="grid4">
-      <div>
-        <label class="fld">Currency</label>
-        <select id="a_ccy">
-          <option value="GBP">GBP £</option>
-          <option value="USD">USD $</option>
-          <option value="EUR">EUR €</option>
-          <option value="AUD">AUD $</option>
-          <option value="SGD">SGD $</option>
-          <option value="NOK">NOK kr</option>
-          <option value="AED">AED د.إ</option>
-        </select>
-      </div>
-      <div>
-        <label class="fld">Average daily operator cost</label>
-        <input id="a_daycost" type="number" min="0" step="50" value="1200">
-        <div class="hint">Per person, per day — fully loaded.</div>
-      </div>
-      <div>
-        <label class="fld">Working hours per day</label>
-        <input id="a_hrs" type="number" min="1" step="0.5" value="12">
-        <div class="hint">Used to derive the hourly rate.</div>
-      </div>
-      <div>
-        <label class="fld">Value time horizon (years)</label>
-        <input id="a_horizon" type="number" min="1" step="1" value="5">
-        <div class="hint">Period over which recurring value accrues.</div>
-      </div>
+    <div class="choice" id="choices"></div>
+    <div class="callout" id="loaded" style="display:none"></div>
+    <div class="navrow"><span></span><button class="btn" data-go="2">Next: set the assumptions</button></div>
+  </section>
+
+  
+  <section class="panel" id="p2">
+    <div class="stepno">Step 2 of 7</div>
+    <h2>Set the assumptions</h2>
+    <p class="why">These five settings turn hours into money. They sit in plain view on purpose: anyone reviewing your case should be able to see - and challenge - the basis it rests on.</p>
+    <div class="ag">
+      <div><label class="f" for="a_ccy">Currency</label><select id="a_ccy"></select><div class="hint">Changing it converts every figure.</div></div>
+      <div><label class="f" for="a_day">Cost of one person-day, fully loaded</label><input type="number" id="a_day" min="0" step="50"><div class="hint">Salary, overheads, travel and logistics.</div></div>
+      <div><label class="f" for="a_hrs">Working hours per day</label><input type="number" id="a_hrs" min="1" step="0.5"><div class="hint">Turns the day cost into an hourly rate. Use 12 for site shifts, 8 for office hours.</div></div>
+      <div><label class="f" for="a_hz">Value time horizon (years)</label><input type="number" id="a_hz" min="1" max="20" step="1"><div class="hint">How long the benefit is counted for.</div></div>
+      <div><label class="f" for="a_dr">Discount rate (% a year)</label><input type="number" id="a_dr" min="0" max="50" step="0.5"><div class="hint">Your finance team's rate for valuing future savings today.</div></div>
     </div>
-    <div class="hint" id="rate_line" style="margin-top:10px"></div>
-  </div>
-</section>
+    <div class="callout" id="rateline"></div>
+    <div class="callout" id="fxnote" style="display:none"></div>
+    <details class="more"><summary>Exchange rates used for conversion</summary><div>
+      <p>Indicative rates against the US dollar, derived from the euro reference rates published on 15 October 2026 (the UAE dirham is pegged to the dollar). Edit any rate to match your own treasury rate before you switch currency. A conversion uses the rates shown at the moment you switch.</p><p>Need a currency that isn't listed? Give it a label and a rate in the last row, and it appears in the currency list as "Other - <i>your label</i>".</p>
+      <table class="fx" id="fxtable"></table></div></details>
+    <details class="more"><summary>More detail: why the day rate matters so much</summary><div>
+      <p>Most of the value in these cases is people's time - hours on site, planning, permits, reporting. Every hour in the model is valued at the hourly rate above, so a change to the day cost moves every result.</p>
+      <p>If your organisation uses different rates for different crews, use an average here and enter any external contractor costs as money, not hours, in steps 4 and 5.</p></div></details>
+    <div class="navrow"><button class="btn ghost" data-go="1">Back</button><button class="btn" data-go="3">Next: describe the use case</button></div>
+  </section>
 
-<!-- ═══ VALUE SUMMARY (live) ═══ -->
-<section class="block">
-  <div class="wrap">
-    <div class="summary">
-      <h2>Value summary</h2>
-      <p class="lead">As-Is compared against a chosen solution. Updates live as you type.</p>
-      <div class="pickrow">
-        <label for="sum_pick">Comparing As-Is against:</label>
-        <select id="sum_pick"></select>
-      </div>
-      <div class="tiles" id="tiles"></div>
-      <div class="summ-note" id="summ_note"></div>
+  
+  <section class="panel" id="p3">
+    <div class="stepno">Step 3 of 7</div>
+    <h2>Describe the use case</h2>
+    <p class="why">One calculation covers one use case: a single piece of work you want to do differently. A clear name makes the report easy to share with the people who will approve it.</p>
+    <div class="g2">
+      <div><label class="f" for="uc_name">Name</label><input type="text" id="uc_name" placeholder="e.g. Routine external corrosion rounds, north platform"></div>
+      <div><label class="f" for="uc_scale">What the figures cover</label><input type="text" id="uc_scale" placeholder="e.g. one site, per year"></div>
     </div>
-  </div>
-</section>
+    <div style="margin-top:18px"><label class="f" for="uc_desc">What the work is, why it matters and what "done" looks like</label><textarea id="uc_desc" rows="3"></textarea></div>
+    <div class="navrow"><button class="btn ghost" data-go="2">Back</button><button class="btn" data-go="4">Next: cost today's way of working</button></div>
+  </section>
 
-<!-- ═══ SOLUTIONS / BREAKDOWN ═══ -->
-<section class="block">
-  <div class="wrap">
-    <h2>The states &amp; solutions</h2>
-    <p class="lead">Start with the <strong>As-Is</strong> — the cost of the work as it is done today (usually recurring man-hours, little or no capital). Then add each proposed solution and enter what it takes to stand it up and run it, layer by layer. Use the <strong>basis</strong> control on each line to mark a cost as a one-off (deployment) or annual (recurring).</p>
-    <div class="tabs" id="tabs"></div>
-    <div id="panels"></div>
-  </div>
-</section>
+  
+  <section class="panel" id="p4">
+    <div class="stepno">Step 4 of 7</div>
+    <h2>Cost the way the work is done today</h2>
+    <p class="why">This is your baseline. It is usually mostly people's time and contractor costs, with little or no new equipment. Open each area, fill in what applies and leave the rest at zero.</p>
+    <details class="more"><summary>How to fill in a line</summary><div>
+      <p><b>Cost</b> is money spent: equipment, contractors, hire, licences. <b>Hours</b> are your own people's time; the tool values them at the hourly rate from step 2.</p>
+      <p><b>One-off</b> means you pay it once to get started. <b>Each year</b> means it comes round again every year. Most baseline costs are "each year".</p>
+      <p>Anything that doesn't fit a line? Use "Add a line" in that area. Lost or deferred production is a common one: the examples leave it out on purpose, because only you know what a day of your asset is worth.</p></div></details>
+    <div id="ed_asis"></div>
+    <div class="navrow"><button class="btn ghost" data-go="3">Back</button><button class="btn" data-go="5">Next: cost the proposed solution</button></div>
+  </section>
 
-<!-- ═══ COMPARISON MATRIX ═══ -->
-<section class="block">
-  <div class="wrap">
-    <h2>Side-by-side comparison</h2>
-    <p class="lead">Every state, alongside each other. Section subtotals roll up to a solution total; the ROI rows compare each solution against the As-Is baseline.</p>
-    <div class="matrix-wrap"><table class="mx" id="matrix"></table></div>
-  </div>
-</section>
+  
+  <section class="panel" id="p5">
+    <div class="stepno">Step 5 of 7</div>
+    <h2>Cost the proposed solution</h2>
+    <p class="why">Now enter what it takes to stand the new way of working up and run it. This is where cases are usually too thin: the robot is costed, but the network connection, the cyber-security work, the change process and the training are not. Each area prompts you for them.</p>
+    <div class="soltabs" id="soltabs"></div>
+    <div id="ed_sol"></div>
+    <div class="navrow"><button class="btn ghost" data-go="4">Back</button><button class="btn" data-go="6">Next: see the results</button></div>
+  </section>
 
-<!-- ═══ YOUR DETAILS  (moved down to sit beside Capture, 2026-08-05) ═══ -->
-<section class="block">
-  <div class="wrap">
-    <h2>Your details</h2>
-    <p class="lead">You have the numbers — these attach your name to them, so the case can be attributed and, if you want it, discussed.</p>
-    <div class="grid3">
-      <div><label class="fld">Name <span class="req">*</span></label><input id="u_name" placeholder="Full name"></div>
-      <div><label class="fld">Company <span class="req">*</span></label><input id="u_company" placeholder="Organisation"></div>
-      <div><label class="fld">Email <span class="req">*</span></label><input id="u_email" type="email" placeholder="name@company.com"></div>
-      <div><label class="fld">Phone</label><input id="u_phone" placeholder="+.."></div>
-      <div style="grid-column:2 / -1"><label class="fld">The type of solution you are trying to scale</label><input id="u_soltype" placeholder="e.g. autonomous surveillance robot for routine operator rounds"></div>
+  
+  <section class="panel" id="p6">
+    <div class="stepno">Step 6 of 7</div>
+    <h2>Your results</h2>
+    <p class="why">Each solution is compared with today's way of working. Check the figures that drive the answer before you share it - the two that are usually challenged first are the hours saved and the one-off cost.</p>
+    <div class="soltabs" id="restabs"></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="chartcard">
+      <div class="ch-head"><div><h3 style="margin:0">Cumulative cost over time</h3><p class="hint" id="ch_sub" style="margin-top:4px"></p></div>
+        <div class="ch-ctl"><div class="seg" role="group" aria-label="Values"><button data-cv="abs" class="on">Absolute</button><button data-cv="disc">Discounted</button></div><div class="seg" role="group" aria-label="Chart type"><button data-ct="line" class="on">Line</button><button data-ct="col">Columns</button></div></div></div>
+      <div class="ch-stats" id="ch_stats"></div>
+      <div class="ch-legend" id="ch_legend"></div>
+      <div class="ch-wrap" id="ch_wrap"><svg id="chart" role="img" aria-label="Cumulative cost over time"></svg><div class="ch-tip" id="ch_tip"></div></div>
+      <details class="more" style="margin-top:12px"><summary>Show the figures as a table</summary><div class="wrapx" id="ch_table"></div></details>
     </div>
+    <div id="rangebox"></div>
+    <p class="reading" id="reading"></p>
+    <details class="more"><summary>How the results are worked out</summary><div>
+      <p><b>Annual cost</b> = everything marked "each year", with hours valued at your hourly rate. <b>Annual saving</b> = today's annual cost minus the solution's annual cost.</p>
+      <p><b>One-off investment</b> = everything marked "one-off" in the solution, less anything one-off in today's baseline. <b>Payback</b> = one-off investment ÷ annual saving. <b>Return over the period</b> = (annual saving × years) ÷ one-off investment, shown as value for each unit invested.</p>
+      <p>The six headline figures are not discounted. The chart's Discounted view, the net present value and the discounted payback use the discount rate from step 2, applied month by month.</p></div></details>
+    <h3 style="margin-top:26px">Side by side</h3><p class="hint" id="mxnote"></p>
+    <div class="wrapx"><table class="mx" id="matrix"></table></div>
+    <div class="navrow"><button class="btn ghost" data-go="5">Back</button><button class="btn" data-go="7">Next: save and share</button></div>
+  </section>
 
-    <div class="exchange" id="exchange_note">
-      <b>Export and your data.</b> In requesting this free export, <b>Dewhurst.tech will hold a copy of this data</b> &mdash; the case as entered, together with the details above. It will not be used for any purpose beyond attributing the case and, where you have asked for it, discussing it with you; it will not be passed to a third party, and it will not be used for anything further without your consent. Please see the <a href="privacy.html">privacy notice</a> for detail. Nothing is transmitted until you choose to export.
-    </div>
-
+  
+  <section class="panel" id="p7">
+    <div class="stepno">Step 7 of 7</div>
+    <h2>Save, print and share your case</h2>
+    <p class="why">Save a file to keep your work, open it again next time, or print a report for the people who will approve it. In return for the calculator being free, saving, opening or printing shares an anonymised copy of the case's figures with Dewhurst.tech.</p>
     <div class="consent">
-      <label class="chk" for="u_contact"><input type="checkbox" id="u_contact"><span>Separately &mdash; I&rsquo;d like Steve Smith to get in touch about this use case. <b>No obligation</b> &mdash; one conversation about the opportunity, not a marketing list.</span></label>
-      <div class="hint" id="contact_note" style="display:none"></div>
+      <label class="ack"><input type="checkbox" id="c_share"><span><b>I agree that Dewhurst.tech keeps an anonymised copy of this case's figures</b> - without my name, my organisation, or the name and description I've given the case - to follow trends across cases and, occasionally, to show combined, anonymised trends in talks. Nothing that could identify me or my organisation is kept. <a href="data-policy.html" target="_blank" rel="noopener">Read the data policy</a>.</span></label>
+      <label class="ack"><input type="checkbox" id="c_contact"><span><b>I'd also like Dewhurst.tech to contact me about this case.</b> Optional. With this ticked, my name, organisation, email and phone, and the case's name and description, are sent with the copy, so we can talk it through. No mailing list, no follow-up sequence.</span></label>
+      <div class="g2" id="contact_f" style="display:none;margin-top:4px">
+        <div><label class="f" for="u_email">Email <span class="muted" style="font-weight:400">(needed for contact)</span></label><input type="email" id="u_email"></div>
+        <div><label class="f" for="u_phone">Phone <span class="muted" style="font-weight:400">(optional)</span></label><input type="tel" id="u_phone"></div>
+      </div>
+      <p class="hint" id="c_hint">Tick the first box to save, open or print. Starting again or going back doesn't need it.</p>
     </div>
-
-    <!-- honeypot: real people never fill this in; bots usually do -->
-    <div class="hp" aria-hidden="true"><label>Leave this field empty <input id="u_hp" tabindex="-1" autocomplete="off"></label></div>
-
-    <p class="privacy"><b>How your details are handled.</b> Your name, company and email travel with the case when you export it, so it can be attributed and, if you have asked for it, discussed. They are held and processed in line with the UK GDPR, kept no longer than that conversation needs, and never sold or passed to a third party for marketing. To have your details and your case deleted at any point, email <a href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a> and it will be done. Full detail: <a href="privacy.html">privacy notice</a>.</p>
-  </div>
-</section>
-
-<!-- ═══ CALCULATE / CAPTURE ═══ -->
-<section class="block">
-  <div class="wrap">
-    <h2>Calculate &amp; capture</h2>
-    <p class="lead">Capturing the use case adds a dated snapshot to the list below and lets you export it. <strong>Export PDF report</strong> gives you a clean, printable one-file summary to circulate; JSON and CSV give you the underlying data. Every export is emailed to you as well as downloaded, and a copy is retained by Dewhurst.tech as set out above.</p>
-    <div class="actions">
-      <button class="btn" id="calc">Calculate &amp; capture use case</button>
-      <button class="btn ghost" id="exp_pdf">Export PDF report</button>
-      <button class="btn ghost" id="exp_json">Export JSON</button>
-      <button class="btn ghost" id="exp_csv">Export CSV</button>
-      <button class="btn ghost" id="reset_uc">New use case</button>
+    <h3 style="margin-top:26px">Your details <span class="muted" style="font-family:var(--sans);font-size:14px;font-weight:400">(optional - for the heading of your report; sent to us only if you tick the second box)</span></h3>
+    <div class="g2" style="margin-top:10px">
+      <div><label class="f" for="u_name">Name</label><input type="text" id="u_name"></div>
+      <div><label class="f" for="u_org">Organisation</label><input type="text" id="u_org"></div>
     </div>
-    <div class="msg" id="calc_msg"></div>
-    <div class="sendmsg" id="send_msg"></div>
-  </div>
-</section>
+    <div class="gated" id="gated">
+    <h3 style="margin-top:30px">Keep it</h3>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn" id="b_save">Save this case (file)</button>
+      <button class="btn ghost" id="b_csv">Download as spreadsheet (CSV)</button>
+      <label class="btn ghost" for="f_import" id="l_import" style="cursor:pointer">Open a saved case</label><input type="file" id="f_import" accept=".json,application/json" hidden>
+    </div>
+    <p class="hint">The saved file contains every case you have captured in this session. Open it here again next time to carry on.</p>
+    <div id="caps"></div>
+    <h3 style="margin-top:30px">Report it</h3>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn ghost" id="b_rp">Printable report - portrait</button>
+      <button class="btn ghost" id="b_rl">Printable report - landscape (for slides)</button>
+    </div>
+    <p class="hint">Use your browser's print dialog to print or save as PDF. Keep "Background graphics" on.</p>
+    </div>
+    <p class="hint" style="margin-top:18px">How your data is handled: <a href="data-policy.html">calculator data policy</a> · <a href="privacy.html">privacy notice</a>.</p>
+    <div class="navrow"><button class="btn ghost" data-go="6">Back</button><button class="btn ghost" id="b_new">Start a new case</button></div>
+  </section>
+  </main>
+</div>
 
-<!-- ═══ COLLECTED ═══ -->
-<section class="block collected">
+<div class="wrap tool-foot">Examples are illustrative, for learning the tool. You are responsible for the figures you use. Not advice. To the fullest extent permitted by law, no liability is accepted for decisions based on this calculator.</div>
+<footer class="foot">
   <div class="wrap">
-    <h2>Captured use cases <span class="muted" style="font-size:14px;color:var(--grey)" id="cap_count"></span></h2>
-    <div id="collected_body"><p class="empty">No use cases captured yet in this session.</p></div>
-  </div>
-</section>
-
-<!-- ═══ PRINT-ONLY REPORT SURFACE — populated by buildReport() ═══ -->
-<div id="report" aria-hidden="true"></div>
-
-<footer>
-  <div class="wrap">
-    <div class="lockup"><span class="word"><b>Dewhurst</b><span>.tech</span></span></div>
-    <div class="fstrap">Safe <em>·</em> Sustainable <em>·</em> Scalable</div>
-    <div class="c">© 2026 Dewhurst.tech · Value &amp; ROI Case Tool v0.3 (review build) · <a href="privacy.html" style="color:#B9C4CF;text-decoration:underline">Privacy</a></div>
+    <a class="brand" href="index.html"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech" width="279" height="84"></a>
+    <div class="c">© 2026 Dewhurst.tech Ltd · Registered in England &amp; Wales, company no. 17373526<br>Registered office: 71-75 Shelton Street, Covent Garden, London WC2H 9JQ · <a href="privacy.html">Privacy</a> · <a href="data-policy.html">Calculator data</a><div class="ver">Value &amp; ROI Calculator 2.1 · Version:2026.10.19.01</div></div>
   </div>
 </footer>
+<div class="toast" id="toast"></div>
+<iframe id="pf" title="report" aria-hidden="true" style="position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden"></iframe>
 
+<script src="assets/collector.js"></script>
 <script>
-"use strict";
 
-/* ---------- Template: the whole-system breakdown ---------- */
-const TEMPLATE = [
-  { key:'technology', name:'Technology / Equipment', groups:[
-    { name:'Primary tooling', items:['Sensors','Robotics'] },
-    { name:'Access equipment', items:['Scaffolding'] },
-    { name:'OT infrastructure', items:['Connectivity / networks','OT / ICS security (IEC 62443)'] }
-  ]},
-  { key:'process', name:'Process', groups:[
-    { name:'', items:['Writing / updating procedures','Preparing work packs','Management of change','Planning','Activity execution'] }
-  ]},
-  { key:'people', name:'People', groups:[
-    { name:'', items:['Initial training','Continuous development','Competency &amp; qualification'] }
-  ]},
-  { key:'performance', name:'Performance', groups:[
-    { name:'', items:['Tooling to log / monitor / track result data','Reporting capability','Integration to digital twins','Automation of decision-outcome workflow'] }
-  ]}
+const EXAMPLES = [{"id": "EX-01", "kind": "tutorial", "title": "Tutorial - replacing a manual inspection round with a remote system", "asis": "Two technicians spend a day a week on a manual inspection round, with a contractor visit each quarter.", "sol": "A remote inspection system does the routine round; technicians review exceptions and handle the follow-up.", "scale": "one site, per year", "evidence": "None. Invented round numbers, there only to show how the tool works.", "basis": {"ccy": "USD", "day": 1200, "hrs": 12, "hz": 5}, "items": {"asis": [["process", "Activity execution", 20000, 1250, "annual"], ["performance", "Reporting capability", 0, 100, "annual"], ["people", "Competency & qualification", 2000, 20, "annual"]], "sol": [["technology", "Robotics", 120000, 0, "oneoff"], ["technology", "Connectivity / networks", 15000, 40, "oneoff"], ["technology", "OT / ICS security (IEC 62443)", 20000, 60, "oneoff"], ["process", "Management of change", 5000, 40, "oneoff"], ["process", "Writing / updating procedures", 0, 40, "oneoff"], ["people", "Initial training", 3000, 50, "oneoff"], ["process", "Activity execution", 30000, 300, "annual"], ["performance", "Reporting capability", 0, 50, "annual"], ["people", "Competency & qualification", 3000, 20, "annual"]]}, "range": null}, {"id": "EX-02", "kind": "evidence", "title": "Routine plant rounds and equipment checks - autonomous ground robot", "asis": "A competent operator walks a one-to-two-hour round at least daily, limited by daylight, weather and manning.", "sol": "A legged or wheeled autonomous robot runs scheduled rounds around the clock and sends exceptions to the control room.", "scale": "one site, per year", "evidence": "Public case studies and conference papers from several operators and technology providers, describing rounds automated and routine monitoring hours released.", "basis": {"ccy": "USD", "day": 1200, "hrs": 12, "hz": 5}, "items": {"asis": [["technology", "Sensors", 9500, 0, "annual"], ["process", "Preparing work packs", 0, 90, "annual"], ["process", "Planning", 0, 115, "annual"], ["process", "Activity execution", 110000, 1080, "annual"], ["people", "Continuous development", 0, 15, "annual"], ["people", "Competency & qualification", 3000, 25, "annual"], ["performance", "Tooling to log / monitor / track result data", 4000, 0, "annual"], ["performance", "Reporting capability", 0, 175, "annual"]], "sol": [["technology", "Sensors", 9500, 0, "annual"], ["technology", "Robotics", 175000, 0, "oneoff"], ["technology", "Connectivity / networks", 30000, 70, "oneoff"], ["technology", "OT / ICS security (IEC 62443)", 45000, 105, "oneoff"], ["process", "Writing / updating procedures", 0, 60, "oneoff"], ["process", "Preparing work packs", 0, 15, "annual"], ["process", "Management of change", 8000, 40, "oneoff"], ["process", "Planning", 0, 20, "annual"], ["process", "Activity execution", 70000, 180, "annual"], ["people", "Initial training", 9500, 160, "oneoff"], ["people", "Continuous development", 0, 40, "annual"], ["people", "Competency & qualification", 4500, 15, "annual"], ["performance", "Tooling to log / monitor / track result data", 20000, 0, "annual"], ["performance", "Reporting capability", 0, 30, "annual"], ["performance", "Integration to digital twins", 40000, 80, "oneoff"], ["performance", "Automation of decision-outcome workflow", 9000, 0, "annual"]]}, "range": {"saving": [40000, 210000], "hours": [900, 1500], "deploy": [310000, 440000], "payback": [1.5, 8.8], "roi": [0.5, 3.3]}}, {"id": "EX-03", "kind": "evidence", "title": "External inspection of flare stacks, structures and floating roofs - drone", "asis": "Rope-access teams, or a shutdown and cool-down for flare work; roof inspections on foot under a permit.", "sol": "A drone survey from a safe stand-off distance, with live imagery and a photographic record.", "scale": "one site, about 24 inspections a year", "evidence": "Public conference papers and case studies from several operators and technology providers, reporting inspection-time reductions of roughly 85% to 95%.", "basis": {"ccy": "USD", "day": 1200, "hrs": 12, "hz": 5}, "items": {"asis": [["technology", "Sensors", 10000, 0, "annual"], ["process", "Preparing work packs", 0, 105, "annual"], ["process", "Planning", 0, 140, "annual"], ["process", "Activity execution", 125000, 1280, "annual"], ["people", "Continuous development", 0, 15, "annual"], ["people", "Competency & qualification", 3000, 25, "annual"], ["performance", "Tooling to log / monitor / track result data", 4000, 0, "annual"], ["performance", "Reporting capability", 0, 205, "annual"]], "sol": [["technology", "Sensors", 6500, 0, "annual"], ["technology", "Robotics", 40000, 0, "oneoff"], ["technology", "Connectivity / networks", 9000, 20, "oneoff"], ["technology", "OT / ICS security (IEC 62443)", 15000, 30, "oneoff"], ["process", "Writing / updating procedures", 0, 60, "oneoff"], ["process", "Preparing work packs", 0, 15, "annual"], ["process", "Management of change", 8000, 40, "oneoff"], ["process", "Planning", 0, 20, "annual"], ["process", "Activity execution", 50000, 180, "annual"], ["people", "Initial training", 3500, 55, "oneoff"], ["people", "Continuous development", 0, 15, "annual"], ["people", "Competency & qualification", 4500, 15, "annual"], ["performance", "Tooling to log / monitor / track result data", 20000, 0, "annual"], ["performance", "Reporting capability", 0, 30, "annual"], ["performance", "Integration to digital twins", 10000, 80, "oneoff"], ["performance", "Automation of decision-outcome workflow", 9000, 0, "annual"]]}, "range": {"saving": [110000, 280000], "hours": [1100, 1850], "deploy": [100000, 140000], "payback": [0.3, 1.2], "roi": [4.2, 13.8]}}];
+const CCY = {USD:{s:'$',n:'US dollar'},GBP:{s:'£',n:'Pound sterling'},EUR:{s:'€',n:'Euro'},AUD:{s:'A$',n:'Australian dollar'},NOK:{s:'kr ',n:'Norwegian krone'},SGD:{s:'S$',n:'Singapore dollar'},AED:{s:'AED ',n:'UAE dirham'},OTHER:{s:'',n:'Other'}};
+
+const FX0 = {USD:1, GBP:0.7549, EUR:0.8922, AUD:1.4470, NOK:9.5039, SGD:1.2829, AED:3.6725, OTHER:0};
+const SECTIONS = [
+ {k:'technology', n:'Technology and equipment', what:'Sensors and robots, access equipment such as scaffolding - and the OT infrastructure the system joins: networks and cyber security.',
+  items:[['Sensors','Inspection sensors, kit hire or consumables'],['Robotics','Robot, drone or crawler: purchase, lease or service fee'],['Scaffolding','Access: scaffolding, rope access, cranes or lifts'],['Connectivity / networks','Joining the system to site networks and control systems (OT)'],['OT / ICS security (IEC 62443)','Cyber-security assessment, controls and approvals']]},
+ {k:'process', n:'Process', what:'The paperwork and planning around the work, and the work itself.',
+  items:[['Writing / updating procedures','New or changed procedures'],['Preparing work packs','Work packs, permits and isolations'],['Management of change','The site\'s change process for new equipment or methods'],['Planning','Scheduling and coordination'],['Activity execution','Doing the work: own crew hours and contractor costs']]},
+ {k:'people', n:'People', what:'Training, keeping skills current and proving people are competent.',
+  items:[['Initial training','Getting people ready to run, check and stop the system'],['Continuous development','Keeping skills current'],['Competency & qualification','Assessment, certification and records']]},
+ {k:'performance', n:'Performance', what:'What happens to the results: data, reporting and decisions.',
+  items:[['Tooling to log / monitor / track result data','Software and data storage'],['Reporting capability','Writing up and reviewing results'],['Integration to digital twins','Feeding results into models or asset systems'],['Automation of decision-outcome workflow','Turning findings into work orders automatically']]}
 ];
 
-const CCY = {GBP:'£',USD:'$',EUR:'€',AUD:'A$',SGD:'S$',NOK:'kr',AED:'AED '};
+let uid=1; const nid=()=>'i'+(uid++);
+const S = {step:1, ccy:'USD', fx:{...FX0}, otherLabel:'', day:1200, hrs:12, hz:5, dr:8, uc:{name:'',scale:'',desc:''}, user:{name:'',org:''},
+  states:[], cur:null, res:null, example:null, collected:[], visited:new Set([1])};
+function blankItems(){ const out=[]; SECTIONS.forEach(s=>s.items.forEach(([l,h])=>out.push({id:nid(),sec:s.k,label:l,help:h,cost:0,hours:0,basis:'annual',custom:false}))); return out; }
+function newState(type,label){ return {id:nid(),type,label,items:blankItems()}; }
+function reset(){ S.states=[newState('asis','Today'),newState('sol','Solution A')]; S.cur=S.states[1].id; S.res=S.states[1].id; S.example=null; }
+reset();
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-/* ══════════════════════════════════════════════════════════════════
-   BACKEND — email delivery of the report
-   ------------------------------------------------------------------
-   Paste the Google Apps Script deployment URL into ENDPOINT to switch
-   email delivery ON. Leave it as an empty string and the tool behaves
-   exactly as it did before: local download only, nothing transmitted.
-   TOKEN must match SHARED_TOKEN in the Apps Script.
-   ══════════════════════════════════════════════════════════════════ */
-const BACKEND = {
-  ENDPOINT: '',
-  TOKEN: 'dewtech-roi-2026'
-};
-const SITE = 'https://www.dewhurst.tech';
-function backendOn(){ return !!(BACKEND.ENDPOINT && BACKEND.ENDPOINT.indexOf('http')===0); }
+const rate=()=> (S.hrs>0? S.day/S.hrs : 0);
+function totals(st){ let oc=0,oh=0,ac=0,ah=0; st.items.forEach(i=>{const c=+i.cost||0,h=+i.hours||0; if(i.basis==='oneoff'){oc+=c;oh+=h}else{ac+=c;ah+=h}}); const r=rate(); return {oc,oh,ac,ah,one:oc+oh*r,ann:ac+ah*r}; }
+function secTotals(st,k){ const t={one:0,ann:0,oh:0,ah:0}; const r=rate(); st.items.filter(i=>i.sec===k).forEach(i=>{const c=+i.cost||0,h=+i.hours||0; if(i.basis==='oneoff'){t.one+=c+h*r;t.oh+=h}else{t.ann+=c+h*r;t.ah+=h}}); return t; }
+function compare(sol){ const A=totals(S.states[0]), B=totals(sol); const saving=A.ann-B.ann, hours=A.ah-B.ah, deploy=B.one-A.one;
+  return {A,B,saving,hours,deploy,payback:(saving>0&&deploy>0)?deploy/saving:null, roi:(deploy>0)?saving*S.hz/deploy:null, net:saving*S.hz-deploy}; }
 
-/* ---------- State ---------- */
-let solSeq = 0;
-function blankItems(){
-  const items = [];
-  TEMPLATE.forEach(sec=>sec.groups.forEach(g=>g.items.forEach(label=>{
-    items.push({ id:'i'+(items.length), section:sec.key, group:g.name, label:label, cost:0, hours:0, basis:'oneoff', custom:false });
-  })));
-  return items;
+const sym=()=>S.ccy==='OTHER'?((S.otherLabel||'Other')+' '):CCY[S.ccy].s;
+const ccyName=k=>k==='OTHER'?('Other - '+(S.otherLabel||'set a label below')):(k+' - '+CCY[k].n);
+function money(v){ const n=Math.round(v||0); const a=Math.abs(n).toLocaleString('en-GB'); return (n<0?'-':'')+sym()+a; }
+function kmoney(v){ const a=Math.abs(v); if(a>=1e6) return (v<0?'-':'')+sym()+(a/1e6).toFixed(a>=1e7?0:1)+'m'; if(a>=1e4) return (v<0?'-':'')+sym()+Math.round(a/1e3)+'k'; return money(v); }
+const hrs=v=>Math.round(v||0).toLocaleString('en-GB')+' h';
+const yrs=v=>v==null?'-':(v<1? (Math.round(v*12))+' months' : (Math.round(v*10)/10)+' years');
+const ratio=v=>v==null?'-':(Math.round(v*10)/10)+'x';
+function toast(t){ const e=$('#toast'); e.textContent=t; e.style.display='block'; clearTimeout(toast._t); toast._t=setTimeout(()=>e.style.display='none',2200); }
+
+const STEPS=[['Start','Tutorial, example or blank'],['Assumptions','Currency, day rate, period'],['Use case','Name and describe it'],['Today','Cost the current way'],['Solution','Cost the new way'],['Results','Saving, payback, return'],['Save and share','File, report, print']];
+function renderSteps(){ $('#steps').innerHTML=STEPS.map((s,i)=>{const n=i+1; const cls=(n===S.step?'on':'')+(S.visited.has(n)&&n!==S.step?' done':''); return `<li class="${cls}"><button data-go="${n}"><span class="n"><span>${n}</span></span><span class="t">${s[0]}<small>${s[1]}</small></span></button></li>`}).join(''); }
+function go(n){ n=Math.max(1,Math.min(7,+n)); S.step=n; S.visited.add(n); $$('.panel').forEach(p=>p.classList.toggle('on',p.id==='p'+n)); document.body.classList.toggle('compact',n>1); renderSteps(); if(n===4) renderEditor('asis'); if(n===5){renderSolTabs(); renderEditor('sol');} if(n===6) renderResults(); if(n===7) renderCaps(); if(history.replaceState) history.replaceState(null,'','#step-'+n); requestAnimationFrame(()=>{ const nh=($('.nav')||{offsetHeight:90}).offsetHeight; const top=Math.max(0,$('#tool').getBoundingClientRect().top+window.scrollY-nh-12); window.scrollTo({top,behavior:'smooth'}); }); }
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]'); if(b){e.preventDefault(); go(b.dataset.go);}});
+
+function renderSoFar(){ const sol=S.states.find(s=>s.id===S.res)||S.states[1]; const c=compare(sol);
+  const X=(S.example&&S.example.range&&S.example.pristine)?S.example.range:null, fq=S.fx[S.ccy];
+  const v=X?{s:kmoney(X.saving[0]*fq)+'-'+kmoney(X.saving[1]*fq).replace(sym(),''),h:X.hours[0].toLocaleString('en-GB')+'-'+X.hours[1].toLocaleString('en-GB')+' h',d:kmoney(X.deploy[0]*fq)+'-'+kmoney(X.deploy[1]*fq).replace(sym(),''),p:X.payback[0]+'-'+X.payback[1]+' yrs'}:{s:kmoney(c.saving),h:hrs(c.hours),d:kmoney(c.deploy),p:yrs(c.payback)};
+  $('#sofar').innerHTML=`<div class="k">Your case so far</div>${X?'<div class="tagline" style="margin:-4px 0 6px">Example ranges</div>':''}<div class="row"><span>Annual saving</span><b>${v.s}</b></div><div class="row"><span>Hours freed a year</span><b>${v.h}</b></div><div class="row"><span>One-off investment</span><b>${v.d}</b></div><div class="row"><span>Payback</span><b>${v.p}</b></div><div class="tagline">${S.example? (S.example.pristine?'Example figures - '+esc(S.example.title.split(' - ')[0]):'Example, edited by you') : 'Your own figures'} · ${esc(sol.label)}</div>`; }
+
+function rangeHtml(e){ if(!e.range) return ''; const r=e.range, f=S.fx[S.ccy]; const m=v=>kmoney(v*f);
+  return `<div class="rng"><span>Annual saving <b>${m(r.saving[0])} to ${m(r.saving[1])}</b></span><span>Hours freed a year <b>${r.hours[0].toLocaleString('en-GB')} to ${r.hours[1].toLocaleString('en-GB')}</b></span><span>Payback <b>${r.payback[0]} to ${r.payback[1]} years</b></span></div>`; }
+function renderChoices(){ const ok=$('#ack').checked;
+  const cap=x=>x?x.charAt(0).toUpperCase()+x.slice(1):''; const cards=EXAMPLES.map(e=>{const pt=e.title.split(' - '); const h=e.kind==='tutorial'?cap(pt[1]):pt[0]; const sub=e.kind==='tutorial'?'':cap(pt[1]||''); return `<div class="ex"><div class="kind">${e.kind==='tutorial'?'Tutorial':'Worked example'}</div><h3>${esc(h)}</h3>${sub?'<p>'+esc(sub)+'</p>':''}<p><b>Today:</b> ${esc(e.asis)}</p><p><b>Instead:</b> ${esc(e.sol)}</p>${rangeHtml(e)}<p style="font-size:13px">${e.kind==='tutorial'?'Invented round numbers.':'Indicative ranges. '+esc(e.evidence)}</p><button class="btn sm" data-ex="${e.id}" ${(ok||e.kind==='tutorial')?'':'disabled'}>${e.kind==='tutorial'?'Start the tutorial':'Load this example'}</button></div>`}).join('');
+  $('#choices').innerHTML=cards+`<div class="ex"><div class="kind">Your own figures</div><h3>Start blank</h3><p>Every line starts at zero. Best when you already know the work and have your own numbers to hand.</p><button class="btn sm ghost" id="b_blank">Start blank</button></div>`;
+  $('#ackhint').style.display=ok?'none':'block'; }
+$('#ack').addEventListener('change',renderChoices);
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-ex]'); if(b&&!b.disabled) loadExample(b.dataset.ex); if(e.target.id==='b_blank'){ reset(); syncInputs(); refresh(); $('#loaded').style.display='block'; $('#loaded').textContent='Blank case ready. Set your assumptions next.'; go(2);} });
+function loadExample(id){ const e=EXAMPLES.find(x=>x.id===id); if(!e) return;
+  reset(); const f=S.fx[S.ccy]/S.fx[e.basis.ccy];
+  S.day=Math.round(e.basis.day*f); S.hrs=e.basis.hrs; S.hz=e.basis.hz;
+  const fill=(st,list)=>{ list.forEach(([sec,lab,c,h,b])=>{ let it=st.items.find(i=>i.label===lab&&i.sec===sec); if(!it){it={id:nid(),sec,label:lab,help:'',cost:0,hours:0,basis:'annual',custom:true}; st.items.push(it);} it.cost=Math.round(c*f); it.hours=h; it.basis=b; if(e.kind!=='tutorial'&&c>=10000){ const q=c>=50000?10000:5000, lo=Math.floor(c*0.6*f/q)*q, hi=Math.ceil(c*1.4*f/q)*q; it.help='Example placeholder band '+kmoney(lo)+' to '+kmoney(hi)+' - a modelling assumption, not a price. Use your own quote.'; } }); };
+  fill(S.states[0],e.items.asis); fill(S.states[1],e.items.sol); S.states[1].label='Solution A';
+  S.uc={name:e.title, scale:e.scale, desc:'Today: '+e.asis+' Instead: '+e.sol};
+  S.example={id:e.id,title:e.title,kind:e.kind,range:e.range,pristine:true};
+  syncInputs(); refresh();
+  $('#loaded').style.display='block';
+  $('#loaded').innerHTML= e.kind==='tutorial' ? '<b>Tutorial loaded.</b> Every step now has round numbers in it. Use <b>Next</b> to walk through - and change anything to see what moves.' : '<b>Example loaded.</b> Treat every figure as a placeholder: replace it with your own as you go through the steps.'+(S.ccy!=='USD'?' Figures were converted from US dollars at the rate shown in step 2.':'');
 }
-function newSolution(type,label){
-  return { id:'s'+(solSeq++), type:type, label:label, items:blankItems() };
+function touched(){ if(S.example&&S.example.pristine){ S.example.pristine=false; } }
+
+function renderFx(){ $('#a_ccy').innerHTML=Object.keys(CCY).map(k=>`<option value="${k}" ${k==='OTHER'&&!(S.otherLabel&&S.fx.OTHER>0)?'disabled':''}>${esc(ccyName(k))}</option>`).join(''); $('#a_ccy').value=S.ccy;
+  $('#fxtable').innerHTML='<tr><th>Currency</th><th>Units per 1 US dollar</th></tr>'+Object.keys(CCY).filter(k=>k!=='USD'&&k!=='OTHER').map(k=>`<tr><td>${k} - ${CCY[k].n}</td><td><input type="number" step="0.0001" min="0" data-fx="${k}" value="${S.fx[k]}"></td></tr>`).join('')+`<tr><td>Other - <input type="text" id="fx_olab" maxlength="12" placeholder="label, e.g. ZAR" value="${esc(S.otherLabel)}" style="max-width:150px;padding:6px 8px"></td><td><input type="number" step="0.0001" min="0" data-fx="OTHER" value="${S.fx.OTHER||''}" placeholder="your rate"></td></tr>`; }
+document.addEventListener('input',e=>{ if(e.target.dataset.fx){ const v=parseFloat(e.target.value); if(v>0) S.fx[e.target.dataset.fx]=v; renderChoices(); if(e.target.dataset.fx==='OTHER') refreshCcyOptions(); } if(e.target.id==='fx_olab'){ S.otherLabel=e.target.value.trim(); refreshCcyOptions(); if(S.ccy==='OTHER') refresh(); } });
+function refreshCcyOptions(){ const o=$('#a_ccy option[value="OTHER"]'); if(o){ o.textContent=ccyName('OTHER'); o.disabled=!(S.otherLabel&&S.fx.OTHER>0); } }
+$('#a_ccy').addEventListener('change',e=>{ const from=S.ccy,to=e.target.value; if(from===to) return; const f=S.fx[to]/S.fx[from];
+  S.states.forEach(st=>st.items.forEach(i=>i.cost=Math.round((+i.cost||0)*f))); S.day=Math.round(S.day*f); S.ccy=to;
+  $('#fxnote').style.display='block'; $('#fxnote').innerHTML=`Every figure has been converted from ${from==='OTHER'?S.otherLabel:from} to ${to==='OTHER'?S.otherLabel:to} at 1 ${from==='OTHER'?S.otherLabel:from} = ${(f).toFixed(4)} ${to==='OTHER'?S.otherLabel:to}. Hours are unchanged. To go back, switch the currency again.`;
+  syncInputs(); refresh(); toast('Converted to '+(to==='OTHER'?S.otherLabel:to)); });
+function syncInputs(){ $('#a_ccy').value=S.ccy; $('#a_day').value=S.day; $('#a_hrs').value=S.hrs; $('#a_hz').value=S.hz; $('#a_dr').value=S.dr; $('#uc_name').value=S.uc.name; $('#uc_scale').value=S.uc.scale; $('#uc_desc').value=S.uc.desc; $('#u_name').value=S.user.name; $('#u_org').value=S.user.org; }
+[['#a_day','day'],['#a_hrs','hrs'],['#a_hz','hz'],['#a_dr','dr']].forEach(([s,k])=>$(s).addEventListener('input',e=>{S[k]=parseFloat(e.target.value)||0; touched(); refresh();}));
+[['#uc_name','name'],['#uc_scale','scale'],['#uc_desc','desc']].forEach(([s,k])=>$(s).addEventListener('input',e=>{S.uc[k]=e.target.value;}));
+[['#u_name','name'],['#u_org','org']].forEach(([s,k])=>$(s).addEventListener('input',e=>{S.user[k]=e.target.value;}));
+function renderRate(){ $('#rateline').innerHTML=`Each hour is valued at <b>${money(rate())}</b> (${money(S.day)} a day ÷ ${S.hrs} hours). Benefits are counted over <b>${S.hz} years</b>, and future amounts are discounted at <b>${S.dr}% a year</b> where a discounted figure is shown.`; }
+
+function stateFor(kind){ return kind==='asis'?S.states[0]:(S.states.find(s=>s.id===S.cur)||S.states[1]); }
+function renderEditor(kind){ const st=stateFor(kind); const host=$(kind==='asis'?'#ed_asis':'#ed_sol'); const openSet=new Set([...host.querySelectorAll('details.sec-ed[open]')].map(d=>d.dataset.k));
+  if(!host.children.length) openSet.add('process');
+  let h='';
+  if(kind==='sol') h+=`<div style="display:flex;gap:12px;align-items:end;margin-bottom:14px"><div style="flex:1"><label class="f">Name of this solution</label><input type="text" data-slabel value="${esc(st.label)}"></div>${S.states.length>2?'<button class="btn sm ghost" data-delsol>Remove this solution</button>':''}</div>`;
+  SECTIONS.forEach(sec=>{ const t=secTotals(st,sec.k);
+    h+=`<details class="sec-ed" data-k="${sec.k}" ${openSet.has(sec.k)?'open':''}><summary><span>${sec.n}</span><span class="sub" data-sub="${sec.k}">One-off ${kmoney(t.one)} · Each year ${kmoney(t.ann)}</span></summary><div class="inner"><div class="what">${sec.what}</div><div class="line-hd"><span>Line</span><span>Cost (${S.ccy})</span><span>Hours</span><span>When</span><span></span></div>`;
+    st.items.filter(i=>i.sec===sec.k).forEach(i=>{ h+=`<div class="line" data-id="${i.id}"><div class="lab">${i.custom?`<input type="text" data-f="label" value="${esc(i.label)}" aria-label="Line name">`:esc(i.label)+(i.help?`<small>${esc(i.help)}</small>`:'')}</div><label class="ml"><span>Cost</span><input type="number" min="0" step="500" data-f="cost" value="${i.cost||0}" aria-label="Cost"></label><label class="ml"><span>Hours</span><input type="number" min="0" step="5" data-f="hours" value="${i.hours||0}" aria-label="Hours"></label><select data-f="basis" aria-label="When"><option value="annual" ${i.basis==='annual'?'selected':''}>Each year</option><option value="oneoff" ${i.basis==='oneoff'?'selected':''}>One-off</option></select>${i.custom?'<button class="x" data-del title="Remove line">×</button>':'<span></span>'}</div>`; });
+    h+=`<button class="addl" data-add="${sec.k}">+ Add a line</button></div></details>`; });
+  const T=totals(st);
+  h+=`<div class="tot"><div>One-off cost<b data-tt="oc">${kmoney(T.oc)}</b></div><div>One-off hours<b data-tt="oh">${hrs(T.oh)}</b></div><div>Cost each year<b data-tt="ac">${kmoney(T.ac)}</b></div><div>Hours each year<b data-tt="ah">${hrs(T.ah)}</b></div></div>`;
+  host.innerHTML=h; host.dataset.kind=kind; }
+function liveTotals(host){ const st=stateFor(host.dataset.kind); SECTIONS.forEach(sec=>{const t=secTotals(st,sec.k); const e=host.querySelector(`[data-sub="${sec.k}"]`); if(e) e.textContent=`One-off ${kmoney(t.one)} · Each year ${kmoney(t.ann)}`;}); const T=totals(st); const set=(k,v)=>{const e=host.querySelector(`[data-tt="${k}"]`); if(e) e.textContent=v;}; set('oc',kmoney(T.oc)); set('oh',hrs(T.oh)); set('ac',kmoney(T.ac)); set('ah',hrs(T.ah)); }
+['#ed_asis','#ed_sol'].forEach(sel=>{ const host=$(sel);
+  host.addEventListener('input',e=>{ const st=stateFor(host.dataset.kind); if(e.target.dataset.slabel!==undefined){ st.label=e.target.value; renderSolTabs(); return; } const row=e.target.closest('.line'); if(!row) return; const it=st.items.find(i=>i.id===row.dataset.id); const f=e.target.dataset.f; it[f]= f==='label'||f==='basis'? e.target.value : (parseFloat(e.target.value)||0); touched(); liveTotals(host); renderSoFar(); });
+  host.addEventListener('change',e=>{ if(e.target.dataset.f==='basis'){ const st=stateFor(host.dataset.kind); const it=st.items.find(i=>i.id===e.target.closest('.line').dataset.id); it.basis=e.target.value; touched(); liveTotals(host); renderSoFar(); } });
+  host.addEventListener('click',e=>{ const st=stateFor(host.dataset.kind);
+    if(e.target.dataset.add){ st.items.push({id:nid(),sec:e.target.dataset.add,label:'New line',help:'',cost:0,hours:0,basis:'annual',custom:true}); touched(); renderEditor(host.dataset.kind); }
+    if(e.target.dataset.del!==undefined){ const id=e.target.closest('.line').dataset.id; st.items=st.items.filter(i=>i.id!==id); touched(); renderEditor(host.dataset.kind); renderSoFar(); }
+    if(e.target.dataset.delsol!==undefined){ S.states=S.states.filter(s=>s.id!==st.id); S.cur=S.states[1].id; if(!S.states.find(s=>s.id===S.res)) S.res=S.cur; renderSolTabs(); renderEditor('sol'); renderSoFar(); } }); });
+function renderSolTabs(){ const sols=S.states.slice(1); $('#soltabs').innerHTML=sols.map(s=>`<button class="${s.id===S.cur?'on':''}" data-sol="${s.id}">${esc(s.label)}</button>`).join('')+(sols.length<4?'<button data-addsol>+ Add another solution</button>':''); }
+$('#soltabs').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; if(b.dataset.addsol!==undefined){ const L='Solution '+String.fromCharCode(64+S.states.length); const ns=newState('sol',L); S.states.push(ns); S.cur=ns.id; touched(); } else S.cur=b.dataset.sol; renderSolTabs(); renderEditor('sol'); });
+
+function renderResults(){ const sols=S.states.slice(1); if(!sols.find(s=>s.id===S.res)) S.res=sols[0].id;
+  $('#restabs').innerHTML=sols.length>1? sols.map(s=>`<button class="${s.id===S.res?'on':''}" data-res="${s.id}">${esc(s.label)}</button>`).join('') : '';
+  const sol=sols.find(s=>s.id===S.res); const c=compare(sol);
+  const EXR=(S.example&&S.example.range&&S.example.pristine)?S.example.range:null, fxr=S.fx[S.ccy];
+  const rr=(k)=>kmoney(EXR[k][0]*fxr)+' to '+kmoney(EXR[k][1]*fxr);
+  if(EXR){ $('#tiles').innerHTML=[['Cost today, each year','about '+kmoney(c.A.ann),'example figures'],[esc(sol.label)+', each year','about '+kmoney(c.B.ann),'example figures'],['Annual saving',rr('saving'),EXR.hours[0].toLocaleString('en-GB')+' to '+EXR.hours[1].toLocaleString('en-GB')+' h freed each year','hi'],['One-off investment',rr('deploy'),'to stand the solution up'],['Payback',EXR.payback[0]+' to '+EXR.payback[1]+' years','from the annual saving'],['Return over '+S.hz+' years',EXR.roi[0]+'x to '+EXR.roi[1]+'x','the investment, over the period']].map(t=>`<div class="tile ${t[3]||''}"><div class="t">${t[0]}</div><div class="v" style="font-size:23px">${t[1]}</div><div class="s">${t[2]}</div></div>`).join(''); }
+  else
+  $('#tiles').innerHTML=[['Cost today, each year',money(c.A.ann),hrs(c.A.ah)+' of your people\'s time'],[esc(sol.label)+', each year',money(c.B.ann),hrs(c.B.ah)+' of your people\'s time'],['Annual saving',money(c.saving),hrs(c.hours)+' freed each year','hi'],['One-off investment',money(c.deploy),'to stand the solution up'],['Payback',yrs(c.payback),c.payback?'from the annual saving':'no payback on these figures'],['Return over '+S.hz+' years',ratio(c.roi),'the investment, over the period']].map(t=>`<div class="tile ${t[3]||''}"><div class="t">${t[0]}</div><div class="v">${t[1]}</div><div class="s">${t[2]}</div></div>`).join('');
+  let rb=''; if(S.example&&S.example.range&&S.example.pristine){ const r=S.example.range,f=S.fx[S.ccy]; rb=`<div class="rangebox"><b>This is an example, so the results are shown as ranges.</b> The low end takes today's costs and hours 20% lower and the solution's costs 25% higher than the example lines; the high end takes today's 20% higher and the solution's costs 15% lower. The solution's hours are left unchanged. Each range is rounded outwards, so it always contains both ends. The side-by-side table below shows the example's middle case, which is one point within that range, not a forecast. Payback is sensitive: a small change in the effort saved moves it a long way, which is why your own figures matter.</div>`; }
+  else if(S.example&&S.example.kind==='tutorial'&&S.example.pristine){ rb='<div class="rangebox">These are the tutorial\'s invented round numbers. Change any line in steps 4 and 5 and come back: the results follow.</div>'; }
+  else if(S.example&&!S.example.pristine){ rb='<div class="callout">You have changed the example, so these results reflect your figures, not the example\'s published range.</div>'; }
+  $('#rangebox').innerHTML=rb;
+  const ok=c.saving>0;
+  if(EXR&&ok){ $('#reading').innerHTML=`On the example's ranges, ${esc(sol.label)} pays back in <b>${EXR.payback[0]} to ${EXR.payback[1]} years</b>. The example shows how a case is built, not what yours will return: enter your own figures to see a single answer.`; } else
+  $('#reading').innerHTML= ok? `On these figures, ${esc(sol.label)} costs <b>${money(c.deploy)}</b> to stand up and saves <b>${money(c.saving)}</b> a year - ${c.payback?'paying back in about <b>'+yrs(c.payback)+'</b>':'with no one-off cost to recover'}. Over ${S.hz} years that is a net value of <b>${money(c.net)}</b> (not discounted) - and <b>${hrs(c.hours)}</b> of your people's time freed every year for other work.` : (c.A.ann===0? 'Start by costing today\'s way of working in step 4 - the results compare everything against it.' : `On these figures ${esc(sol.label)} costs more to run each year than today's way of working, so it doesn't pay back on cost alone. Check whether a benefit is missing - lost production avoided, or safety exposure reduced - and add it as a line in step 4.`);
+  renderMatrix(); renderSoFar(); renderChart(); }
+$('#restabs').addEventListener('click',e=>{const b=e.target.closest('[data-res]'); if(b){S.res=b.dataset.res; renderResults();}});
+function renderMatrix(){ const st=S.states; let h='<thead><tr><th>Area</th>'+st.map(s=>`<th>${esc(s.label)}</th>`).join('')+'</tr></thead><tbody>';
+  SECTIONS.forEach(sec=>{ h+=`<tr class="sec"><td colspan="${st.length+1}">${sec.n}</td></tr>`; h+='<tr><td>One-off</td>'+st.map(s=>`<td>${money(secTotals(s,sec.k).one)}</td>`).join('')+'</tr>'; h+='<tr><td>Each year</td>'+st.map(s=>`<td>${money(secTotals(s,sec.k).ann)}</td>`).join('')+'</tr>'; });
+  h+='<tr class="sec"><td colspan="'+(st.length+1)+'">Totals</td></tr>';
+  h+='<tr class="big"><td>One-off</td>'+st.map(s=>`<td>${money(totals(s).one)}</td>`).join('')+'</tr><tr class="big"><td>Each year</td>'+st.map(s=>`<td>${money(totals(s).ann)}</td>`).join('')+'</tr><tr><td>Hours each year</td>'+st.map(s=>`<td>${hrs(totals(s).ah)}</td>`).join('')+'</tr>';
+  h+='<tr><td>Annual saving against today</td><td>-</td>'+st.slice(1).map(s=>`<td>${money(compare(s).saving)}</td>`).join('')+'</tr><tr><td>Payback</td><td>-</td>'+st.slice(1).map(s=>`<td>${yrs(compare(s).payback)}</td>`).join('')+'</tr><tr><td>Return over '+S.hz+' years</td><td>-</td>'+st.slice(1).map(s=>`<td>${ratio(compare(s).roi)}</td>`).join('')+'</tr></tbody>';
+  $('#matrix').innerHTML=h; $('#mxnote').textContent=(S.example&&S.example.range&&S.example.pristine)?'For an example, this table shows the middle case - one point inside the ranges above, not a forecast.':''; }
+
+function snapshot(){ return {tool:'dewhurst.tech value & roi calculator',version:2,saved:new Date().toISOString(),ccy:S.ccy,fx:S.fx,assumptions:{day:S.day,hrs:S.hrs,hz:S.hz,dr:S.dr},otherLabel:S.otherLabel,usecase:{...S.uc},user:{...S.user},example:S.example?{...S.example}:null,
+  states:S.states.map(s=>({label:s.label,type:s.type,items:s.items.filter(i=>i.cost||i.hours||i.custom).map(i=>({area:i.sec,line:i.label,cost:i.cost,hours:i.hours,when:i.basis==='oneoff'?'one-off':'each year',custom:i.custom}))})),
+  results:S.states.slice(1).map(s=>{const c=compare(s);return {solution:s.label,annual_saving:Math.round(c.saving),hours_freed:Math.round(c.hours),one_off:Math.round(c.deploy),payback_years:c.payback?+c.payback.toFixed(2):null,return_ratio:c.roi?+c.roi.toFixed(2):null};}),
+  note:'Created with the Dewhurst.tech Value & ROI Calculator. The user is responsible for all figures. Example figures are illustrative only.'}; }
+function capture(){ const snap=snapshot(); const i=S.collected.findIndex(c=>c.usecase.name===snap.usecase.name&&snap.usecase.name); if(i>=0) S.collected[i]=snap; else S.collected.push(snap); renderCaps(); return snap; }
+function download(name,text,type){ const b=new Blob([text],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500); }
+const fname=ext=>('value-case-'+(S.uc.name||'untitled').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,50)+'.'+ext);
+$('#b_save').addEventListener('click',()=>{ if(!share('save')) return; capture(); download(fname('json'),JSON.stringify({tool:'dewhurst.tech value & roi calculator',version:2,cases:S.collected},null,1),'application/json'); toast('Saved to your downloads'); });
+$('#b_csv').addEventListener('click',()=>{ if(!share('csv')) return; const rows=[['state','area','line','cost_'+S.ccy,'hours','when']]; if(S.example&&S.example.pristine) rows.unshift(['note','Example '+S.example.id+': illustrative modelling placeholders, not prices. The user is responsible for all figures.','','','','']); S.states.forEach(s=>s.items.filter(i=>i.cost||i.hours).forEach(i=>rows.push([s.label,i.sec,i.label,i.cost,i.hours,i.basis==='oneoff'?'one-off':'each year']))); download(fname('csv'),rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n'),'text/csv'); });
+$('#f_import').addEventListener('change',e=>{ const f=e.target.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ try{ const d=JSON.parse(rd.result); const cases=d.cases||(d.states?[d]:null); if(!cases||!cases.length||!cases[0].states) throw 0; S.collected=cases; openCase(cases[cases.length-1]); share('open'); toast('Opened '+cases.length+' saved case'+(cases.length>1?'s':'')); }catch(err){ toast('That file wasn\'t recognised. Choose a file saved from this calculator.'); } e.target.value=''; }; rd.readAsText(f); });
+function openCase(c){ S.ccy=c.ccy||'USD'; if(c.fx) S.fx={...FX0,...c.fx}; S.day=c.assumptions.day; S.hrs=c.assumptions.hrs; S.hz=c.assumptions.hz; S.dr=(c.assumptions.dr!=null?c.assumptions.dr:8); S.otherLabel=c.otherLabel||''; S.uc={name:'',scale:'',desc:'',...c.usecase}; S.user={name:'',org:'',...(c.user||{})}; S.example=(c.example&&c.example.id)?{...c.example}:null;
+  S.states=c.states.map(s=>{ const st=newState(s.type,s.label); s.items.forEach(x=>{ let it=st.items.find(i=>i.label===x.line&&i.sec===x.area&&!x.custom); if(!it){ it={id:nid(),sec:x.area,label:x.line,help:'',cost:0,hours:0,basis:'annual',custom:true}; st.items.push(it);} it.cost=x.cost; it.hours=x.hours; it.basis=x.when==='one-off'?'oneoff':'annual'; }); return st; });
+  S.cur=S.states[1].id; S.res=S.cur; renderFx(); syncInputs(); refresh(); renderCaps(); }
+function renderCaps(){ $('#caps').innerHTML=S.collected.length? '<p class="hint" style="margin-top:14px">Cases in this session:</p>'+S.collected.map((c,i)=>`<div class="cap"><span>${esc(c.usecase.name||'Untitled')} <span class="muted">· ${esc(c.ccy)}</span></span><button class="btn sm ghost" data-open="${i}">Open</button></div>`).join('') : ''; }
+$('#caps').addEventListener('click',e=>{const b=e.target.closest('[data-open]'); if(b){ openCase(S.collected[+b.dataset.open]); go(6);} });
+
+$('#b_new').addEventListener('click',()=>{ if(!confirmNew()) return; reset(); S.uc={name:'',scale:'',desc:''}; syncInputs(); refresh(); go(1); });
+function confirmNew(){ const any=S.states.some(s=>s.items.some(i=>i.cost||i.hours)); if(!any) return true; capture(); toast('Your current case is kept in this session\'s list'); return true; }
+
+const BACKEND={URL:'https://api.web3forms.com/submit',KEY:(window.DT_COLLECTOR_KEY||'')};
+const CASE_ID=(Math.random().toString(36).slice(2)+Date.now().toString(36)).slice(0,14);
+function consentOn(){ return $('#c_share').checked; }
+function gate(){ const on=consentOn(); $('#gated').classList.toggle('off',!on); $$('#gated button').forEach(b=>b.disabled=!on); $('#f_import').disabled=!on; $('#c_hint').style.display=on?'none':'block'; $('#contact_f').style.display=$('#c_contact').checked?'grid':'none'; if(!on&&$('#c_contact').checked){ $('#c_contact').checked=false; $('#contact_f').style.display='none'; } }
+['#c_share','#c_contact'].forEach(id=>$(id).addEventListener('change',()=>{ if(id==='#c_contact'&&$('#c_contact').checked&&!consentOn()) $('#c_share').checked=true; gate(); }));
+function anonPayload(action){ const d=new Date(); return {tool:'dewhurst.tech value & roi calculator',version:2,case:CASE_ID,action,month:d.toISOString().slice(0,7),ccy:S.ccy==='OTHER'?'OTHER':S.ccy,
+  assumptions:{day:S.day,hrs:S.hrs,hz:S.hz,dr:S.dr}, example:S.example?{id:S.example.id,edited:!S.example.pristine}:null,
+  states:S.states.map(st=>({type:st.type,lines:st.items.filter(i=>i.cost||i.hours).map(i=>({area:i.sec,line:i.custom?'custom line':i.label,cost:i.cost,hours:i.hours,when:i.basis}))})),
+  results:S.states.slice(1).map(st=>{const c=compare(st);return {annual_saving:Math.round(c.saving),hours_freed:Math.round(c.hours),one_off:Math.round(c.deploy),payback_years:c.payback?+c.payback.toFixed(2):null};})}; }
+function csvCell(v){ v=(v===null||v===undefined)?'':String(v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
+function shareText(p){ const L=[]; const n=x=>Math.round(+x||0).toLocaleString('en-GB');
+  L.push('Value & ROI Calculator - anonymised case ('+p.action+')');
+  L.push('Case ref: '+p.case+' | Month: '+p.month+' | Currency: '+p.ccy);
+  L.push('Assumptions: day cost '+n(p.assumptions.day)+' | hours a day '+p.assumptions.hrs+' | horizon '+p.assumptions.hz+' years | discount rate '+p.assumptions.dr+'%');
+  L.push('Started from: '+(p.example?p.example.id+(p.example.edited?' (edited)':' (unchanged)'):'a blank case'));
+  L.push(''); L.push('RESULTS');
+  p.results.forEach((r,k)=>L.push('Solution '+String.fromCharCode(65+k)+': annual saving '+n(r.annual_saving)+' | hours freed '+n(r.hours_freed)+' | one-off '+n(r.one_off)+' | payback '+(r.payback_years===null?'none':r.payback_years+' years')));
+  if(p.contact){ L.push(''); L.push('CONTACT REQUESTED'); L.push('Name: '+(p.contact.name||'-')); L.push('Organisation: '+(p.contact.organisation||'-')); L.push('Email: '+(p.contact.email||'-')); L.push('Phone: '+(p.contact.phone||'-')); L.push('Case name: '+(p.contact.usecase||'-')); L.push('Description: '+(p.contact.description||'-')); }
+  L.push(''); L.push('CSV - copy the lines below into a spreadsheet');
+  const H=['case','month','action','currency','day_cost','hours_per_day','horizon_years','discount_rate','example','edited','state','state_type','area','line','cost','hours','when'];
+  L.push(H.join(','));
+  p.states.forEach((st,k)=>st.lines.forEach(li=>L.push([p.case,p.month,p.action,p.ccy,p.assumptions.day,p.assumptions.hrs,p.assumptions.hz,p.assumptions.dr,p.example?p.example.id:'',p.example?(p.example.edited?'yes':'no'):'',k===0?'Today':'Solution '+String.fromCharCode(64+k),st.type,li.area,li.line,li.cost,li.hours,li.when].map(csvCell).join(','))));
+  return L.join('\n'); }
+function share(action){ if(!consentOn()) return false; const p=anonPayload(action);
+  if($('#c_contact').checked){ p.contact={name:S.user.name,organisation:S.user.org,email:($('#u_email').value||'').trim(),phone:($('#u_phone').value||'').trim(),usecase:S.uc.name,description:S.uc.desc}; }
+  const body={access_key:BACKEND.KEY,subject:'Calculator case - '+action+' - '+p.month+' - '+p.ccy+(p.contact?' - CONTACT REQUESTED':''),from_name:'Dewhurst.tech calculator',message:shareText(p)};
+  if(p.contact&&p.contact.email) body.replyto=p.contact.email;
+  if(!BACKEND.KEY){ try{ console.info('[not sent] no collector key set; this email would be sent:',body); }catch(e){} return true; }
+  try{ fetch(BACKEND.URL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body)}).catch(()=>{}); }catch(e){} return true; }
+
+const SERIES_COL=['#4A8FD0','#C27C12','#2E8B6A','#9A4E9A'];
+const CH={view:'abs',type:'line'};
+function monthlyRate(){ return Math.pow(1+(S.dr||0)/100,1/12)-1; }
+function cumSeries(st,disc){ const T=totals(st), n=Math.round(S.hz*12), r=monthlyRate(); const out=[]; let c=T.one; out.push(c); for(let m=1;m<=n;m++){ const f=disc?1/Math.pow(1+r,m):1; c+=T.ann/12*f; out.push(c);} return out; }
+function npvSaving(sol){ const a=cumSeries(S.states[0],true), b=cumSeries(sol,true); return a[a.length-1]-b[b.length-1]; }
+function crossMonth(base,sol){ for(let m=0;m<base.length;m++){ if(sol[m]<=base[m]) return m; } return null; }
+function niceMax(v){ if(v<=0) return 1; const p=Math.pow(10,Math.floor(Math.log10(v))); const n=v/p; return (n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*p; }
+function renderChart(){ const svg=$('#chart'); if(!svg) return; const disc=CH.view==='disc';
+  const series=[{name:S.states[0].label,col:'#6B7684',dash:true,data:cumSeries(S.states[0],disc)}].concat(S.states.slice(1).map((st,i)=>({name:st.label,col:SERIES_COL[i%4],data:cumSeries(st,disc)})));
+  const n=series[0].data.length-1, W=svg.clientWidth||800, H=340, L=68, Rm=16, T=14, B=34, pw=W-L-Rm, ph=H-T-B;
+  const ymax=niceMax(Math.max(...series.flatMap(s=>s.data))*1.04);
+  const x=m=>L+pw*m/n, y=v=>T+ph*(1-v/ymax);
+  let g=`<rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/>`;
+  for(let i=0;i<=4;i++){ const v=ymax*i/4, yy=y(v); g+=`<line x1="${L}" x2="${W-Rm}" y1="${yy}" y2="${yy}" stroke="#E6EAEF" stroke-width="1"/><text x="${L-8}" y="${yy+4}" text-anchor="end" font-size="11.5" fill="#7A848F">${kmoney(v)}</text>`; }
+  for(let yr=0;yr<=S.hz;yr++){ const xx=x(yr*12); g+=`<text x="${xx}" y="${H-12}" text-anchor="middle" font-size="11.5" fill="#7A848F">${yr===0?'Start':'Year '+yr}</text><line x1="${xx}" x2="${xx}" y1="${T+ph}" y2="${T+ph+4}" stroke="#AAB2BB"/>`; }
+  if(CH.type==='line'){ series.forEach(s=>{ const d=s.data.map((v,m)=>(m?'L':'M')+x(m).toFixed(1)+','+y(v).toFixed(1)).join(''); g+=`<path d="${d}" fill="none" stroke="${s.col}" stroke-width="2" ${s.dash?'stroke-dasharray="6 4"':''} stroke-linejoin="round"/>`; }); }
+  else { const k=series.length, gw=pw/(n+1), bw=Math.max(1,(gw-2)/k-1); for(let m=0;m<=n;m++){ series.forEach((s,i)=>{ const v=s.data[m], bx=L+gw*m+1+i*(bw+1), by=y(v); g+=`<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw.toFixed(1)}" height="${(T+ph-by).toFixed(1)}" fill="${s.col}" ${s.dash?'fill-opacity=".55"':''}/>`; }); } }
+
+  const vi=Math.max(1,S.states.findIndex(st=>st.id===S.res)); const cm=crossMonth(series[0].data,series[vi].data);
+  if(cm!==null&&cm>0){ const xx=x(cm), yy=y(series[vi].data[cm]); g+=`<line x1="${xx}" x2="${xx}" y1="${T}" y2="${T+ph}" stroke="${series[vi].col}" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/><circle cx="${xx}" cy="${yy}" r="5" fill="${series[vi].col}" stroke="#fff" stroke-width="2"/>${(()=>{const lab=(W<520?'Payback':series[vi].name+' pays back')+': month '+cm; const fl=xx+8+lab.length*6.6>W-Rm; return `<text x="${fl?xx-8:xx+8}" text-anchor="${fl?'end':'start'}" y="${T+12}" font-size="12" fill="#0E1621">${esc(lab)}</text>`;})()}`; }
+  g+=`<line id="ch_x" x1="0" x2="0" y1="${T}" y2="${T+ph}" stroke="#0E1621" stroke-width="1" opacity="0"/>`;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.innerHTML=g;
+  $('#ch_legend').innerHTML=series.map(s=>`<span><i class="${s.dash?'dash':''}" style="background:${s.col}"></i>${esc(s.name)}</span>`).join('');
+  const sol=S.states.find(st=>st.id===S.res)||S.states[1], c=compare(sol), npv=npvSaving(sol), dcm=crossMonth(cumSeries(S.states[0],true),cumSeries(sol,true));
+  $('#ch_sub').textContent=`Monthly, over ${S.hz} years. One-off costs fall at the start; each year's running cost is spread evenly across its months. ${disc?'Discounted at '+S.dr+'% a year to today\'s money.':'Not discounted.'}`;
+  const PX=S.example&&S.example.range&&S.example.pristine;
+  $('#ch_stats').innerHTML=`<div>Net present value of ${esc(sol.label)} at ${S.dr}%<b>${PX?'about '+kmoney(npv):money(npv)}</b></div><div>Discounted payback<b>${dcm===null?'not within '+S.hz+' years':(dcm<12?dcm+' months':(Math.round(dcm/1.2)/10)+' years')}</b></div><div>Undiscounted payback<b>${yrs(c.payback)}</b></div>${PX?'<div style="max-width:30ch">Example: the chart shows the middle case, one point inside the ranges above.</div>':''}`;
+  let tb='<table class="mx"><thead><tr><th>Year</th>'+series.map(s=>`<th>${esc(s.name)}</th>`).join('')+'</tr></thead><tbody>';
+  for(let yr=0;yr<=S.hz;yr++){ tb+=`<tr><td>${yr===0?'Start':'End of year '+yr}</td>`+series.map(s=>`<td>${money(s.data[yr*12])}</td>`).join('')+'</tr>'; }
+  $('#ch_table').innerHTML=tb+'</tbody></table>';
+  const wrap=$('#ch_wrap'), tip=$('#ch_tip');
+  wrap.onmousemove=ev=>{ const rc=svg.getBoundingClientRect(), px=(ev.clientX-rc.left)*W/rc.width; const m=Math.max(0,Math.min(n,Math.round((px-L)/pw*n))); const xl=$('#ch_x'); xl.setAttribute('x1',x(m)); xl.setAttribute('x2',x(m)); xl.setAttribute('opacity','.35');
+    tip.innerHTML=`<b>${m===0?'Start':'Month '+m+' (year '+Math.ceil(m/12)+')'}</b>`+series.map(s=>`<div><span style="color:#55606C">${esc(s.name)}</span><span>${kmoney(s.data[m])}</span></div>`).join('');
+    tip.style.display='block'; const tx=(x(m)/W)*rc.width; tip.style.left=Math.min(rc.width-tip.offsetWidth-4,Math.max(0,tx+12))+'px'; tip.style.top='10px'; };
+  wrap.onmouseleave=()=>{ tip.style.display='none'; const xl=$('#ch_x'); if(xl) xl.setAttribute('opacity','0'); };
 }
-const state = {
-  solutions:[ newSolution('asis','As-Is'), newSolution('solution','Solution A') ],
-  collected:[]
-};
-let activeTab = state.solutions[0].id;
-const SOL_LETTERS = ['A','B','C','D','E','F','G','H'];
+document.addEventListener('click',e=>{ const a=e.target.closest('[data-cv]'), b=e.target.closest('[data-ct]'); if(a){ CH.view=a.dataset.cv; $$('[data-cv]').forEach(x=>x.classList.toggle('on',x===a)); renderChart(); } if(b){ CH.type=b.dataset.ct; $$('[data-ct]').forEach(x=>x.classList.toggle('on',x===b)); renderChart(); } });
+window.addEventListener('resize',()=>{ if(S.step===6) renderChart(); });
 
-/* ---------- Helpers ---------- */
-const $ = s=>document.querySelector(s);
-function assumptions(){
-  const ccy = $('#a_ccy').value;
-  const day = Math.max(0, parseFloat($('#a_daycost').value)||0);
-  const hrs = Math.max(0.01, parseFloat($('#a_hrs').value)||0.01);
-  const horizon = Math.max(1, parseFloat($('#a_horizon').value)||1);
-  return { ccy, day, hrs, horizon, rate: day/hrs };
-}
-function money(v){
-  const a = assumptions();
-  const sym = CCY[a.ccy]||'';
-  const n = (Math.round((v||0)*100)/100);
-  return sym + n.toLocaleString('en-GB',{maximumFractionDigits:0});
-}
-function hoursFmt(v){ return (Math.round((v||0)*10)/10).toLocaleString('en-GB',{maximumFractionDigits:1}) + ' h'; }
-function ratio(v){ return (Math.round((v||0)*10)/10).toLocaleString('en-GB',{maximumFractionDigits:1}) + ' : 1'; }
+function report(orient){ const st=S.states; const date=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  const PR=(S.example&&S.example.range&&S.example.pristine);
+  const rows=PR?'<tr><td colspan=6>See the example ranges above. Enter your own figures for a single answer.</td></tr>':st.slice(1).map(s=>{const c=compare(s); return `<tr><td>${esc(s.label)}</td><td>${money(c.saving)}</td><td>${hrs(c.hours)}</td><td>${money(c.deploy)}</td><td>${yrs(c.payback)}</td><td>${ratio(c.roi)}</td></tr>`}).join('');
+  const detail=st.map(s=>`<h3>${esc(s.label)}</h3><table><tr><th>Area</th><th>Line</th><th>Cost</th><th>Hours</th><th>When</th></tr>${s.items.filter(i=>i.cost||i.hours).map(i=>`<tr><td>${esc(SECTIONS.find(x=>x.k===i.sec).n)}</td><td>${esc(i.label)}</td><td>${money(i.cost)}</td><td>${hrs(i.hours)}</td><td>${i.basis==='oneoff'?'One-off':'Each year'}</td></tr>`).join('')||'<tr><td colspan=5>No lines entered</td></tr>'}</table>`).join('');
+  const RX=(S.example&&S.example.range&&S.example.pristine)?S.example.range:null, fq=S.fx[S.ccy];
+  const rng=RX?`<p class="warn"><b>Example results as ranges:</b> annual saving ${kmoney(RX.saving[0]*fq)} to ${kmoney(RX.saving[1]*fq)}; hours freed ${RX.hours[0]} to ${RX.hours[1]} a year; one-off investment ${kmoney(RX.deploy[0]*fq)} to ${kmoney(RX.deploy[1]*fq)}; payback ${RX.payback[0]} to ${RX.payback[1]} years; return ${RX.roi[0]}x to ${RX.roi[1]}x. The detailed lines below are the example's placeholder inputs (middle case), not prices.</p>`:'';
+  const ex=S.example? `<p class="warn">Built from ${S.example.kind==='tutorial'?'the tutorial (invented round numbers)':'a worked example ('+esc(S.example.id)+(S.example.pristine?', unchanged':', edited')+')'}. Example figures are illustrative only and are not benchmarks, quotes or advice.</p>`:'';
+  const css=`@page{size:A4 ${orient};margin:14mm}body{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#0E1621;font-size:11pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}body::before{content:"";position:fixed;inset:0;background:url('assets/hammerhead.png') center/auto 70% no-repeat;opacity:.05;z-index:-1}header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #12233A;padding-bottom:8px;margin-bottom:14px}header img{height:44px}h1{font-family:Georgia,serif;font-size:20pt;margin:6px 0}h3{font-family:Georgia,serif;margin:16px 0 6px}table{width:100%;border-collapse:collapse;font-size:9.5pt}th,td{border-bottom:1px solid #DDE3E9;padding:5px 6px;text-align:left}th{background:#F4F6F8}.meta{color:#55606C;font-size:10pt}.warn{background:#FBF6EC;border-left:3px solid #C68A1D;padding:6px 10px;font-size:9.5pt}footer{margin-top:18px;font-size:8.5pt;color:#55606C;border-top:1px solid #DDE3E9;padding-top:6px}`;
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(S.uc.name||'Value case')} - Dewhurst.tech</title><style>${css}</style></head><body><header><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech"><span class="meta">Value &amp; ROI case · ${date}</span></header><h1>${esc(S.uc.name||'Untitled value case')}</h1><p class="meta">${esc(S.uc.scale)}${S.user.name||S.user.org?' · Prepared by '+esc([S.user.name,S.user.org].filter(Boolean).join(', ')):''}</p><p>${esc(S.uc.desc)}</p>${ex}${rng}<p class="meta">Basis: ${money(S.day)} per person-day over ${S.hrs} hours (${money(rate())} an hour), ${S.hz}-year period, ${S.ccy}. Headline figures are not discounted; at ${S.dr}% a year the net present value of the first solution is ${money(npvSaving(S.states[1]))}.</p><h3>Summary - each solution against today</h3><table><tr><th>Solution</th><th>Annual saving</th><th>Hours freed a year</th><th>One-off investment</th><th>Payback</th><th>Return over ${S.hz} years</th></tr>${rows}</table>${detail}<footer>Prepared with the Dewhurst.tech Value &amp; ROI Calculator. The person who prepared this case is responsible for every figure in it. Not advice; to the fullest extent permitted by law, no liability is accepted for decisions based on it. www.dewhurst.tech</footer></body></html>`; }
+function openReport(o){ const fr=$('#pf'); fr.srcdoc=report(o); fr.onload=()=>{ try{ fr.contentWindow.focus(); fr.contentWindow.print(); }catch(e){ const w=window.open(); w.document.write(report(o)); w.document.close(); } }; }
+$('#b_rp').addEventListener('click',()=>{ if(share('report')) openReport('portrait'); }); $('#b_rl').addEventListener('click',()=>{ if(share('report')) openReport('landscape'); });
 
-/* ---------- Compute a single solution ---------- */
-function computeSol(sol){
-  const a = assumptions();
-  const secTot = {};
-  TEMPLATE.forEach(s=>secTot[s.key]={oneCap:0,oneHrs:0,annCap:0,annHrs:0});
-  let oneCap=0,oneHrs=0,annCap=0,annHrs=0;
-  sol.items.forEach(it=>{
-    const c = parseFloat(it.cost)||0, h = parseFloat(it.hours)||0;
-    if(it.basis==='annual'){ annCap+=c; annHrs+=h; secTot[it.section].annCap+=c; secTot[it.section].annHrs+=h; }
-    else { oneCap+=c; oneHrs+=h; secTot[it.section].oneCap+=c; secTot[it.section].oneHrs+=h; }
-  });
-  const oneTime = oneHrs*a.rate, annTime = annHrs*a.rate;
-  Object.values(secTot).forEach(t=>{
-    t.oneTotal = t.oneCap + t.oneHrs*a.rate;
-    t.annTotal = t.annCap + t.annHrs*a.rate;
-  });
-  return {
-    secTot,
-    oneCap, oneHrs, oneTime, oneTotal:oneCap+oneTime,
-    annCap, annHrs, annTime, annTotal:annCap+annTime
-  };
-}
-
-/* ---------- RENDER: solution tabs + panels ---------- */
-function renderTabs(){
-  const tabs = $('#tabs'); tabs.innerHTML='';
-  state.solutions.forEach(sol=>{
-    const b = document.createElement('button');
-    b.className = 'tab'+(sol.type==='asis'?' asis':'')+(sol.id===activeTab?' active':'');
-    b.innerHTML = escapeHtml(sol.label)+'<span class="pill">'+(sol.type==='asis'?'Baseline':'Solution')+'</span>';
-    b.onclick = ()=>{ activeTab=sol.id; renderTabs(); renderPanels(); };
-    tabs.appendChild(b);
-  });
-  const add = document.createElement('button');
-  add.className='addbtn'; add.textContent='+ Add solution';
-  add.onclick = addSolution;
-  tabs.appendChild(add);
-}
-
-function renderPanels(){
-  const host = $('#panels'); host.innerHTML='';
-  state.solutions.forEach(sol=>{
-    const p = document.createElement('div');
-    p.className='panel'+(sol.id===activeTab?'':' hidden');
-
-    // panel head: label + delete
-    const head = document.createElement('div'); head.className='panel-head';
-    const g = document.createElement('div'); g.className='grow';
-    g.innerHTML = '<label class="fld">'+(sol.type==='asis'?'Baseline label':'Solution label')+'</label>';
-    const inp = document.createElement('input'); inp.value=sol.label;
-    inp.oninput = e=>{ sol.label=e.target.value; renderTabs(); renderSummaryPicker(); renderMatrix(); renderSummary(); };
-    g.appendChild(inp); head.appendChild(g);
-    if(sol.type!=='asis'){
-      const del = document.createElement('button'); del.className='del-sol'; del.textContent='Remove this solution';
-      del.onclick = ()=>removeSolution(sol.id);
-      head.appendChild(del);
-    }
-    p.appendChild(head);
-
-    // sections
-    TEMPLATE.forEach(sec=>{
-      p.appendChild(renderSection(sol,sec));
-    });
-
-    // solution total
-    const c = computeSol(sol);
-    const tot = document.createElement('div'); tot.className='sol-total';
-    tot.innerHTML =
-      block('One-off cost', money(c.oneTotal), true) +
-      block('One-off man-hours', hoursFmt(c.oneHrs), false) +
-      block('Annual cost', money(c.annTotal), true) +
-      block('Annual man-hours', hoursFmt(c.annHrs), false);
-    p.appendChild(tot);
-
-    host.appendChild(p);
-  });
-}
-function block(t,v,tech){ return '<div><div class="t">'+t+'</div><div class="v'+(tech?' tech':'')+'">'+v+'</div></div>'; }
-
-function renderSection(sol,sec){
-  const wrap = document.createElement('div');
-  const collapsed = sol._open && sol._open[sec.key] ? '' : ' collapsed';
-  wrap.className='sec'+collapsed;
-  const c = computeSol(sol).secTot[sec.key];
-
-  const h = document.createElement('div'); h.className='sec-h';
-  h.innerHTML = '<span class="caret">▼</span><span class="nm">'+sec.name+'</span>'+
-    '<span class="roll">One-off <b>'+money(c.oneTotal)+'</b> · '+hoursFmt(c.oneHrs)+
-    ' &nbsp;|&nbsp; Annual <b>'+money(c.annTotal)+'</b> · '+hoursFmt(c.annHrs)+'</span>';
-  h.onclick = ()=>{ sol._open=sol._open||{}; sol._open[sec.key]=!(sol._open[sec.key]); renderPanels(); };
-  wrap.appendChild(h);
-
-  const body = document.createElement('div'); body.className='sec-body';
-  const head = document.createElement('div'); head.className='row head';
-  head.innerHTML='<span class="lab">Element</span><span class="r">Cost</span><span class="r">Man-hours</span><span>Basis</span><span></span>';
-  body.appendChild(head);
-
-  sec.groups.forEach(grp=>{
-    if(grp.name){ const gn=document.createElement('div'); gn.className='grp-nm'; gn.innerHTML=grp.name; body.appendChild(gn); }
-    sol.items.filter(it=>it.section===sec.key && it.group===grp.name).forEach(it=>{
-      body.appendChild(renderRow(sol,it));
-    });
-  });
-  // custom items for this section (group '')
-  const addWrap = document.createElement('button'); addWrap.className='addrow'; addWrap.textContent='+ add element';
-  addWrap.onclick = ()=>{
-    sol.items.push({ id:'i'+Date.now()+Math.floor(Math.random()*1000), section:sec.key, group:(sec.groups[sec.groups.length-1].name||''), label:'', cost:0, hours:0, basis:'oneoff', custom:true });
-    sol._open=sol._open||{}; sol._open[sec.key]=true; renderPanels();
-  };
-  body.appendChild(addWrap);
-  wrap.appendChild(body);
-  return wrap;
-}
-
-function renderRow(sol,it){
-  const r = document.createElement('div'); r.className='row';
-  // label
-  const lab = document.createElement('div'); lab.className='lab';
-  if(it.custom){
-    const li=document.createElement('input'); li.value=it.label; li.placeholder='Describe this element';
-    li.oninput=e=>{ it.label=e.target.value; };
-    lab.appendChild(li);
-  } else { lab.innerHTML = it.label; }
-  r.appendChild(lab);
-  // cost
-  const c=document.createElement('input'); c.type='number'; c.min='0'; c.step='100'; c.className='num'; c.value=it.cost||''; c.placeholder='0';
-  c.oninput=e=>{ it.cost=parseFloat(e.target.value)||0; recalcLive(); };
-  r.appendChild(c);
-  // hours
-  const h=document.createElement('input'); h.type='number'; h.min='0'; h.step='1'; h.className='num'; h.value=it.hours||''; h.placeholder='0';
-  h.oninput=e=>{ it.hours=parseFloat(e.target.value)||0; recalcLive(); };
-  r.appendChild(h);
-  // basis
-  const b=document.createElement('select');
-  b.innerHTML='<option value="oneoff">One-off</option><option value="annual">Annual</option>';
-  b.value=it.basis;
-  b.onchange=e=>{ it.basis=e.target.value; recalcLive(); };
-  r.appendChild(b);
-  // remove
-  const rm=document.createElement('button'); rm.className='rm'; rm.title='Remove';
-  if(it.custom){ rm.textContent='×'; rm.onclick=()=>{ sol.items=sol.items.filter(x=>x!==it); renderPanels(); recalcLive(); }; }
-  else { rm.textContent=''; }
-  r.appendChild(rm);
-  return r;
-}
-
-/* recalc only the light views (keep focus in inputs — don't re-render panels) */
-function recalcLive(){
-  // update the active panel's section rollups + totals without rebuilding inputs
-  renderSectionRollups();
-  renderSolTotals();
-  renderSummary();
-  renderMatrix();
-}
-function renderSectionRollups(){
-  document.querySelectorAll('#panels .panel').forEach((p,idx)=>{
-    const sol = state.solutions[idx]; if(!sol) return;
-    const comp = computeSol(sol);
-    p.querySelectorAll('.sec').forEach((secEl,si)=>{
-      const sec = TEMPLATE[si]; if(!sec) return;
-      const c = comp.secTot[sec.key];
-      const roll = secEl.querySelector('.roll');
-      if(roll) roll.innerHTML='One-off <b>'+money(c.oneTotal)+'</b> · '+hoursFmt(c.oneHrs)+
-        ' &nbsp;|&nbsp; Annual <b>'+money(c.annTotal)+'</b> · '+hoursFmt(c.annHrs);
-    });
-  });
-}
-function renderSolTotals(){
-  document.querySelectorAll('#panels .panel').forEach((p,idx)=>{
-    const sol = state.solutions[idx]; if(!sol) return;
-    const c = computeSol(sol);
-    const tot = p.querySelector('.sol-total');
-    if(tot) tot.innerHTML =
-      block('One-off cost', money(c.oneTotal), true) +
-      block('One-off man-hours', hoursFmt(c.oneHrs), false) +
-      block('Annual cost', money(c.annTotal), true) +
-      block('Annual man-hours', hoursFmt(c.annHrs), false);
-  });
-}
-
-/* ---------- Solutions add/remove ---------- */
-function addSolution(){
-  const used = state.solutions.filter(s=>s.type==='solution').length;
-  const letter = SOL_LETTERS[used] || String(used+1);
-  const sol = newSolution('solution','Solution '+letter);
-  state.solutions.push(sol);
-  activeTab = sol.id;
-  renderAll();
-}
-function removeSolution(id){
-  const sols = state.solutions.filter(s=>s.type==='solution');
-  if(sols.length<=1){ flash('Keep at least one solution to compare against As-Is.','err'); return; }
-  state.solutions = state.solutions.filter(s=>s.id!==id);
-  if(activeTab===id) activeTab = state.solutions[0].id;
-  renderAll();
-}
-
-/* ---------- Summary ---------- */
-function renderSummaryPicker(){
-  const sel = $('#sum_pick'); const prev = sel.value;
-  sel.innerHTML='';
-  state.solutions.filter(s=>s.type==='solution').forEach(s=>{
-    const o=document.createElement('option'); o.value=s.id; o.textContent=s.label; sel.appendChild(o);
-  });
-  if([...sel.options].some(o=>o.value===prev)) sel.value=prev;
-}
-function pair(){
-  const asis = state.solutions.find(s=>s.type==='asis');
-  const selId = $('#sum_pick').value;
-  const sol = state.solutions.find(s=>s.id===selId) || state.solutions.find(s=>s.type==='solution');
-  return {asis, sol};
-}
-function compare(asis, sol){
-  const A = computeSol(asis), S = computeSol(sol), a = assumptions();
-  // Current cost = As-Is annual running cost. Solution running cost = solution annual.
-  const currentAnnual = A.annTotal, solAnnual = S.annTotal;
-  const annualSaving = currentAnnual - solAnnual;                 // money/yr freed
-  const annualHrsSaved = A.annHrs - S.annHrs;                     // hours/yr bought back
-  const deploy = S.oneTotal - A.oneTotal;                         // one-off to switch
-  const horizonValue = annualSaving * a.horizon;
-  const netValue = horizonValue - deploy;
-  const payback = annualSaving>0 ? deploy/annualSaving : null;    // years
-  const roiRatio = deploy>0 ? horizonValue/deploy : null;         // value:invest over horizon
-  const costRatio = solAnnual>0 ? currentAnnual/solAnnual : null; // running-cost ratio
-  const timeRatio = S.annHrs>0 ? A.annHrs/S.annHrs : null;        // running-hours ratio
-  return {A,S,currentAnnual,solAnnual,annualSaving,annualHrsSaved,deploy,horizonValue,netValue,payback,roiRatio,costRatio,timeRatio};
-}
-function renderSummary(){
-  const {asis,sol}=pair(); if(!asis||!sol){ return; }
-  const a=assumptions(); const r=compare(asis,sol);
-  const goodMoney = r.annualSaving>=0;
-  const goodHrs = r.annualHrsSaved>=0;
-  const tiles=$('#tiles');
-  tiles.innerHTML =
-    tile('Current cost (As-Is)', money(r.currentAnnual)+' /yr', hoursFmt(asis===null?0:r.A.annHrs)+' /yr', '') +
-    tile('Solution running cost', money(r.solAnnual)+' /yr', 'one-off '+money(r.deploy), 'tech') +
-    tile('Annual saving', (goodMoney?'+':'')+money(r.annualSaving)+' /yr', (goodHrs?'+':'')+hoursFmt(r.annualHrsSaved)+' bought back', goodMoney?'good':'') +
-    tile('ROI over '+a.horizon+' yrs', r.roiRatio!=null?ratio(r.roiRatio):'—', r.payback!=null?('payback '+r.payback.toFixed(1)+' yrs'):'no payback', r.roiRatio!=null&&r.roiRatio>=1?'good':'');
-  const note=$('#summ_note');
-  const bits=[];
-  bits.push('<b style="color:#fff">Reading:</b> against the As-Is baseline, '+escapeHtml(sol.label)+' costs <b style="color:#fff">'+money(r.deploy)+'</b> one-off to stand up and <b style="color:#fff">'+money(r.solAnnual)+'/yr</b> to run.');
-  if(r.annualSaving>0){
-    bits.push('It frees <b style="color:#6FD3B0">'+money(r.annualSaving)+'</b> and <b style="color:#6FD3B0">'+hoursFmt(r.annualHrsSaved)+'</b> of operator time every year');
-    bits.push(r.payback!=null?('paying back in <b style="color:#fff">'+r.payback.toFixed(1)+' years</b>, and returning <b style="color:#fff">'+ratio(r.roiRatio)+'</b> on the one-off spend over '+a.horizon+' years ('+money(r.netValue)+' net).'):'.');
-  } else if(r.annualSaving<0){
-    bits.push('It currently costs <b style="color:#fff">'+money(-r.annualSaving)+'/yr more</b> to run than the As-Is — the case is not yet positive on running cost.');
-  } else {
-    bits.push('Enter the As-Is running cost and the solution costs to see the return.');
-  }
-  bits.push('<br><span style="opacity:.8">Time is valued at '+money(a.rate)+'/hour ('+money(a.day)+'/day ÷ '+a.hrs+'h). Man-hours bought back are the real prize where beds on the asset — not money — are the hard ceiling.</span>');
-  note.innerHTML=bits.join(' ');
-}
-function tile(t,v,s,cls){ return '<div class="tile"><div class="t">'+t+'</div><div class="v'+(cls?' '+cls:'')+'">'+v+'</div><div class="s">'+s+'</div></div>'; }
-
-/* ---------- Comparison matrix ---------- */
-function renderMatrix(){
-  const t=$('#matrix'); const a=assumptions();
-  const cols = state.solutions;
-  let html='<thead><tr><th>Element / measure</th>';
-  cols.forEach(s=>{ html+='<th class="'+(s.type==='asis'?'asis':'')+'">'+escapeHtml(s.label)+'</th>'; });
-  html+='</tr></thead><tbody>';
-  const comps = cols.map(computeSol);
-  // section rows (one-off total then annual total)
-  TEMPLATE.forEach(sec=>{
-    html+='<tr class="group"><td>'+sec.name+'</td>'+cols.map(()=>'<td></td>').join('')+'</tr>';
-    html+='<tr><td class="muted">— one-off</td>'+comps.map(c=>'<td>'+money(c.secTot[sec.key].oneTotal)+'</td>').join('')+'</tr>';
-    html+='<tr><td class="muted">— annual</td>'+comps.map(c=>'<td>'+money(c.secTot[sec.key].annTotal)+'</td>').join('')+'</tr>';
-  });
-  // totals
-  html+='<tr class="total"><td>One-off cost (deploy)</td>'+comps.map(c=>'<td>'+money(c.oneTotal)+'</td>').join('')+'</tr>';
-  html+='<tr class="total"><td>One-off man-hours</td>'+comps.map(c=>'<td>'+hoursFmt(c.oneHrs)+'</td>').join('')+'</tr>';
-  html+='<tr class="total"><td>Annual running cost</td>'+comps.map(c=>'<td>'+money(c.annTotal)+'</td>').join('')+'</tr>';
-  html+='<tr class="total"><td>Annual man-hours</td>'+comps.map(c=>'<td>'+hoursFmt(c.annHrs)+'</td>').join('')+'</tr>';
-  // ROI rows vs As-Is
-  const asis = state.solutions.find(s=>s.type==='asis');
-  html+='<tr class="roi"><td>Annual saving vs As-Is</td>'+cols.map(s=>{
-    if(s.type==='asis') return '<td>baseline</td>';
-    const r=compare(asis,s); return '<td class="'+(r.annualSaving>=0?'good':'')+'">'+(r.annualSaving>=0?'+':'')+money(r.annualSaving)+'</td>';
-  }).join('')+'</tr>';
-  html+='<tr class="roi"><td>Man-hours bought back /yr</td>'+cols.map(s=>{
-    if(s.type==='asis') return '<td>baseline</td>';
-    const r=compare(asis,s); return '<td class="'+(r.annualHrsSaved>=0?'good':'')+'">'+(r.annualHrsSaved>=0?'+':'')+hoursFmt(r.annualHrsSaved)+'</td>';
-  }).join('')+'</tr>';
-  html+='<tr class="roi"><td>Payback (years)</td>'+cols.map(s=>{
-    if(s.type==='asis') return '<td>—</td>';
-    const r=compare(asis,s); return '<td>'+(r.payback!=null?r.payback.toFixed(1):'—')+'</td>';
-  }).join('')+'</tr>';
-  html+='<tr class="roi"><td>ROI over '+a.horizon+' yrs (value : invest)</td>'+cols.map(s=>{
-    if(s.type==='asis') return '<td>—</td>';
-    const r=compare(asis,s); return '<td class="'+(r.roiRatio!=null&&r.roiRatio>=1?'good':'')+'">'+(r.roiRatio!=null?ratio(r.roiRatio):'—')+'</td>';
-  }).join('')+'</tr>';
-  html+='</tbody>';
-  t.innerHTML=html;
-}
-
-/* ---------- Rate line ---------- */
-function renderRate(){
-  const a=assumptions();
-  $('#rate_line').innerHTML='Derived hourly operator cost: <b>'+money(a.rate)+' / hour</b> &nbsp;(&nbsp;'+money(a.day)+' per day ÷ '+a.hrs+' hours&nbsp;). Money and time are linked through this figure.';
-}
-
-/* ---------- Validation + capture ---------- */
-function validate(){
-  const errs=[];
-  if(!$('#u_name').value.trim()) errs.push('your name');
-  if(!$('#u_company').value.trim()) errs.push('company');
-  const em=$('#u_email').value.trim();
-  if(!em) errs.push('email'); else if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) errs.push('a valid email');
-  if(!$('#uc_name').value.trim()) errs.push('a use case name');
-  return errs;
-}
-function snapshot(){
-  const a=assumptions();
-  const asis=state.solutions.find(s=>s.type==='asis');
-  const sols=state.solutions.filter(s=>s.type==='solution');
-  return {
-    captured_at: new Date().toISOString(),
-    user:{ name:$('#u_name').value.trim(), company:$('#u_company').value.trim(), email:$('#u_email').value.trim(), phone:$('#u_phone').value.trim(), solution_type:$('#u_soltype').value.trim(),
-           contact_opt_in: !!$('#u_contact').checked },
-    consent:{ contact_opt_in: !!$('#u_contact').checked,
-              statement: 'Details used only to attribute this value case and, where opted in, to discuss it. Processed in line with UK GDPR. Not sold, not shared with third parties.',
-              given_at: !!$('#u_contact').checked ? new Date().toISOString() : null },
-    assumptions:{ currency:a.ccy, daily_operator_cost:a.day, hours_per_day:a.hrs, hourly_rate:Math.round(a.rate*100)/100, horizon_years:a.horizon },
-    use_case:{ name:$('#uc_name').value.trim(), description:$('#uc_desc').value.trim() },
-    states: state.solutions.map(s=>{
-      const c=computeSol(s);
-      return {
-        label:s.label, type:s.type,
-        totals:{ oneoff_cost:round(c.oneTotal), oneoff_manhours:round(c.oneHrs), annual_cost:round(c.annTotal), annual_manhours:round(c.annHrs) },
-        sections:TEMPLATE.map(sec=>({ section:sec.name, oneoff_cost:round(c.secTot[sec.key].oneTotal), annual_cost:round(c.secTot[sec.key].annTotal), oneoff_manhours:round(c.secTot[sec.key].oneHrs), annual_manhours:round(c.secTot[sec.key].annHrs) })),
-        line_items:s.items.filter(it=>(it.label||'').trim()).map(it=>({ section:it.section, group:it.group, label:stripTags(it.label), cost:round(it.cost), man_hours:round(it.hours), basis:it.basis }))
-      };
-    }),
-    roi: sols.map(s=>{ const r=compare(asis,s); return {
-      solution:s.label,
-      current_annual_cost:round(r.currentAnnual), solution_annual_cost:round(r.solAnnual),
-      annual_saving:round(r.annualSaving), annual_manhours_saved:round(r.annualHrsSaved),
-      oneoff_deployment:round(r.deploy),
-      payback_years: r.payback!=null?round(r.payback):null,
-      roi_ratio_over_horizon: r.roiRatio!=null?round(r.roiRatio):null,
-      running_cost_ratio: r.costRatio!=null?round(r.costRatio):null,
-      running_time_ratio: r.timeRatio!=null?round(r.timeRatio):null
-    };})
-  };
-}
-const round=v=>Math.round((v||0)*100)/100;
-function capture(){
-  const errs=validate();
-  const msg=$('#calc_msg');
-  if(errs.length){ msg.className='msg err'; msg.textContent='Please complete: '+errs.join(', ')+'.'; return; }
-  const snap=snapshot();
-  state.collected.push(snap);
-  renderCollected();
-  msg.className='msg ok';
-  const best = snap.roi[0];
-  msg.textContent='Captured "'+snap.use_case.name+'". '+(best&&best.annual_saving>0?('Headline: '+best.solution+' frees '+money(best.annual_saving)+' and '+hoursFmt(best.annual_manhours_saved)+' per year.'):'Snapshot saved — export it below.');
-}
-function renderCollected(){
-  const host=$('#collected_body'); $('#cap_count').textContent = state.collected.length?('· '+state.collected.length+' this session'):'';
-  if(!state.collected.length){ host.innerHTML='<p class="empty">No use cases captured yet in this session.</p>'; return; }
-  let h='<table><thead><tr><th>#</th><th>Use case</th><th>Company</th><th>Best solution</th><th>Annual saving</th><th>Hours / yr</th><th>Payback</th><th>Captured</th></tr></thead><tbody>';
-  state.collected.forEach((s,i)=>{
-    const best = s.roi.slice().sort((a,b)=>(b.annual_saving||0)-(a.annual_saving||0))[0]||{};
-    h+='<tr><td>'+(i+1)+'</td><td><b>'+escapeHtml(s.use_case.name)+'</b><br><span class="muted" style="color:var(--grey)">'+escapeHtml(s.use_case.description||'')+'</span></td><td>'+escapeHtml(s.user.company)+'</td><td>'+escapeHtml(best.solution||'—')+'</td><td>'+money(best.annual_saving||0)+'</td><td>'+hoursFmt(best.annual_manhours_saved||0)+'</td><td>'+(best.payback_years!=null?best.payback_years.toFixed(1)+' yr':'—')+'</td><td>'+new Date(s.captured_at).toLocaleString('en-GB')+'</td></tr>';
-  });
-  h+='</tbody></table>';
-  host.innerHTML=h;
-}
-
-/* ---------- Export ---------- */
-function download(name,text,type){
-  const blob=new Blob([text],{type:type}); const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
-}
-function exportJSON(){
-  withExport('json', function(snap){
-    const data = state.collected.length ? state.collected : [snap];
-    download('dewhurst-roi-usecases.json', JSON.stringify(data,null,2), 'application/json');
-  });
-}
-function csvText(data){
-  const rows=[['captured_at','name','company','email','phone','solution_type','contact_opt_in','currency','hourly_rate','horizon_years','use_case','use_case_desc','solution','current_annual_cost','solution_annual_cost','annual_saving','annual_manhours_saved','oneoff_deployment','payback_years','roi_ratio_over_horizon']];
-  data.forEach(s=>{
-    (s.roi.length?s.roi:[{}]).forEach(r=>{
-      rows.push([s.captured_at,s.user.name,s.user.company,s.user.email,s.user.phone,s.user.solution_type,(s.user.contact_opt_in?'yes':'no'),s.assumptions.currency,s.assumptions.hourly_rate,s.assumptions.horizon_years,s.use_case.name,s.use_case.description,r.solution||'',r.current_annual_cost,r.solution_annual_cost,r.annual_saving,r.annual_manhours_saved,r.oneoff_deployment,r.payback_years,r.roi_ratio_over_horizon]);
-    });
-  });
-  return rows.map(r=>r.map(cell=>{ const v=(cell==null?'':String(cell)); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }).join(',')).join('\n');
-}
-function exportCSV(){
-  withExport('csv', function(snap){
-    download('dewhurst-roi-usecases.csv', csvText(state.collected.length ? state.collected : [snap]), 'text/csv');
-  });
-}
-
-/* ---------- PDF report ----------
-   Deliberately library-free. buildReport() writes a clean, print-only block
-   into #report; window.print() then lets the visitor choose "Save as PDF".
-   Works offline, adds no third-party script, and keeps the page self-contained. */
-function repRow(k,v){ return '<tr><td>'+k+'</td><td><b>'+v+'</b></td></tr>'; }
-function buildReport(snap){
-  const a = assumptions();
-  const when = new Date(snap.captured_at);
-  let h = '';
-  h += '<div class="rep-head">' +
-       '<img class="rep-logo" src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech">' +
-       '<div class="rep-title">Value &amp; ROI Case</div></div>';
-  h += '<div class="meta">Generated ' + when.toLocaleString('en-GB') + '</div>';
-
-  h += '<h2>Use case</h2><table class="kv">';
-  h += repRow('Use case', escapeHtml(snap.use_case.name || '—'));
-  h += repRow('Description', escapeHtml(snap.use_case.description || '—'));
-  h += repRow('Solution type being scaled', escapeHtml(snap.user.solution_type || '—'));
-  h += '</table>';
-
-  h += '<h2>Prepared by</h2><table class="kv">';
-  h += repRow('Name', escapeHtml(snap.user.name || '—'));
-  h += repRow('Company', escapeHtml(snap.user.company || '—'));
-  h += repRow('Email', escapeHtml(snap.user.email || '—'));
-  h += repRow('Phone', escapeHtml(snap.user.phone || '—'));
-  h += '</table>';
-
-  h += '<h2>Key assumptions</h2><table class="kv">';
-  h += repRow('Currency', snap.assumptions.currency);
-  h += repRow('Average daily operator cost', money(snap.assumptions.daily_operator_cost) + ' / day');
-  h += repRow('Working hours per day', snap.assumptions.hours_per_day + ' h');
-  h += repRow('Derived hourly operator cost', money(snap.assumptions.hourly_rate) + ' / hour');
-  h += repRow('Value time horizon', snap.assumptions.horizon_years + ' years');
-  h += '</table>';
-
-  h += '<h2>Value summary — each solution against the As-Is baseline</h2>';
-  h += '<table><thead><tr><th>Measure</th>' + snap.roi.map(r=>'<th>'+escapeHtml(r.solution)+'</th>').join('') + '</tr></thead><tbody>';
-  const R = [
-    ['Current annual cost (As-Is)', r=>money(r.current_annual_cost)],
-    ['Solution annual running cost', r=>money(r.solution_annual_cost)],
-    ['One-off deployment', r=>money(r.oneoff_deployment)],
-    ['Annual saving', r=>(r.annual_saving>=0?'+':'')+money(r.annual_saving)],
-    ['Man-hours bought back / yr', r=>(r.annual_manhours_saved>=0?'+':'')+hoursFmt(r.annual_manhours_saved)],
-    ['Payback (years)', r=>(r.payback_years!=null?r.payback_years.toFixed(1):'—')],
-    ['ROI over '+snap.assumptions.horizon_years+' yrs (value : invest)', r=>(r.roi_ratio_over_horizon!=null?ratio(r.roi_ratio_over_horizon):'—')]
-  ];
-  R.forEach(row=>{ h += '<tr><td>'+row[0]+'</td>' + snap.roi.map(r=>'<td>'+row[1](r)+'</td>').join('') + '</tr>'; });
-  h += '</tbody></table>';
-
-  h += '<h2>Whole-system breakdown — every state side by side</h2>';
-  h += '<table>' + $('#matrix').innerHTML + '</table>';
-
-  h += '<div class="note"><b>How to read this.</b> Time is valued at ' + money(a.rate) + ' per hour (' +
-       money(a.day) + ' per day ÷ ' + a.hrs + ' hours). Payback is the one-off deployment divided by the annual saving. ' +
-       'ROI is the saving accumulated over the ' + snap.assumptions.horizon_years + '-year horizon set against that one-off spend, shown as value : invest. ' +
-       'Man-hours bought back are stated separately on purpose — on a live asset the hard ceiling is beds and POB, not budget.</div>';
-
-  if(snap.user.contact_opt_in){
-    h += '<div class="note"><b>Contact requested.</b> ' + escapeHtml(snap.user.name || 'The author of this case') +
-         ' has asked to discuss this use case with Steve Smith. Reply to ' + escapeHtml(snap.user.email || '—') + '.</div>';
-  }
-
-  h += '<div class="rep-foot">© 2026 Dewhurst.tech · Value &amp; ROI Case Tool v0.3 (review build) · dewhurst.tech<br>' +
-       'Figures are the author\'s own inputs and assumptions. This report is a decision aid, not an assurance opinion.</div>';
-
-  $('#report').innerHTML = h;
-}
-/* ---------- A standalone, self-contained copy of the report ----------
-   Same content as the print view, but with ordinary (non-print-scoped) CSS and
-   an absolute logo URL, so it survives being emailed and converted to PDF
-   server-side. This is what gets posted to the backend. */
-const REPORT_CSS =
-  'body{font-family:Helvetica,Arial,sans-serif;color:#0E1621;margin:0;padding:24px;background:#fff;line-height:1.5}' +
-  '.rep-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}' +
-  '.rep-logo{height:64px;width:auto;display:block}' +
-  '.rep-title{font-family:Georgia,serif;font-size:22px;font-weight:700;text-align:right}' +
-  '.meta{font-size:11px;color:#444;letter-spacing:.4px;text-transform:uppercase;border-top:1px solid #999;padding-top:8px;margin-top:10px;margin-bottom:18px}' +
-  'h2{font-family:Georgia,serif;font-size:16px;margin:22px 0 5px}' +
-  'table{width:100%;border-collapse:collapse;font-size:12px}' +
-  'th,td{border:1px solid #bbb;padding:4px 7px;text-align:right;vertical-align:top}' +
-  'th:first-child,td:first-child{text-align:left}' +
-  'thead th{background:#eee}' +
-  'tr.group td,tr.total td,tr.roi td{font-weight:700}' +
-  'table.kv td{border:none;padding:2px 0}' +
-  'table.kv td:first-child{width:34%;color:#444;font-weight:400}' +
-  '.note{font-size:12px;color:#222;margin-top:12px;line-height:1.55;border-left:2px solid #888;padding-left:10px}' +
-  '.rep-foot{margin-top:28px;border-top:1px solid #999;padding-top:8px;font-size:11px;color:#444}';
-
-function reportStandaloneHtml(snap){
-  buildReport(snap);
-  const inner = $('#report').innerHTML.replace(
-    /src="brand-lockup-2\.w338-h84-c0\.jpg"/g, 'src="' + SITE + '/brand-lockup-2.w338-h84-c0.jpg"');
-  return '<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8">' +
-         '<title>Dewhurst.tech — Value &amp; ROI Case</title><style>' + REPORT_CSS + '</style></head>' +
-         '<body>' + inner + '</body></html>';
-}
-
-/* ---------- Post the case to the backend ----------
-   Tries a normal fetch first so we can read the result; if the browser blocks
-   reading the response (CORS), it retries fire-and-forget so the send still
-   happens. Either way the visitor also gets their local file, so a failure
-   here never leaves them empty-handed. */
-function sendCase(snap, kind){
-  if(!backendOn()) return Promise.resolve({ok:false, off:true});
-  const payload = {
-    token: BACKEND.TOKEN,
-    hp: ($('#u_hp') ? $('#u_hp').value : ''),
-    kind: kind,
-    snapshot: snap,
-    report_html: reportStandaloneHtml(snap),
-    json_text: JSON.stringify(state.collected.length ? state.collected : [snap], null, 2),
-    csv_text: csvText(state.collected.length ? state.collected : [snap])
-  };
-  const body = JSON.stringify(payload);
-  const opts = { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: body };
-  return fetch(BACKEND.ENDPOINT, opts)
-    .then(function(r){
-      if(!r.ok) throw new Error('http '+r.status);
-      return r.text().then(function(t){ try{ return JSON.parse(t); }catch(e){ return {ok:true}; } });
-    })
-    .catch(function(){
-      const o2 = { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: body };
-      return fetch(BACKEND.ENDPOINT, o2).then(function(){ return {ok:true, opaque:true}; })
-                                        .catch(function(){ return {ok:false}; });
-    });
-}
-
-/* Every export routes through here: check the details, fire the email, report back. */
-function withExport(kind, done){
-  const msg = $('#calc_msg'), send = $('#send_msg');
-  const errs = validate();
-  if(errs.length){
-    msg.className='msg err';
-    msg.textContent='Before exporting, please complete: '+errs.join(', ')+'. These details are held with the case so it can be attributed.';
-    return;
-  }
-  msg.className='msg'; msg.textContent='';
-  const snap = snapshot();
-  done(snap);
-  if(!backendOn()){
-    send.className='sendmsg';
-    send.innerHTML='Downloaded. Email delivery is not switched on yet &mdash; to share this case, attach the file to an email to <a href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a>.';
-    return;
-  }
-  send.className='sendmsg'; send.textContent='Sending a copy to '+snap.user.email+'…';
-  sendCase(snap, kind).then(function(res){
-    if(res && res.ok){
-      send.className='sendmsg ok';
-      send.textContent='Sent. A copy of this case is on its way to '+snap.user.email+' (please check your spam folder if it does not arrive). A copy has been retained by Dewhurst.tech.';
-    } else {
-      send.className='sendmsg err';
-      send.innerHTML='The email could not be sent just now &mdash; but your download worked, so nothing is lost. Please attach it to an email to <a href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a>.';
-    }
-  });
-}
-
-function exportPDF(){
-  withExport('pdf', function(snap){
-    buildReport(snap);
-    const oldTitle = document.title;
-    document.title = 'Dewhurst.tech Value and ROI Case — ' + (snap.use_case.name || 'use case');
-    const m=$('#calc_msg'); m.className='msg ok';
-    m.textContent='Report ready. In the print dialog, choose "Save as PDF" as the destination.';
-    window.print();
-    setTimeout(function(){ document.title = oldTitle; }, 1500);
-  });
-}
-
-/* ---------- Utils ---------- */
-function escapeHtml(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-function stripTags(s){ const d=document.createElement('div'); d.innerHTML=s||''; return d.textContent||''; }
-function flash(t,cls){ const m=$('#calc_msg'); m.className='msg '+(cls||''); m.textContent=t; }
-
-/* ---------- Reset ---------- */
-function resetUseCase(){
-  solSeq=0;
-  state.solutions=[ newSolution('asis','As-Is'), newSolution('solution','Solution A') ];
-  activeTab=state.solutions[0].id;
-  ['uc_name','uc_desc'].forEach(id=>$('#'+id).value='');
-  renderAll(); flash('Cleared — ready for a new use case. Your details and assumptions were kept.','ok');
-}
-
-/* ---------- Wire up ---------- */
-function renderAll(){ renderTabs(); renderPanels(); renderSummaryPicker(); renderSummary(); renderMatrix(); renderRate(); }
-['a_ccy','a_daycost','a_hrs','a_horizon'].forEach(id=>$('#'+id).addEventListener('input',()=>{ renderRate(); recalcLive(); }));
-$('#sum_pick').addEventListener('change',renderSummary);
-$('#calc').addEventListener('click',capture);
-$('#exp_pdf').addEventListener('click',exportPDF);
-$('#exp_json').addEventListener('click',exportJSON);
-$('#exp_csv').addEventListener('click',exportCSV);
-$('#reset_uc').addEventListener('click',resetUseCase);
-$('#u_contact').addEventListener('change',function(e){
-  const n=$('#contact_note');
-  if(e.target.checked){
-    n.style.display='block';
-    n.innerHTML='Noted, thank you &mdash; your request to be contacted is recorded with the case. Export it below and Steve will be in touch.';
-  } else { n.style.display='none'; n.innerHTML=''; }
-});
-renderAll();
+function refresh(){ renderRate(); renderSoFar(); if(S.step===4) renderEditor('asis'); if(S.step===5){renderSolTabs(); renderEditor('sol');} if(S.step===6) renderResults(); }
+renderFx(); syncInputs(); renderChoices(); refresh(); gate();
+const m=location.hash.match(/step-(\d)/); go(m?+m[1]:1); window.scrollTo(0,0);
 </script>
+
 </body>
 </html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engagement model - Dewhurst.tech</title>
+<link rel="canonical" href="https://www.dewhurst.tech/engagement.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.dewhurst.tech/engagement.html">
+<meta name="description" content="How an engagement with Dewhurst.tech works: three short, fixed-price reviews for the step from pilot to fleet - for asset owners, technology providers and investors.">
+<meta property="og:title" content="Dewhurst.tech - how an engagement works">
+<meta property="og:description" content="Three short, fixed-price reviews for the step nobody funds: five days, one question agreed in writing, a report that is yours to keep.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.eng-hero{padding:72px 0 56px;background:var(--mist);border-bottom:1px solid var(--hair)}
+.eng-hero h1{font-size:52px;line-height:1.08;max-width:18ch}
+.eng-hero .lede{margin-top:18px;font-size:20px}
+.jump{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.jump a{font-size:14.5px;text-decoration:none;color:var(--ink);border:1px solid var(--hair);background:#fff;border-radius:999px;padding:8px 15px}
+.jump a:hover{border-color:var(--tech)}
+.rev{display:flex;flex-direction:column;scroll-margin-top:110px}
+.rev .seat{font-size:12px;letter-spacing:1.8px;text-transform:uppercase;color:var(--tech-ink);font-weight:700;margin-bottom:10px}
+.rev .q{font-family:var(--serif);font-style:italic;color:var(--grey);margin-bottom:16px;font-size:17px}
+.rev dl{display:grid;gap:12px;font-size:15.5px}
+.rev dt{font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--grey2);font-weight:700}
+.rev dd{color:var(--ink)}
+.lenses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.lens{border-radius:12px;padding:22px 22px 24px;border-top:6px solid}
+.lens .n{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;font-weight:700}
+.lens h3{font-size:20px;margin:8px 0 8px}
+.lens p{font-size:15.5px;color:#36414D}
+.test{margin-top:18px;background:var(--navy);color:#fff;border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;align-items:center}
+.test p{color:#D5DEE7;font-size:16px}.test p b{color:#fff}
+.days{display:grid;grid-template-columns:.8fr 1fr 1fr 1fr;gap:6px}
+.day .chev{height:72px;color:#fff;display:flex;flex-direction:column;justify-content:center;padding-left:30px;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 50%,calc(100% - 22px) 100%,0 100%,22px 50%)}
+.day:first-child .chev{clip-path:polygon(0 0,calc(100% - 22px) 0,100% 50%,calc(100% - 22px) 100%,0 100%);padding-left:16px}
+.day .w{font-size:11.5px;letter-spacing:1.4px;font-weight:700;opacity:.85}.day .t{font-family:var(--serif);font-size:20px;font-weight:700}
+.day .d{font-size:15px;color:var(--grey);padding:12px 12px 0 16px}
+.day .io{padding:10px 12px 0 16px}.day .io .k{font-size:11px;letter-spacing:1.4px;font-weight:700;color:var(--grey2)}.day .io .k.rx{color:var(--tech-ink)}
+.day .io b{display:block;font-size:15px}.day .io span{font-size:13.5px;color:var(--grey)}
+.report{display:grid;grid-template-columns:300px minmax(0,1fr);gap:40px;align-items:start}
+.mock{border:1px solid #CBD3DC;border-radius:8px;padding:18px 18px 20px;box-shadow:var(--shadow);background:#fff}
+.mock .h{font-family:var(--serif);font-weight:700;font-size:16px}.mock .u{height:3px;width:40%;background:var(--tech);margin:6px 0 14px}
+.mock .s{font-size:11px;font-weight:700;margin-top:12px;letter-spacing:.5px}
+.mock .l{height:7px;border-radius:3px;background:#DCE2E9;margin-top:6px}.mock .l.b{background:#B9D3EE}
+.mock .r{display:flex;align-items:center;gap:8px;margin-top:7px}.mock .r .l{flex:1;margin:0}
+.mock .r i{display:inline-block;width:12px;height:8px;border-radius:2px;background:#E3E7EC;margin-left:2px}.mock .r i.on{background:#C0392B}
+.anat{list-style:none;display:grid;gap:14px;counter-reset:a}
+.anat li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;counter-increment:a}
+.anat li::before{content:counter(a);width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+.anat b{display:block;font-size:17px;font-family:var(--serif)}.anat span{color:var(--grey);font-size:15.5px}
+.var4{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
+.var4 div{background:var(--mist);border-radius:8px;padding:8px 10px;font-size:13.5px;color:var(--grey)}.var4 div b{display:block;font-family:var(--sans);font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--tech-ink)}
+.terms{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--hair)}
+.terms div{padding:18px 20px 18px 0;border-bottom:1px solid var(--hair)}
+.terms b{display:block;font-size:15.5px;margin-bottom:4px}.terms span{font-size:15px;color:var(--grey)}
+.after{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.after a{text-decoration:none;color:inherit}
+.steps5{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
+.steps5::before{content:"";position:absolute;left:10%;right:10%;top:16px;height:3px;background:#C9DDF2}
+.steps5 div{position:relative;text-align:center}
+.steps5 .c{width:34px;height:34px;border-radius:50%;background:var(--tech-ink);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.steps5 div:last-child .c{background:var(--navy)}
+.steps5 .w{font-size:12.5px;color:var(--grey);margin-top:8px}.steps5 b{display:block;font-size:16px}.steps5 span{font-size:14px;color:var(--grey)}
+@media (max-width:900px){
+  .eng-hero h1{font-size:36px}
+  .lenses,.terms,.after,.var4{grid-template-columns:1fr}
+  .test,.report{grid-template-columns:1fr}
+  .days{grid-template-columns:1fr}.day .chev{clip-path:none!important;padding-left:16px;border-radius:8px}
+  .steps5{grid-template-columns:1fr;text-align:left}.steps5::before{display:none}
+  .steps5 div{display:grid;grid-template-columns:44px 1fr;text-align:left;align-items:start}.steps5 .c{margin:0;grid-row:span 3}
+  .mock{max-width:320px}
+}
+</style>
+
+<script data-goatcounter="https://dewhurst-tech.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech" width="279" height="84"></a>
+    <button type="button" class="burger" aria-label="Menu" onclick="this.closest('nav').classList.toggle('open')"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <ul>
+      <li><a href="index.html#elements">Three elements</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="engagement.html" aria-current="page">Engagement</a></li>
+      <li><a href="philosophy.html">Philosophy</a></li>
+      <li><a href="roi-tool.html">Value &amp; ROI Calculator</a></li>
+      <li><a href="index.html#founder">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+<header class="eng-hero">
+  <div class="wrap">
+    <div class="eyebrow">Engagement model</div>
+    <h1>From pilot to fleet</h1>
+    <p class="lede">Three short, fixed-price reviews for the step nobody funds. Each one answers a single question, agreed in writing on day one, in five days over two to three weeks. The report is yours to keep and act on, with or without us.</p>
+    <div class="jump"><a href="#operator">Asset Owners</a><a href="#vendor">Technology Providers</a><a href="#investor">Investors</a><a href="#days">The five days</a><a href="#start">How to start</a></div>
+  </div>
+</header>
+
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Choose by where you sit</div><h2>One review for each seat at the table</h2><p class="lede">The same handful of questions decides whether a technology scales beyond its first site. Each review asks them early - from your side of the table.</p></div>
+    <div class="cards3">
+      <div class="card rev" id="operator"><div class="seat">Asset Owners</div><h3>Pilot-to-fleet review</h3><div class="q">What stops your pilot reaching a second site - and what removes it?</div>
+        <dl><div><dt>What we look at</dt><dd>The pilot record, up to four conversations with the people who'd have to make it work and a structured look at the robotics, the AI and the OT integration.</dd></div>
+        <div><dt>What you get</dt><dd>A short report your leadership can act on - the barriers, who should own each and the route to site two - and a one-hour walk-through.</dd></div>
+        <div><dt>Then, if useful</dt><dd>A plan for site two; the competence route; programme advice.</dd></div></dl></div>
+      <div class="card rev" id="vendor"><div class="seat">Technology Providers</div><h3>Operator-readiness review</h3><div class="q">What will an operator's assurance and OT teams ask before they buy beyond a trial?</div>
+        <dl><div><dt>What we look at</dt><dd>Your trial record and documentation, up to four conversations and a structured look from the operator's side of the table - the assurance case, the OT and cyber-security integration and competence.</dd></div>
+        <div><dt>What you get</dt><dd>An operator-readiness gap list, a short report on what to fix first and a one-hour walk-through.</dd></div>
+        <div><dt>Then, if useful</dt><dd>The evidence pack; support in the first fleet conversation; board or advisory support.</dd></div></dl></div>
+      <div class="card rev" id="investor"><div class="seat">Investors</div><h3>Technical due diligence review</h3><div class="q">Will the technology survive contact with a real industrial operation?</div>
+        <dl><div><dt>What we look at</dt><dd>The technical material from the data room, up to four conversations including management and a structured look at the robotics, the AI and the OT it has to plug into. Faster if your committee date needs it.</dd></div>
+        <div><dt>What you get</dt><dd>A short report written for your investment committee, questions to put to management and a one-hour walk-through.</dd></div>
+        <div><dt>Then, if useful</dt><dd>A review of the next deal; a closer look at one barrier; board support.</dd></div></dl></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec mist">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">What the review often finds</div><h2>Why good pilots stall at the first site</h2><p class="lede">The answer usually turns on one or two of these. They are examples, not the review: which of them matter in your case - and what else does - is what the five days are for.</p></div>
+    <div class="cards4">
+      <div class="card"><div class="num">01</div><h3>The middle isn't funded</h3><p>The vendor's contract ends at the trial - and the site's change process was built for proven equipment. Someone carries the step between them, without the budget or the mandate.</p></div>
+      <div class="card"><div class="num">02</div><h3>The OT work hasn't been scoped</h3><p>The robot works. Joining it to the site's control systems (OT) and cyber-security rules (IEC 62443) is a project in its own right, often the longest one.</p></div>
+      <div class="card"><div class="num">03</div><h3>The evidence is the wrong kind</h3><p>A certificate shows it's fit for purpose. Only time on a live site shows it's fit for service - and that's what an operator signs against.</p></div>
+      <div class="card"><div class="num">04</div><h3>Competence is assumed</h3><p>Who is trained to run it, check it and stop it, at the second site - not just the first?</p></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">What we look at</div><h2>Three lenses, one test</h2><p class="lede">The three elements, asked as plain questions. Underneath each sits a structured set of checks, built up deployment by deployment - which is what makes this five days rather than five weeks. The report shows what we found and why it matters; the checks stay with Dewhurst.tech.</p></div>
+    <div class="lenses">
+      <div class="lens" style="border-color:#E0662F;background:#FDF1EB"><div class="n" style="color:#B44E20">Total Awareness</div><h3>Have we seen everything it touches?</h3><p>The plant, the people, the procedures, the history - the things a demonstration never meets.</p></div>
+      <div class="lens" style="border-color:#159A6E;background:#E9F6F1"><div class="n" style="color:#0F7A57">Integrated Signal Intelligence</div><h3>Does the right signal reach the person who decides?</h3><p>From the sensor, through the OT and control systems, to the work order and the person who acts on it.</p></div>
+      <div class="lens" style="border-color:#12355B;background:#EAEFF5"><div class="n" style="color:#12355B">Evolutionary Transformation</div><h3>Can it be brought in step by step?</h3><p>So a failure along the way is survivable - and the gain outlasts the person who championed it.</p></div>
+    </div>
+    <div class="test">
+      <svg viewBox="0 0 200 74" aria-hidden="true"><text x="4" y="12" font-size="11" fill="#F2A99F" font-weight="700" font-family="Inter,Arial,sans-serif">SAFE-LIFE</text><path d="M4,62 L58,24 L68,24 L68,70" stroke="#F2A99F" stroke-width="3.5" fill="none"/><text x="100" y="12" font-size="11" fill="#8FC2F0" font-weight="700" font-family="Inter,Arial,sans-serif">FAIL-SAFE</text><path d="M100,66 L116,66 L116,54 L132,54 L132,44 L144,50 L152,50 L152,36 L170,36 L170,24 L196,24" stroke="#8FC2F0" stroke-width="3.5" fill="none"/></svg>
+      <p><b>One test across all three: when something goes wrong - and something always does - does the plan survive it?</b> Engineers call it safe-life ("it won't fail") or fail-safe ("when it fails, we're still in the game").</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec mist" id="days">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">The five days</div><h2>Five days of review, over two to three weeks</h2><p class="lede">Remote by design, which is what keeps it quick. A site day can be added at cost if you'd like one, agreed in advance.</p></div>
+    <div class="days">
+      <div class="day"><div class="chev" style="background:#4A5A6A"><div class="w">WEEK 0</div><div class="t">Order</div></div><div class="d">Purchase order in place; your material shared.</div><div class="io"><div class="k">FROM YOU</div><b>The purchase order</b><span>and the material we ask for after our call</span></div></div>
+      <div class="day"><div class="chev" style="background:#123A5C"><div class="w">DAY 1</div><div class="t">Frame</div></div><div class="d">Kick-off call; the material read; the question confirmed in writing. If it's the wrong question, we change it on day one, not day five.</div><div class="io"><div class="k rx">YOU RECEIVE</div><b>A one-page scope note</b><span>the question, what's in and out, who we'd like to speak to</span></div></div>
+      <div class="day"><div class="chev" style="background:#2C6591"><div class="w">DAYS 2-4</div><div class="t">Look</div></div><div class="d">Up to four conversations; a structured look across the three lenses - including the OT and the assurance case.</div><div class="io"><div class="k">FROM YOU</div><b>Up to four people</b><span>45 minutes each</span></div></div>
+      <div class="day"><div class="chev" style="background:#2F6FA8"><div class="w">DAY 5</div><div class="t">Answer</div></div><div class="d">The report issued, then a one-hour walk-through with you and your team.</div><div class="io"><div class="k rx">YOU RECEIVE</div><b>The report and walk-through</b><span>end of week two to three</span></div></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">What you hold at the end</div><h2>About ten pages, with the answer on page one</h2><p class="lede">Written for your leadership team, in plain English, with an owner suggested for each barrier - so it can turn straight into a decision.</p></div>
+    <div class="report">
+      <div class="mock" aria-hidden="true"><div class="h">Dewhurst.tech</div><div class="u"></div>
+        <div class="s">1 · THE ANSWER</div><div class="l b" style="width:95%"></div><div class="l b" style="width:88%"></div><div class="l b" style="width:60%"></div>
+        <div class="s">2 · WHAT WOULD STOP IT SCALING</div>
+        <div class="r"><div class="l" style="width:90%"></div><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+        <div class="r"><div class="l"></div><i class="on"></i><i class="on"></i><i></i><i></i></div>
+        <div class="r"><div class="l"></div><i class="on"></i><i class="on"></i><i></i><i></i></div>
+        <div class="r"><div class="l"></div><i class="on"></i><i></i><i></i><i></i></div>
+        <div class="s">3 · WHAT REMOVES EACH</div><div class="l" style="width:92%"></div><div class="l" style="width:80%"></div>
+        <div class="s">4 · For your seat</div><div class="l" style="width:85%"></div><div class="l" style="width:70%"></div>
+        <div class="s">5 · NEXT STEP</div><div class="l" style="width:75%"></div></div>
+      <div>
+        <ol class="anat">
+          <li><div><b>The answer</b><span>One paragraph, in plain English. Yes, no, or yes-if.</span></div></li>
+          <li><div><b>What would stop it scaling</b><span>The three or four barriers that matter - each rated for how serious it is.</span></div></li>
+          <li><div><b>What removes each</b><span>The action, and who should own it.</span></div></li>
+          <li><div><b>The part written for your seat</b>
+            <div class="var4"><div><b>Asset Owners</b>The route to site two: what has to be true, in what order, for the second site to say yes.</div><div><b>Technology Providers</b>What each operator gate will ask, against what you can show today - and what to fix first.</div><div><b>Investors</b>Questions to put to management - the ones that test the barriers.</div></div></div></li>
+          <li><div><b>The recommended next step</b><span>With or without us.</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec mist">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">The terms, in short</div><h2>Fixed scope, fixed fee, no surprises</h2></div>
+    <div class="terms">
+      <div><b>Fixed fee</b><span>Quoted before you commit. No day rates; the estimating risk sits with us, not you.</span></div>
+      <div><b>What would move it</b><span>More than four conversations, a second site or technology, or a site visit - each agreed in writing before it's worked.</span></div>
+      <div><b>Your report</b><span>Yours to keep and use as you wish. Dewhurst.tech keeps its own review method, checks and know-how.</span></div>
+      <div><b>Confidentiality</b><span>Your material is used only for your review. We're happy to sign your confidentiality agreement before anything is shared.</span></div>
+      <div><b>Not included</b><span>Certifying the technology, the site or any individual; building software; changing your procedures. The review recommends; you decide.</span></div>
+      <div><b>Independence</b><span>Dewhurst.tech sells no hardware, software or inspection services and takes no vendor commission. Steve Smith sits on the board of SPRINT Robotics, an industry association; this work is Dewhurst.tech's, not SPRINT's. Anything that could bear on it is declared in writing before it arises.</span></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">After the review</div><h2>Built to stand on its own</h2><p class="lede">You can act on the report without us. If you'd like help acting on it, the natural next pieces are our four services.</p></div>
+    <div class="after">
+      <a class="card svc link" href="index.html#services"><img src="assets/icon-04-deployment-strategy-assurance.png" alt=""><div class="tag">Deployment Strategy &amp; Assurance</div><p>A plan for site two - the deployment and assurance plan that takes the pilot, and the OT it joins, to its second site.</p></a>
+      <a class="card svc link" href="index.html#services"><img src="assets/icon-06-competency-qualification-quality-assurance.png" alt=""><div class="tag">Competency, Qualification &amp; QA</div><p>The people side - the competence and qualification route for those who'll run, check and stop it - the robots and the OT systems alike.</p></a>
+      <a class="card svc link" href="index.html#services"><img src="assets/icon-07-board-advisory.png" alt=""><div class="tag">Board &amp; Advisory</div><p>Board-level advice on the wider robotics, AI and OT programme - or board support for an investor.</p></a>
+      <a class="card svc link" href="index.html#services"><img src="assets/icon-05-technical-due-diligence.png" alt=""><div class="tag">Technical Due Diligence</div><p>Due diligence on the robotics and OT in the next deal, or a closer look at one barrier where the report finds something serious.</p></a>
+    </div>
+  </div>
+</section>
+
+
+<section id="start" class="sec mist contact">
+  <div class="wrap">
+    <div class="eyebrow">How to start</div>
+    <h2>Before the commitment is made.</h2>
+    <p>The first step is a 30-minute call to agree the one question worth answering first.</p>
+    <div class="steps5" style="margin:10px 0 40px">
+      <div><div class="c">1</div><div class="w">This week</div><b>A 30-minute call</b><span>Confirm the question and the people</span></div>
+      <div><div class="c">2</div><div class="w">Then</div><b>Purchase order</b><span>And a confidentiality agreement, if you need one</span></div>
+      <div><div class="c">3</div><div class="w">Day 1</div><b>Scope note</b><span>The question, in writing</span></div>
+      <div><div class="c">4</div><div class="w">Week 2-3</div><b>The report</b><span>The answer, the barriers, what removes each</span></div>
+      <div><div class="c">5</div><div class="w">Same week</div><b>Walk-through</b><span>One hour, with you and your team</span></div>
+    </div>
+    <a class="btn" href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a>
+    <p style="margin-top:26px;font-size:16px">Want to frame the value case first? The <a href="roi-tool.html">Value &amp; ROI Calculator</a> sets the whole-system costs side by side.</p>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech" width="279" height="84"></a>
+    <div class="c">© 2026 Dewhurst.tech Ltd · Registered in England &amp; Wales, company no. 17373526<br>Registered office: 71-75 Shelton Street, Covent Garden, London WC2H 9JQ · <a href="privacy.html">Privacy</a> · <a href="data-policy.html">Calculator data</a><div class="ver">Version:2026.10.19.01</div></div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,347 +1,198 @@
 <!DOCTYPE html>
 <html lang="en-GB">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Dewhurst.tech — the safe adoption of inspection, maintenance and surveillance robotics</title>
-        <meta name="description" content="An independent authority on the safe adoption of inspection, maintenance and surveillance robotics, and the OT infrastructure beneath them in heavy industry.">
-        <!-- ══════════════════════════════════════════════════════════════════════════
-     DEWHURST.TECH — THE PAGE · v2.1 · SECTIONED FOR PINEGROW · 2026-07-15
-     ──────────────────────────────────────────────────────────────────────────
-     WHAT CHANGED FROM v2.0:  structure only. NOT ONE WORD OF COPY HAS CHANGED.
-     Every sentence is still quoted verbatim from D21. This pass only wrapped
-     each section in a self-contained shell so you can adjust them one at a time
-     in Pinegrow. The canonical copy source is still D21; if a WORD is wrong,
-     change D21 and re-derive — never hand-edit the words here.
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dewhurst.tech - independent advice on adopting robotics and OT in heavy industry</title>
+<link rel="canonical" href="https://www.dewhurst.tech/">
+<meta name="description" content="Dewhurst.tech is an independent authority on the safe adoption of inspection, maintenance and surveillance robotics - and the OT infrastructure beneath them - in heavy industry.">
+<meta property="og:title" content="Dewhurst.tech - independent advice on robotics and OT in heavy industry">
+<meta property="og:description" content="Independent advice on the safe adoption of inspection, maintenance and surveillance robotics - and the OT infrastructure beneath them - in heavy industry.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.dewhurst.tech/">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/site.css">
 
-     HOW THE SECTIONS WORK  (read this once and the whole file makes sense):
 
-     1. Every section is a normal block in top-to-bottom order. If you make one
-        TALLER — add a graphic, add padding — every section BELOW it moves down
-        on its own. You never position anything by hand to keep the page tidy.
+<script data-goatcounter="https://dewhurst-tech.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
 
-     2. Each section has its OWN background layer (<div class="sec-bg">). That
-        background is locked INSIDE the section: it stretches and crops to fit
-        the section automatically and can NEVER spill into the section above or
-        below. Resize the section and the background just follows.
 
-     3. Each section carries its "knobs" as --variables in its opening tag:
-              --pad-y        top/bottom breathing room (this is your "+5cm")
-              --bg           the background image  e.g. url('backgrounds/about.png')
-              --bg-size      cover | contain | 120%
-              --bg-pos       center | top | right | '50% 30%'
-              --bg-opacity   0 (invisible) … 1 (solid)
-        Change a knob → only that section changes. Nothing else moves.
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech" width="279" height="84"></a>
+    <button type="button" class="burger" aria-label="Menu" onclick="this.closest('nav').classList.toggle('open')"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <ul>
+      <li><a href="#elements">Three elements</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="engagement.html">Engagement</a></li>
+      <li class="has-sub"><a href="philosophy.html">Philosophy</a>
+        <ul><li><a href="philosophy-a1.html">1 · Why good operations still get caught out</a></li><li><a href="philosophy-a2.html">2 · Two hundred years of experience, but not a complete team</a></li><li><a href="philosophy-a3.html">3 · A warning is only as good as the room it lands in</a></li><li><a href="philosophy-a4.html">4 · Three captains asked for a light - and the ship still capsized</a></li><li><a href="philosophy-a5.html">5 · Two out of three feels like success. That's the problem.</a></li><li><a href="philosophy-a6.html">6 · The man who believed the old stories</a></li></ul></li>
+      <li><a href="roi-tool.html">Value &amp; ROI Calculator</a></li>
+      <li><a href="#founder">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
 
-     4. CONTENT stays in flow (auto-reflow). DECORATION (the background, and the
-        emblem box below) sits on layers ABOVE it, scoped to the section. That
-        split is the whole trick: it is why growing a section is always safe.
+<main id="main">
 
-     5. 🔒 THE LOCKUP IS LOCKED. In the nav and footer the wordmark block is
-        marked LOCKED — do NOT rescale, re-space or "balance" it on the canvas.
-        The heavy serif / thin blue imbalance is the argument, not a mistake.
+<header class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap grid">
+    <div>
+      <div class="kicker">Independent advice · robotics and OT in heavy industry</div>
+      <h1>Become the apex operator <span>- and sustain it.</span></h1>
+      <p class="offer">An independent authority on the safe adoption of inspection, maintenance and surveillance robotics - and the OT infrastructure beneath them - in heavy industry.</p>
+      <div class="actions">
+        <a class="btn" href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a>
+      </div>
+    </div>
+    <div class="hero-mark"><img src="assets/hammerhead.png" alt="" width="400" height="960"></div>
+  </div>
+</header>
 
-     PUT YOUR BACKGROUND OPTIONS in a folder called  backgrounds/  next to this
-     file, then point a section's --bg at one. Swapping is a one-line change.
-     ══════════════════════════════════════════════════════════════════════════ -->
-        <style>:root { --ink: #0E1621;  /* Dewhurst — dark, heavy, serif */ --tech: #5B9BD5;  /* .tech — light blue, thin */ --paper: #FFFFFF; --mist: #F4F6F8; --band: #0E1621; --hair: #DDE3E9; --grey: #5C6672; --serif: Georgia,'Times New Roman',serif; --sans: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; } * { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: var(--sans); color: var(--ink); background: var(--paper); line-height: 1.6; -webkit-font-smoothing: antialiased; } .wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; } /* ═══════ SECTION SHELL — the self-contained block every section uses ═══════ *//* .sec        = the section itself: relative + clips its own background *//* .sec-bg     = the background layer, locked to this section, auto-resizing *//* .sec-body   = the content, sitting above the background, in normal flow */.sec { position: relative; overflow: hidden; padding: var(--pad-y,88px) 0; border-top: 1px solid var(--hair); } .sec-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; background-image: url('backgrounds/Background-1.png'); background-size: auto 100%; background-position: var(--bg-pos,center); background-repeat: no-repeat; opacity: var(--bg-opacity,0.5); background-attachment: fixed; } /* ---------- BELIEF SECTION own background: Background-14, cropped to fill just this section (cover) and locked to it (scroll) — independent of the main fixed background behind the rest of the page. Swap the filename to try another; lower opacity to blend it into the dark band. ---------- */.belief .sec-bg { background-image: url('backgrounds/Background-14.png'); background-size: cover; background-position: center; background-attachment: scroll; opacity: 0.85; filter: saturate(0.5) brightness(1.05); } .sec-body { position: relative; z-index: 1; } .hero-sec { position: relative; overflow: hidden; padding: 104px 0 92px; border-top: none; } /* ═══════ EMBLEM BOX — hammerhead inside a semi-transparent bordered shape ═══ *//* Drop this anywhere inside a section. Drag it in Pinegrow, or set the knobs. *//* It is a DECORATION layer: it floats above content, scoped to its section, *//* and does NOT affect reflow. See the ready-to-use template inside §6 ABOUT. */.emblem-box { position: absolute; z-index: 2; pointer-events: none; top: var(--eb-top,40px); right: var(--eb-right,40px); left: var(--eb-left,auto); bottom: var(--eb-bottom,auto); width: var(--eb-size,130px); height: var(--eb-size,130px); border: 1px solid var(--eb-border,rgba(14,40,65,.35)); border-radius: var(--eb-radius,10px); background: 231px; -webkit-backdrop-filter: blur(2px); backdrop-filter: 285px; display: flex; align-items: center; justify-content: center; } .emblem-box img { width: var(--eb-emblem,66%); height: auto; opacity: var(--eb-emblem-op,1); } .hide-mobile { } /* ---------- LOCKUP ---------- */.lockup { display: flex; align-items: center; gap: 14px; } .mark { width: 44px; height: 44px; flex: 0 0 44px; border: 1px dashed var(--tech); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--tech); text-align: center; line-height: 1.1; font-family: var(--sans); } .word { font-family: var(--serif); font-size: 27px; letter-spacing: -.2px; line-height: 1; } .word b { font-weight: 700; color: var(--ink); } .word span { font-family: var(--sans); font-weight: 300; color: var(--tech); } .three { font-family: var(--sans); font-size: 9.5px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--grey); margin-top: 5px; } /* ---------- NAV ---------- */nav { border-bottom: 1px solid var(--hair); position: sticky; top: 0; background: rgba(255,255,255,.94); backdrop-filter: blur(6px); z-index: 10; } nav .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 18px; padding-bottom: 18px; } nav ul { display: flex; gap: 30px; list-style: none; font-size: 14px; } nav a { color: var(--ink); text-decoration: none; opacity: .75; } nav a:hover { opacity: 1; color: var(--tech); } /* ---------- MOBILE MENU: burger hidden on desktop, shown ≤900px. Tapping toggles the 'open' class on <nav> via inline onclick — no separate script. ---------- */.burger { display: none; background: none; border: none; cursor: pointer; color: var(--ink); padding: 6px; line-height: 0; } /* ---------- NAV-OVERLAP FIX: menu jumps stop 130px short so the sticky nav doesn't cover the heading. Raise/lower 130px to taste. ---------- */:target { scroll-margin-top: 130px; } /* ---------- HERO ---------- */h1 { font-family: var(--serif); font-size: 70px; line-height: 1.13; letter-spacing: -.6px; max-width: 16ch; } .sub { font-size: 20px; color: var(--grey); max-width: 60ch; margin-top: 30px; line-height: 1.55; } .sub strong { color: var(--ink); font-weight: 600; } .measure { font-size: 30px; margin-top: 20px; max-width: 60ch; font-weight: 600; } .triad { margin-top: 42px; font-size: 20px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--ink); font-weight: 600; } .triad em { font-style: normal; color: var(--tech); margin: 0 8px; font-weight: 400; } .cta { display: inline-block; margin-top: 38px; background: #5b9bd5; color: #ffffff; text-decoration: none; font-size: 19px; padding: 17px 32px; border-radius: 10px; letter-spacing: .2px; } .cta:hover { background: var(--tech); } /* ---------- SECTION TYPE ---------- */h2 { font-family: var(--serif); font-size: 32px; margin-bottom: 10px; letter-spacing: -.3px; } .cols3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 44px; } .cols4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 36px; } .pillar h3 { font-family: var(--serif); font-size: 21px; margin-bottom: 12px; } .pillar p { color: var(--grey); font-size: 15.5px; } .rule { width: 40px; height: 2px; background: var(--tech); margin: 0 auto 16px; } /* ---------- ELEMENT ICONS: size + hide the off-white square via multiply blend. Change width:60px to resize all icons at once. ---------- */.el-icon { display: block; width: 60px; height: auto; margin: 0 auto 14px; mix-blend-mode: multiply; } /* Centre the icon-card content (icon, rule, heading, text) in System / Services / How-I-Work. */.pillar, .svc, .how > div { text-align: center; } .svc h3 { font-size: 12px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--tech); margin-bottom: 14px; font-weight: 600; } .svc .hl { font-family: var(--serif); font-size: 19px; line-height: 1.35; margin-bottom: 12px; } .svc p { color: var(--grey); font-size: 14.5px; } /* ---------- BELIEF BAND ---------- */.belief { background: var(--band); color: #fff; border-top: none; } .belief h2 { font-family: var(--serif); font-size: 42px; line-height: 1.2; margin-bottom: 6px; max-width: 22ch; } .belief .h2b { font-family: var(--serif); font-size: 42px; line-height: 1.2; color: var(--tech); margin-bottom: 34px; } .belief p { font-size: 18px; color: #B9C4CF; max-width: 70ch; line-height: 1.6; } .belief p strong { color: #fff; font-weight: 600; } .mantra { margin-top: 42px; font-family: var(--serif); font-size: 23px; color: #fff; padding-left: 20px; border-left: 3px solid var(--tech); } /* ---------- BELIEF-BAND HAMMERHEAD: (1) white shark via filter; (2) hexagon shape via clip-path. Scoped to the dark Belief section ONLY, so the hero shark is untouched. To fit the shark inside the hexagon, lower the belief emblem's --eb-emblem knob; to make the hexagon tile more/less visible, change its --eb-fill alpha. ---------- */.belief .emblem-box { height: 285px; clip-path: none; background: none; border: none; -webkit-backdrop-filter: none; backdrop-filter: none; overflow: visible; } /* LAYER 3 (back): slightly larger frosted hexagon — this is where the blur lives. inset:-16px = how much bigger than the outline hexagon. */.belief .emblem-box::after { content: ""; position: absolute; inset: -16px; z-index: -1; background: rgba(255,255,255,.03); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); } /* LAYER 2 (middle): the thin-outline hexagon. stroke = outline colour/opacity; stroke-width = thickness. */.belief .emblem-box .hexframe { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; } .belief .emblem-box .hexframe polygon { fill: none; stroke: rgba(255,255,255,.6); stroke-width: 2; vector-effect: non-scaling-stroke; } /* LAYER 1 (front): the white hammerhead, above the outline and the frost. */.belief .emblem-box img { position: relative; z-index: 1; filter: brightness(0) invert(1); } /* ---------- ABOUT — BYLINE under the portrait (added 2026-08-05).
-   Name in the serif of the wordmark; role in the small blue caps already
-   used by the service headings, so it reads as part of the system. ---------- */.byline { margin-top: 16px; } .byline b { display: block; font-family: var(--serif); font-size: 20px; font-weight: 700; letter-spacing: -.2px; color: var(--ink); } .byline b .post { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: .6px; color: var(--grey); white-space: nowrap; } .byline span { display: block; font-size: 11px; letter-spacing: 1.7px; text-transform: uppercase; color: var(--tech); font-weight: 600; margin-top: 6px; } /* ---------- ABOUT (3 columns) ---------- */.about { display: grid; grid-template-columns: 0.85fr 1.35fr 1fr; gap: 48px; align-items: start; } .portrait { width: 100%; aspect-ratio: 4/5; background: var(--mist); border: 1px dashed var(--hair); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--grey); font-size: 12px; text-align: center; padding: 20px; } .voice p { margin-bottom: 18px; font-size: 16px; } .voice strong { font-weight: 600; } .evidence { border-left: 1px solid var(--hair); padding-left: 30px; } .evidence dl { font-size: 14px; } .evidence dt { font-size: 10.5px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--tech); font-weight: 600; margin-top: 20px; } .evidence dt:first-child { margin-top: 0; } .evidence dd { color: var(--grey); margin-top: 4px; line-height: 1.5; } .evidence dd b { color: var(--ink); font-weight: 600; } /* ---------- HOW I WORK ---------- */.opener { font-family: var(--serif); font-size: 34px; line-height: 1.25; max-width: 24ch; margin-bottom: 52px; } .how h3 { font-family: var(--serif); font-size: 19px; margin-bottom: 10px; } .how p { color: var(--grey); font-size: 15.5px; } /* ---------- CONTACT ---------- */.contact { text-align: center; } .contact h2 { font-family: var(--serif); font-size: 38px; margin-bottom: 20px; } .contact p { color: var(--grey); font-size: 18px; max-width: 60ch; margin: 0 auto 38px; } .contact strong { color: var(--ink); font-weight: 600; } /* ---------- FOOTER ---------- */footer { border-top: 1px solid var(--hair); padding: 40px 0; } footer .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; } footer .c { font-size: 13px; color: var(--grey); } /* ---------- HERO SHARK · RESPONSIVE WATERMARK: on windows narrower than 1200px the floating hammerhead re-centres BEHIND the hero text as a faint watermark, so it never collides with the words (matters most on mobile). Tune: 1200px = when it switches; opacity 0.12 = fainter/stronger; 62vh / 460px = size. ---------- */@media (max-width: 1200px){ .hero-sec .emblem-box {  top: 50%;  left: 50%;  right: auto;  bottom: auto;  transform: translate(-50%,-50%);  width: auto;  height: auto;  z-index: 0;  opacity: 0.3;  border: none;  background: none;  -webkit-backdrop-filter: none;  backdrop-filter: none; }  /* Belief emblem gets the same treatment as the hero: on narrow screens it re-centres, drops behind the text and fades to a watermark. */ .belief .emblem-box {  top: 50%;  left: 50%;  right: auto;  bottom: auto;  transform: translate(-50%,-50%);  z-index: 0;  opacity: 0.4; }  .hero-sec .emblem-box img {  width: auto;  height: 62vh;  max-height: 460px; } } @media (max-width:900px){ h1 {  font-size: 36px; }  .cols3, .cols4 {  grid-template-columns: 1fr;  gap: 34px; }  .about {  grid-template-columns: 1fr;  gap: 34px; }  .evidence {  border-left: none;  padding-left: 0;  border-top: 1px solid var(--hair);  padding-top: 26px; }  .portrait {  aspect-ratio: 3/2; }  .burger {  display: block; }  nav ul {  display: none;  position: absolute;  top: 100%;  left: 0;  right: 0;  flex-direction: column;  gap: 0;  background: rgba(255,255,255,.98);  backdrop-filter: blur(6px);  border-bottom: 1px solid var(--hair);  padding: 8px 28px 14px; }  nav.open ul {  display: flex; }  nav ul li {  border-top: 1px solid var(--hair); }  nav ul li a {  display: block;  padding: 12px 0; }  .belief h2, .belief .h2b {  font-size: 29px; }  .opener {  font-size: 25px; }  .hide-mobile {  display: none; }  /* hide decorative emblem boxes on phones if they crowd text */ }@media (max-width:900px){html{background:#FFFFFF;}body{background:transparent;}body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url('backgrounds/Background-1.png') right top / auto 100% no-repeat;opacity:0.4;}.hero-sec .sec-bg,.sec:not(.belief) .sec-bg{display:none;}.sec:not(.belief){background:rgba(255,255,255,0.62);}}</style>
-        <style>
-/* ---------- PHILOSOPHY: sub-menu (desktop drops down on hover/focus; phone shows it indented inside the menu) ---------- */
-nav ul li.has-sub { position: relative; }
-nav ul li.has-sub::after { content: ""; position: absolute; left: -16px; right: -16px; top: 100%; height: 44px; } /* invisible bridge so the mouse can reach the sub-menu */
-nav ul ul.sub { display: none; position: absolute; top: 100%; margin-top: 0; left: -16px; min-width: 330px; flex-direction: column; gap: 0; background: rgba(255,255,255,.98); border: 1px solid var(--hair); border-radius: 8px; padding: 8px 16px; box-shadow: 0 10px 30px rgba(14,22,33,.08); z-index: 20; }
-nav ul li.has-sub:hover > ul.sub, nav ul li.has-sub:focus-within > ul.sub { display: flex; }
-nav ul ul.sub li { border: none; }
-nav ul ul.sub a { display: block; padding: 7px 0; font-size: 13.5px; opacity: .8; }
-nav a[aria-current="page"] { opacity: 1; color: var(--tech); }
-@media (max-width:900px){
-  nav ul li.has-sub::after { display: none; }
-  nav ul ul.sub { display: flex; position: static; min-width: 0; border: none; box-shadow: none; background: none; padding: 0 0 8px 14px; border-radius: 0; }
-  nav ul ul.sub li { border-top: none; }
-  nav ul ul.sub a { padding: 6px 0; font-size: 13.5px; }
-}
-</style>
-        <!-- GoatCounter website analytics — privacy-friendly, no cookies. Added 2026-07-24. Dashboard: https://dewhurst-tech.goatcounter.com -->
-        <script data-goatcounter="https://dewhurst-tech.goatcounter.com/count"
-                async src="//gc.zgo.at/count.js"></script>
-    </head>
-    <body>
-        <!-- ╔══════════════════════════════════════════════════════════════════════╗
-     ║  SECTION 1 · NAV                                                       ║
-     ║  🔒 LOCKUP IS LOCKED — do not rescale / re-space / balance the words.  ║
-     ╚══════════════════════════════════════════════════════════════════════╝ -->
-        <nav>
-            <div class="wrap">
-                <img src="brand-lockup-2.w338-h84-c0.jpg">
-                <button type="button" class="burger" aria-label="Menu" onclick="this.closest('nav').classList.toggle('open')">
-                    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-                <ul>
-                    <li>
-                        <a href="#system">System</a>
-                    </li>
-                    <li>
-                        <a href="#services">Services</a>
-                    </li>
-                    <li class="has-sub">
-                        <a href="philosophy.html">Philosophy</a>
-                        <ul class="sub"><li><a href="philosophy-a1.html">1 · Why good operations still get caught out</a></li><li><a href="philosophy-a2.html">2 · Two hundred years of experience, but not a complete team</a></li><li><a href="philosophy-a3.html">3 · A warning is only as good as the room it lands in</a></li><li><a href="philosophy-a4.html">4 · Three captains asked for a light - and the ship still capsized</a></li><li><a href="philosophy-a5.html">5 · Two out of three feels like success. That's the problem.</a></li><li><a href="philosophy-a6.html">6 · The man who believed the old stories</a></li></ul>
-                    </li>
-                    <li>
-                        <a href="roi-tool.html" target="_blank" rel="noopener">Value &amp; ROI Calculator</a>
-                    </li>
-                    <li>
-                        <a href="#about">About</a>
-                    </li>
-                    <li>
-                        <a href="#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <picture></picture>
-            <picture></picture>
-        </nav>
-        <!-- ╚═══ END SECTION 1 · NAV ═══╝ -->
-        <!-- ╔══════════════════════════════════════════════════════════════════════╗
-     ║  SECTION 2 · HERO                                                      ║
-     ║  Knobs → --bg / --bg-size / --bg-pos / --bg-opacity                    ║
-     ║  This is the most likely home for your main background artwork.        ║
-     ╚══════════════════════════════════════════════════════════════════════╝ -->
-        <header class="hero-sec" style="--bg: none;--bg-size: cover;--bg-pos: center;--bg-opacity: 0.6;">
-            <div class="emblem-box" style="--eb-top: 250px;--eb-right: 200px;--eb-size: 300px;--eb-fill: rgba(255,255,255,.06);--eb-border: rgba(0,0,0,0);--eb-radius: 10px;--eb-emblem: 66%;">
-                <img src="hammerhead-cut.png" alt="">
-            </div>
-            <div class="sec-bg"></div>
-            <div class="wrap sec-body">
-                <h1>Become the apex operator <span style="color:var(--tech)">&mdash; and sustain it.</span></h1>
-                <p class="measure">Because what you don't anticipate will dominate.</p>
-                <p class="sub">An independent authority on the safe adoption of <strong>inspection, maintenance and surveillance robotics</strong>, and the <strong>OT infrastructure beneath them</strong> in heavy industry.</p>
-                <div class="triad">Operational Apex <em>·</em> Total Awareness <em>·</em> Signal Intelligence
-                </div>
-                <a class="cta" href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a>
-            </div>
-        </header>
-        <!-- ╚═══ END SECTION 2 · HERO ═══╝ -->
-        <!-- ╔══════════════════════════════════════════════════════════════════════╗
-     ║  SECTION 3 · SYSTEM  (the hammerhead triad)   id="system"             ║
-     ╚══════════════════════════════════════════════════════════════════════╝ -->
-        <section id="system" class="sec" style="--pad-y: 50px;--bg: none;--bg-size: cover;--bg-pos: center;--bg-opacity: 0.10;">
-            <div class="sec-bg"></div>
-            <div class="wrap sec-body">
-                <h2>The system</h2>
-                <div class="cols3">
-                    <div class="pillar">
-                        <img class="el-icon" src="icon-01-operational-apex.png" alt="">
-                        <div class="rule"></div>
-                        <h3>Operational Apex</h3>
-                        <p>Built for critical environments, where disciplined execution beats noisy disruption. Safe, scalable, adoption-ready by design.</p>
-                    </div>
-                    <div class="pillar">
-                        <img class="el-icon" src="icon-02-total-awareness.png" alt="">
-                        <div class="rule"></div>
-                        <h3>Total Awareness</h3>
-                        <p>A full 4π-steradian view: across people, process, technology, risk and operations, and in every direction. Because the failure is always in the direction nobody looked.</p>
-                    </div>
-                    <div class="pillar">
-                        <img class="el-icon" src="icon-03-signal-intelligence.png" alt="">
-                        <div class="rule"></div>
-                        <h3>Signal Intelligence</h3>
-                        <p>Every relevant signal connected and interpreted, turning data into decisions heavy industry can act on with confidence.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- ╚═══ END SECTION 3 · SYSTEM ═══╝ -->
-        <!-- ╔══════════════════════════════════════════════════════════════════════╗
-     ║  SECTION 4 · SERVICES   id="services"                                  ║
-     ║  ⛔ Four flat pillars, side by side. NOT a 2×2 quadrant.               ║
-     ╚══════════════════════════════════════════════════════════════════════╝ -->
-        <section id="services" class="sec" style="--pad-y: 50px;--bg: none;--bg-size: cover;--bg-pos: center;--bg-opacity: 0.10;">
-            <div class="sec-bg"></div>
-            <div class="wrap sec-body">
-                <h2>Services</h2>
-                <div class="cols4">
-                    <div class="svc">
-                        <img class="el-icon" src="icon-04-deployment-strategy-assurance.png" alt="">
-                        <h3>Deployment Strategy &amp; Assurance</h3>
-                        <div class="hl">Turn novel, transformational technology into safe, working operations on site.</div>
-                        <p>Assurance and planning that carry a system from pilot to an asset that is sustainably fit for service.</p>
-                    </div>
-                    <div class="svc">
-                        <img class="el-icon" src="icon-05-technical-due-diligence.png" alt="">
-                        <h3>Technical Due Diligence</h3>
-                        <div class="hl">Whether it will be sustainably fit for service — before the commitment is made.</div>
-                        <p>Assessment of the technology, the claims, and the deployment reality, by someone with nothing to sell.</p>
-                    </div>
-                    <div class="svc">
-                        <img class="el-icon" src="icon-06-competency-qualification-quality-assurance.png" alt="">
-                        <h3>Competency, Qualification &amp; Quality Assurance</h3>
-                        <div class="hl">Guidelines and standards that make safe adoption repeatable.</div>
-                        <p>Advocating a framework that qualifies the people, certifies the equipment, and assures the process — for sustainable performance.</p>
-                    </div>
-                    <div class="svc">
-                        <img class="el-icon" src="icon-07-board-advisory.png" alt="">
-                        <h3>Board &amp; Advisory</h3>
-                        <div class="hl">Independent judgement in the room where the technology bet is made.</div>
-                        <p>An independent voice at board level on whether — and how — to commit.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- ╚═══ END SECTION 4 · SERVICES ═══╝ -->
-        <!-- ╔══════════════════════════════════════════════════════════════════════╗
-     ║  SECTION 5 · BELIEF BAND   (the only dark/inverted section)            ║
-     ║  Steve's ruling: KEEP IT DARK. --bg overlays ON TOP of the dark band.  ║
-     ╚══════════════════════════════════════════════════════════════════════╝ -->
-        <section class="sec belief" style="--pad-y: 50px;--bg: none;--bg-size: cover;--bg-pos: center;--bg-opacity: 0.14;">
-            <div class="emblem-box" style="--eb-top: 80px;--eb-right: 230px;--eb-size: 237px;--eb-fill: rgba(255,255,255,.10);--eb-border: rgba(0,0,0,0);--eb-radius: 244px;--eb-emblem: 40%;">
-                <svg class="hexframe" viewBox="0 0 200 280" preserveAspectRatio="none" aria-hidden="true">
-                    <polygon points="100,4 196,72 196,208 100,276 4,208 4,72"/>
-                </svg>
-                <img src="hammerhead-cut.png" alt="">
-            </div>
-            <div class="sec-bg"></div>
-            <div class="wrap sec-body">
-                <h2>Technology readiness is not the constraint.</h2>
-                <div class="h2b">Organisational readiness is.</div>
-                <p><strong>How companies adapt to novelty, govern transformation and align culture &#8212; that is the real frontier.</strong> Most programmes stall not because the technology fails, but because none of the other elements were ever included in the process. <strong>That gap &#8212; between a working demonstration and an asset that is sustainably fit for service &#8212; is where twenty-five years have been spent.</strong></p>
-                <div class="mantra">Make robotics and OT ordinary. Make change management extraordinary.</div>
-            </div>
-        </section>
-        <!-- ╚═══ END SECTION 5 · BELIEF BAND ═══╝ -->
-        <!-- ╔══════════════════════════════════════════════════════════════════════╗
-     ║  SECTION 6 · ABOUT   id="about"   (FACE · VOICE · EVIDENCE)            ║
-     ║  Your "+5cm to add a graphic" example lives here. To grow this band:   ║
-     ║   • add height by raising --pad-y, OR just drop a graphic into a       ║
-     ║     column — the section grows and §7 below moves down on its own.     ║
-     ║   • the background layer restretches to the new height automatically.  ║
-     ╚══════════════════════════════════════════════════════════════════════╝ -->
-        <section id="about" class="sec" style="--pad-y: 50px;--bg: none;--bg-size: cover;--bg-pos: center;--bg-opacity: 0.10;">
-            <div class="sec-bg"></div>
-            <!-- ┈┈┈ EMBLEM BOX · READY-TO-USE TEMPLATE ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
-       This is the "hammerhead inside a small, semi-transparent bordered shape"
-       you asked for. It is commented out so it does not show yet. To use it:
-         1. delete the opening "<!--" and closing "-->
-            <div>
-                <div class="wrap sec-body">
-                    <h2>About</h2>
-                    <div class="about">
-                        <!-- COLUMN 1 — THE FACE -->
-                        <div>
-                            <img src="headshot_fullframe.jpg" alt="Steve Smith" style="width:100%;height:auto;display:block;border-radius:4px;">
-                            <div class="byline"><b>Steve Smith <span class="post">CEng FInstMC</span></b><span>Founder &amp; Principal</span></div>
-                        </div>
-                        <!-- COLUMN 2 — THE VOICE -->
-                        <div class="voice">
-                            <p>I started as an aircraft engineer building and certifying avionic systems &#8212; designing and physically installing the equipment and wiring, modifying the airframe &amp; structures that carried it &#8212; and then had to prove, against an airworthiness standard and with my name on it, that the aircraft was safe to fly. This is a discipline, and it is not paperwork: <strong>a certificate is not the same thing as a safe aeroplane, and someone has to be able to tell the difference.</strong></p>
-                            <p>I have been doing the same job ever since &#8212; <strong>across industries where operational safety and quality assurance are critical: oil and gas, chemical, nuclear, marine and aviation.</strong> Coming through the ranks as a control and automation engineer, and along the way meeting the same problem from every side: from engineering and operations, to engineering sales and projects, then to business development, before consultancy on the operator&apos;s side and finally onto quality assurance, standards, safety and reliability. <strong>From poacher to gamekeeper.</strong> Most recently I led robotics, sensing, integrity and inspection, and OT strategy at BP.</p>
-                            <p>The problem I keep meeting is the same one. <strong>The technology is rarely the difficulty. The organisation it lands in &#8212; the people, the process, the OT infrastructure beneath it, and the authority to actually adopt it &#8212; is where the value is won or lost.</strong> Certified doesn&apos;t mean safe; working in a trial doesn&apos;t mean working on your asset. <strong>Closing that gap is one continuous discipline, not four careers, and it is the whole of what I do.</strong></p>
-                            <p>Today I do that work independently, through my own practice, <strong>Dewhurst.tech</strong> &#8212; as an advisor, a board member, or a hands-on lead, depending on what the decision needs.</p>
-                        </div>
-                        <!-- COLUMN 3 — THE EVIDENCE -->
-                        <div class="evidence">
-                            <dl>
-                                <dt>Standards &#8212; measurement</dt>
-                                <dd>
-                                    <b>BSI Technical Committee CPI/30/5</b> (velocity and mass flow methods &#8212; the committee behind <b>BS ISO 10790</b>, Coriolis flow measurement). Contributions on Coriolis metering, dynamic net-oil calculation, and uncertainty analysis.
-                                </dd>
-                                <dt>Standards &#8212; robotics</dt>
-                                <dd>SPRINT Robotics&apos; guidelines are a body of work, written by many hands across its community. <b>Sole author of one of them</b> &#8212; the <b>Robotic Field Worker Solution Guidelines</b> &#8212; developed through review by the SPRINT community, and externally credited for real deployment success.
-                                </dd>
-                                <dt>Board &amp; platform</dt>
-                                <dd>Action Group Coordinator, Surveillance Robotics &rarr; <b>Treasurer &amp; Board Director, SPRINT Robotics</b>. Chair and keynote speaker, SPRINT Robotics World Conference.
-                                </dd>
-                                <dt>Credentials</dt>
-                                <dd>
-                                    <b>Chartered Engineer (CEng)</b> and <b>Fellow of the Institute of Measurement &amp; Control (InstMC)</b>.
-                                </dd>
-                                <dt>Inventor</dt>
-                                <dd>Patent <b>US10046252</b>, &quot;Sand separator interface detection.&quot;
-                                </dd>
-                                <dt>Engineering origin</dt>
-                                <dd>Time-served aviation engineer: <b>EASA Part-66 B2 Avionics Engineering Licence</b>. Cockpit systems originated, modified and certified against airworthiness standards.
-                                </dd>
-                                <dt>Commercial</dt>
-                                <dd>
-                                    <b>Litre Meter &middot; Emerson Process Management &middot; Petrofac</b> &#8212; including engineering sales and key account management, projects, business development and product development, across multiple product lines, industries and regions.
-                                </dd>
-                                <dt>Track record</dt>
-                                <dd>Technology and strategy leadership in robotics, IIoT/sensing, integrity &amp; inspection, and OT security at <b>BP</b>, across <b>~60 primary assets in 8 operating basins</b>.
-                                </dd>
-                                <dt>Domain</dt>
-                                <dd>Robotics and OT sensors &amp; infrastructure in heavy industry &middot; EX-rated / hazardous-area OT, robots and drones (ATEX / IECEx) &middot; OT/ICS security (IEC 62443) &middot; IIoT and digital twins &middot; technology-maturity roadmapping &middot; standards and certification.</dd>
-                                <dt>Reach</dt>
-                                <dd>
-                                    <b>~25 years</b> across operators and technology providers.
-                                </dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- ╚═══ END SECTION 6 · ABOUT ═══╝ -->
-        <!-- ╔══════════════════════════════════════════════════════════════════════╗
-     ║  SECTION 7 · HOW I WORK   (Steve's ruling: KEEP)                       ║
-     ╚══════════════════════════════════════════════════════════════════════╝ -->
-        <section class="sec" style="--pad-y: 50px;--bg: none;--bg-size: cover;--bg-pos: center;--bg-opacity: 0.10;">
-            <div class="sec-bg"></div>
-            <div class="wrap sec-body">
-                <div class="opener">Certified doesn't mean safe. Working in a trial doesn't mean working on your asset.</div>
-                <div class="cols3 how">
-                    <div>
-                        <img class="el-icon" src="icon-08-independent-by-design.png" alt="">
-                        <h3>Independent, by design.</h3>
-                        <p>I have nothing to sell but judgement. My loyalty is to whether the operation works once the pilots are finished — not to any box, platform or vendor inside it.</p>
-                    </div>
-                    <div>
-                        <img class="el-icon" src="icon-09-whole-system-not-the-kit.png" alt="">
-                        <h3>The whole system, not the kit.</h3>
-                        <p>A programme stalls when the organisation around it was never brought with it. I work across the whole picture — the technology, the OT infrastructure beneath it, the standards, the people, and the authority to actually adopt — and say what it will really take.</p>
-                    </div>
-                    <div>
-                        <img class="el-icon" src="icon-10-from-demo-to-asset.png" alt="">
-                        <h3>From demonstration to asset.</h3>
-                        <p>The question is never whether it works in a trial. It is whether it is sustainably fit for service on a live asset — and a certificate alone cannot answer that. The operator's risk case can. That is the question I am built to answer.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- ╚═══ END SECTION 7 · HOW I WORK ═══╝ -->
-        <!-- ╔══════════════════════════════════════════════════════════════════════╗
-     ║  SECTION 8 · CONTACT   id="contact"                                    ║
-     ║  ⛔ NO FORM. NO SECOND BUTTON. The address is the button, full stop.    ║
-     ╚══════════════════════════════════════════════════════════════════════╝ -->
-        <section id="contact" class="sec contact" style="--pad-y: 50px;--bg: none;--bg-size: cover;--bg-pos: center;--bg-opacity: 0.10;">
-            <div class="sec-bg"></div>
-            <div class="wrap sec-body">
-                <h2>Before the commitment is made...</h2>
-                <p>If you are facing a decision on the adoption of <strong>inspection, maintenance or surveillance robotics &#8212; or the OT infrastructure beneath it</strong> &#8212; I'd be glad to think it through with you.</p>
-                <a class="cta" href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a>
-            </div>
-        </section>
-        <!-- ╚═══ END SECTION 8 · CONTACT ═══╝ -->
-        <!-- ╔══════════════════════════════════════════════════════════════════════╗
-     ║  SECTION 9 · FOOTER                                                    ║
-     ║  🔒 LOCKUP IS LOCKED — same rule as the nav.                           ║
-     ╚══════════════════════════════════════════════════════════════════════╝ -->
-        <footer>
-            <div class="wrap">
-                <!-- 🔒 LOCKED BLOCK — the wordmark. Do not rescale / re-space / balance. -->
-                <div class="lockup">
-                    <img src="brand-lockup-2.w338-h84-c0.jpg">
-                </div>
-                <!-- 🔒 END LOCKED BLOCK -->
-                <div class="c" style="text-align:right;">© 2026 Dewhurst.tech &middot; <a href="privacy.html" style="color:var(--grey);">Privacy</a><div class="ver" style="font-size:11px;color:#AAB2BB;margin-top:4px;letter-spacing:.3px;">Version:2026.10.09.02</div></div>
-            </div>
-        </footer>
-        <!-- ╚═══ END SECTION 9 · FOOTER ═══╝ -->
-    </body>
+
+<section class="proof" aria-label="Credentials at a glance">
+  <div class="wrap">
+    <ul>
+      <li><b>CEng · FInstMC</b>Chartered Engineer and Fellow of the Institute of Measurement &amp; Control</li>
+      <li><b>~25 years</b>across operators and technology providers</li>
+      <li><b>~60 primary assets</b>in 8 operating basins - technology and strategy leadership at BP</li>
+      <li><b>Standards work</b>BSI Technical Committee CPI/30/5; sole author of one of SPRINT Robotics' guidelines</li>
+      <li><b>Board director</b>Treasurer &amp; Board Director, SPRINT Robotics</li>
+    </ul>
+  </div>
+</section>
+
+
+<section id="elements" class="sec">
+  <div class="wrap">
+    <div class="elements2">
+      <div class="venn-card2"><img src="philosophy/venn-crop.jpg" alt="Three overlapping elements - Total Awareness, Integrated Signal Intelligence and Evolutionary Transformation - with Operational Apex where all three meet" width="756" height="838"></div>
+      <div class="el-col">
+        <div class="eyebrow">The system</div>
+        <h2>Three elements. One apex.</h2>
+        <div class="el-list">
+          <div class="el"><h3>Total Awareness</h3><div class="line">Every direction, every perspective.</div><p>A full 4π-steradian view: across people, process, technology, risk and operations - and in every direction. Because the failure is always in the direction nobody looked.</p></div>
+          <div class="el"><h3>Integrated Signal Intelligence</h3><div class="line">From sensor to decision.</div><p>The right sensors give the right signals. Joined end to end, from the sensor on the plant to the person making the decision, they become intelligence.</p></div>
+          <div class="el"><h3>Evolutionary Transformation</h3><div class="line">Systematic and in control.</div><p>The difference between success at a point in time and success that lasts. Transformational in what it changes, evolutionary in how it gets there.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="apex-band">
+      <div class="ab-l"><div class="k">Where all three meet</div><h3>Operational Apex</h3><div class="line">Sustainably fit for service.</div></div>
+      <div class="ab-r"><p>Not just on day one. On the thousandth day. The operation sees the whole system, understands what it is saying and acts on it in a way that is systematic, controlled and built to last.</p><p class="ab-link"><a href="philosophy.html">Explore the three elements</a></p></div>
+    </div>
+  </div>
+</section>
+
+
+<section id="services" class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">What we do</div><h2>Services</h2></div>
+    <div class="cards4">
+      <div class="card svc"><img src="assets/icon-04-deployment-strategy-assurance.png" alt=""><div class="tag">Deployment Strategy &amp; Assurance</div><div class="hl">Turn novel, transformational technology into safe, working operations on site.</div><p>Assurance and planning that carry a system - and the OT it joins - from pilot to an asset that is sustainably fit for service.</p></div>
+      <div class="card svc"><img src="assets/icon-05-technical-due-diligence.png" alt=""><div class="tag">Technical Due Diligence</div><div class="hl">Whether it will be sustainably fit for service - before the commitment is made.</div><p>Assessment of the technology, its OT and cyber-security integration, the claims and the deployment reality, by someone with nothing to sell.</p></div>
+      <div class="card svc"><img src="assets/icon-06-competency-qualification-quality-assurance.png" alt=""><div class="tag">Competency, Qualification &amp; Quality Assurance</div><div class="hl">Guidelines and standards that make safe adoption repeatable.</div><p>Advocating a framework that qualifies the people, certifies the equipment and assures the process - for robotics and OT alike - for sustainable performance.</p></div>
+      <div class="card svc"><img src="assets/icon-07-board-advisory.png" alt=""><div class="tag">Board &amp; Advisory</div><div class="hl">Independent judgement in the room where the technology bet is made.</div><p>An independent voice at board level on whether - and how - to commit to robotics and the OT beneath it.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<section id="start" class="sec mist">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Ways to start</div><h2>Three short, fixed-price reviews for the step nobody funds</h2><p class="lede">Five days, one question agreed in writing on day one and a report that is yours to keep. Choose the one that fits where you sit.</p></div>
+    <div class="cards3">
+      <a class="card offer-card link" href="engagement.html#operator"><div class="seat">Asset Owners</div><h3>Pilot-to-fleet review</h3><div class="q">What stops your pilot reaching a second site - and what removes it?</div><span class="more">How it works</span></a>
+      <a class="card offer-card link" href="engagement.html#vendor"><div class="seat">Technology Providers</div><h3>Operator-readiness review</h3><div class="q">What will an operator's assurance and OT teams ask before they buy beyond a trial?</div><span class="more">How it works</span></a>
+      <a class="card offer-card link" href="engagement.html#investor"><div class="seat">Investors</div><h3>Technical due diligence review</h3><div class="q">Will the technology survive contact with a real industrial operation?</div><span class="more">How it works</span></a>
+    </div>
+    <p style="margin-top:28px"><a class="textlink" href="engagement.html">See the full engagement model - from the first call to the report</a></p>
+  </div>
+</section>
+
+
+<section class="sec belief">
+  <div class="bg" aria-hidden="true"></div>
+  <div class="wrap grid">
+    <div>
+      <h2>Technology readiness is not the constraint.</h2>
+      <div class="h2b">Organisational readiness is.</div>
+      <p>How companies adapt to novelty, govern transformation and align culture - that is the real frontier. Most programmes stall not because the technology fails, but because none of the other elements were ever included in the process. That gap - between a working demonstration and an asset that is sustainably fit for service - is where Dewhurst.tech works.</p>
+      <div class="mantra">Make robotics and OT ordinary. Make change management extraordinary.</div>
+    </div>
+    <div class="hexmark" aria-hidden="true"><svg viewBox="0 0 200 280" preserveAspectRatio="none"><polygon points="100,4 196,72 196,208 100,276 4,208 4,72" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.55)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg><img src="assets/hammerhead-white.png" alt=""></div>
+  </div>
+</section>
+
+
+<section id="founder" class="sec">
+  <div class="wrap">
+    <div class="founder">
+      <div class="portrait">
+        <img src="assets/steve-smith.jpg" alt="Steve Smith" width="900" height="1200">
+        <div class="byline"><b>Steve Smith CEng FInstMC</b><span>Founder &amp; Principal</span></div>
+      </div>
+      <div>
+        <div class="eyebrow">About the founder</div>
+        <h2>Twenty-five years on every side of the table</h2>
+        <p class="intro">Dewhurst.tech is led by its founder, Steve Smith. In his own words:</p>
+        <div class="bio">
+          <p>I started as an aircraft engineer building and certifying avionic systems - designing and physically installing the equipment and wiring, modifying the airframe and structures that carried it - and then had to prove, against an airworthiness standard and with my name on it, that the aircraft was safe to fly. <span>A signature on a certificate is not the same thing as a safe aeroplane. Fit for service is more than simply being fit for purpose - and someone has to be able to tell the difference.</span></p>
+          <p>I have been doing the same job ever since, across industries where operational safety and quality assurance are critical: oil and gas, chemical, nuclear, marine and aviation. I came through the ranks as a control and automation engineer and met the same problem from every side - engineering and operations, engineering sales and projects, business development, consultancy on the operator's side, then quality assurance, standards, safety and reliability. Most recently I led robotics, sensing, integrity and inspection - and OT strategy - at BP.</p>
+          <p>The problem I keep meeting is the same one. The technology is rarely the difficulty. The organisation it lands in - the people, the process, the OT infrastructure beneath it and the authority to actually adopt it - is where the value is won or lost.</p>
+          <p>Today I do that work independently, through Dewhurst.tech - as an advisor, a board member or a hands-on lead, depending on what the decision needs.</p>
+        </div>
+
+      </div>
+    </div>
+    <dl class="creds">
+          <div><dt>Standards - measurement</dt><dd><b>BSI Technical Committee CPI/30/5</b> (velocity and mass flow methods - the committee behind <b>BS ISO 10790</b>, Coriolis flow measurement). Contributions on Coriolis metering, dynamic net-oil calculation and uncertainty analysis.</dd></div>
+          <div><dt>Standards - robotics</dt><dd>SPRINT Robotics' guidelines are a body of work, written by many hands across its community. <b>Sole author of one of them</b> - the <b>Robotic Field Worker Solution Guidelines</b> - developed through review by the SPRINT community and externally credited for real deployment success.</dd></div>
+          <div><dt>Board &amp; platform</dt><dd>Action Group Coordinator, Surveillance Robotics, then <b>Treasurer &amp; Board Director, SPRINT Robotics</b>. Chair and keynote speaker, SPRINT Robotics World Conference.</dd></div>
+          <div><dt>Credentials</dt><dd><b>Chartered Engineer (CEng)</b> and <b>Fellow of the Institute of Measurement &amp; Control (InstMC)</b>.</dd></div>
+          <div><dt>Inventor</dt><dd>Patent <b>US10046252</b>, "Sand separator interface detection."</dd></div>
+          <div><dt>Engineering origin</dt><dd>Time-served aviation engineer: <b>EASA Part-66 B2 Avionics Engineering Licence</b>. Cockpit systems originated, modified and certified against airworthiness standards.</dd></div>
+          <div><dt>Commercial</dt><dd><b>Litre Meter · Emerson Process Management · Petrofac</b> - including engineering sales and key account management, projects, business development and product development, across multiple product lines, industries and regions.</dd></div>
+          <div><dt>Track record</dt><dd>Technology and strategy leadership in robotics, IIoT/sensing, integrity &amp; inspection and OT security at <b>BP</b>, across <b>~60 primary assets in 8 operating basins</b>.</dd></div>
+          <div><dt>Domain</dt><dd>Robotics and OT sensors &amp; infrastructure in heavy industry · EX-rated / hazardous-area OT, robots and drones (ATEX / IECEx) · OT/ICS security (IEC 62443) · IIoT and digital twins · technology-maturity roadmapping · standards and certification.</dd></div>
+        </dl>
+  </div>
+</section>
+
+
+<section class="sec mist">
+  <div class="wrap">
+    <div class="opener">Certified doesn't mean safe. Working in a trial doesn't mean working on your asset.</div>
+    <div class="cards3">
+      <div class="card principle"><img src="assets/icon-08-independent-by-design.png" alt=""><h3>Independent, by design.</h3><p>Our loyalty is to whether the operation works once the pilots are finished - not to any box, platform or vendor inside it.</p></div>
+      <div class="card principle"><img src="assets/icon-09-whole-system-not-the-kit.png" alt=""><h3>The whole system, not the kit.</h3><p>A programme stalls when the organisation around it was never brought with it. We work across the whole picture - the technology, the OT infrastructure beneath it, the standards, the people and the authority to actually adopt - and say what it will really take.</p></div>
+      <div class="card principle"><img src="assets/icon-10-from-demo-to-asset.png" alt=""><h3>From demonstration to asset.</h3><p>The question is never whether it works in a trial. It is whether it is sustainably fit for service on a live asset - and a certificate alone cannot answer that. The operator's risk case can. That is the question we help answer.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<section id="contact" class="sec contact">
+  <div class="wrap">
+    <h2>Before the commitment is made.</h2>
+    <p>If you are facing a decision on the adoption of inspection, maintenance or surveillance robotics - or the OT infrastructure beneath it - we'd be glad to think it through with you. The first step is a 30-minute call to agree the one question worth answering first.</p>
+    <a class="btn" href="mailto:steve@dewhurst.tech">steve@dewhurst.tech</a>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech" width="279" height="84"></a>
+    <div class="c">© 2026 Dewhurst.tech Ltd · Registered in England &amp; Wales, company no. 17373526<br>Registered office: 71-75 Shelton Street, Covent Garden, London WC2H 9JQ · <a href="privacy.html">Privacy</a> · <a href="data-policy.html">Calculator data</a><div class="ver">Version:2026.10.19.01</div></div>
+  </div>
+</footer>
+
+</body>
 </html>
-<!-- END OF PAGE v2.1 — SECTIONED FOR PINEGROW, 2026-07-15. Structure only; copy is byte-for-byte the copy of v2.0, which is quoted verbatim from D21. Change D21 → re-derive. If this line is not the last line, the file is truncated. -->
