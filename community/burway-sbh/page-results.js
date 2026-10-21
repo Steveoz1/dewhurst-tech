@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS } from "./sbh.js";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js";
 
 await boot({ watch: ["entries"] });
 watchTimings(S.instance);
@@ -14,41 +14,100 @@ onChange(() => {
 
 const OUT = ["DNS", "DNF", "DSQ", "Withdrawn"];
 let sort = "pos";
+let view = LS.get("sbh.resultsView", "basic") === "details" ? "details" : "basic";
+
+/* Basic / Details toggle, in front of the A/B toggle in the top bar */
+const vseg = document.createElement("div");
+vseg.className = "seg view"; vseg.setAttribute("role", "group"); vseg.setAttribute("aria-label", "View");
+vseg.innerHTML = `<button type="button" data-v="basic">Basic</button><button type="button" data-v="details">Details</button>`;
+$(".sbh-bar").prepend(vseg);
+$$("button", vseg).forEach(b => b.addEventListener("click", () => { view = b.dataset.v; LS.set("sbh.resultsView", view); draw(); }));
+
 const app = $("#app");
 app.innerHTML = `
   <p class="prov">Provisional - subject to penalties and handicaps.</p>
+  <div class="rfilters">
+    <input class="q" type="search" placeholder="Search crew name, e.g. smi" aria-label="Search crew name" autocomplete="off">
+    <select class="fc" aria-label="Filter by club"><option value="">All clubs</option></select>
+    <select class="fe" aria-label="Filter by event"><option value="">All events</option></select>
+    <button class="clear link" type="button">Clear</button>
+  </div>
   <div class="strip">
     <div class="seg light sortseg" role="group" aria-label="Sort">
       <button type="button" data-s="pos" class="on">By position</button><button type="button" data-s="bow">By Bow#</button><button type="button" data-s="event">By event</button></div>
     <button type="button" class="btn small" id="exp">Export CSV</button>
+    <span class="note rstatus" id="rstatus" aria-live="polite"></span>
     <span class="note" id="inst"></span>
   </div>
   <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>`;
 $$(".sortseg button").forEach(b => b.addEventListener("click", () => { sort = b.dataset.s; $$(".sortseg button").forEach(x => x.classList.toggle("on", x === b)); draw(); }));
+const q = $(".rfilters .q"), fc = $(".rfilters .fc"), fe = $(".rfilters .fe");
+q.addEventListener("input", draw); fc.addEventListener("change", draw); fe.addEventListener("change", draw);
+$(".rfilters .clear").addEventListener("click", () => { q.value = ""; fc.value = ""; fe.value = ""; draw(); });
+
+/* Fill the drop-downs from the live data, keeping the current choice */
+let optKey = "";
+function fillOptions() {
+  const ents = entryList("all");
+  const clubs = [...new Set(ents.map(e => e.club))].sort((a, b) => a.localeCompare(b));
+  const events = [...new Set(ents.map(e => e.event))].sort((a, b) => a.localeCompare(b));
+  const cs = combos().filter(c => Object.keys(c.events).length);
+  const key = JSON.stringify([clubs, events, cs.map(c => [c.id, c.name])]);
+  if (key === optKey) return; optKey = key;
+  const keepC = fc.value, keepE = fe.value;
+  fc.innerHTML = `<option value="">All clubs</option>` + clubs.map(c => `<option>${esc(c)}</option>`).join("");
+  fe.innerHTML = `<option value="">All events</option>` +
+    (cs.length ? `<optgroup label="Event combinations">${cs.map(c => `<option value="combo:${esc(c.id)}">${esc(c.name)}</option>`).join("")}</optgroup>` : "") +
+    `<optgroup label="Events">${events.map(e => `<option value="event:${esc(e)}">${esc(e)}</option>`).join("")}</optgroup>`;
+  fc.value = clubs.includes(keepC) ? keepC : ""; fe.value = [...fe.options].some(o => o.value === keepE) ? keepE : "";
+}
 
 const gname = r => r.combo ? r.combo.name : r.e.event;
-const adjNote = r => [r.hc ? `handicap -${r.hc} s` : "", r.pen ? `penalty +${r.pen} s` : ""].filter(Boolean).join(", ");
 const byPos = (a, b) => (a.pos == null) - (b.pos == null) || (a.pos || 0) - (b.pos || 0) || a.e.bow - b.e.bow;
+function hl(s, t) {                                  // highlight the search text, like the Burway event page
+  s = String(s == null ? "" : s); const i = t ? s.toLowerCase().indexOf(t) : -1;
+  return i < 0 ? esc(s) : esc(s.slice(0, i)) + "<mark>" + esc(s.slice(i, i + t.length)) + "</mark>" + esc(s.slice(i + t.length));
+}
+const timeOr = (v, r) => v != null ? fmtRace(v) : esc(r.note);
 
 function draw() {
-  const div = "all";
-  $("#inst").textContent = S.user ? `Showing instance ${S.instance} times · the public always sees A` : "";
-  let rows = compute(S.instance).filter(r => div === "all" || Number(r.e.division) === Number(div));
+  fillOptions();
+  $$("button", vseg).forEach(b => b.classList.toggle("on", b.dataset.v === view));
+  $("#inst").textContent = S.user ? `Instance ${S.instance} · the public always sees A` : "";
+  const t = q.value.trim().toLowerCase();
+  const all = compute(S.instance);
+  let rows = all.filter(r => (!t || String(r.e.crew).toLowerCase().includes(t))
+    && (!fc.value || r.e.club === fc.value)
+    && (!fe.value || (fe.value.startsWith("combo:") ? r.combo && r.combo.id === fe.value.slice(6) : r.e.event === fe.value.slice(6))));
+  $("#rstatus").textContent = (t || fc.value || fe.value) ? `Showing ${rows.length} of ${all.length} crews` : `${all.length} crews`;
   if (sort === "bow") rows.sort((a, b) => a.e.bow - b.e.bow);
   else if (sort === "event") rows.sort((a, b) => gname(a).localeCompare(gname(b)) || (a.posEv == null) - (b.posEv == null) || (a.posEv || 0) - (b.posEv || 0) || a.e.bow - b.e.bow);
   else rows.sort(byPos);
-  let lastDiv = null, lastEv = null;
+  const basic = view === "basic"; const cols = basic ? 7 : 12;
+  $("#tbl").classList.toggle("basic", basic);
+  let lastEv = null;
   const body = rows.map(r => {
     let h = "";
-    if (sort === "event" && gname(r) !== lastEv) { h += `<tr class="divh"><td colspan="12" style="background:#eef2f6;color:#0E1621">${esc(gname(r))}${r.combo ? ` <small>(event combination: ${esc(Object.keys(r.combo ? (S.race.combos[r.combo.id] || {}).events || {} : {}).join(", "))})</small>` : ""}</td></tr>`; lastEv = gname(r); }
+    if (sort === "event" && gname(r) !== lastEv) {
+      const evs = r.combo ? Object.keys(((S.race.combos || {})[r.combo.id] || {}).events || {}) : [];
+      h += `<tr class="grp"><td colspan="${cols}">${esc(gname(r))}${evs.length ? ` <small>(${esc(evs.join(", "))})</small>` : ""}</td></tr>`; lastEv = gname(r);
+    }
+    if (basic) return h + `<tr class="${r.rt == null ? "out" : ""}">
+      <td class="n pos"><b>${r.pos ?? ""}</b></td><td class="n bw">${r.e.bow}</td><td class="ev">${esc(r.e.event)}</td>
+      <td class="wr nm">${hl(r.e.crew, t)}</td><td class="wr cl">${esc(r.e.club)}</td><td class="n dv">${r.e.division}</td>
+      <td class="t tm"><b>${timeOr(r.adj, r)}</b></td>
+      <td class="meta">Bow ${r.e.bow} · ${esc(r.e.event)} · ${esc(r.e.club)} · Div ${r.e.division}</td></tr>`;
     return h + `<tr class="${r.rt == null ? "out" : ""}">
-      <td class="n"><b>${r.pos ?? ""}</b></td><td class="n">${r.e.bow}</td><td>${esc(r.e.event)}</td><td class="wrap">${esc(r.e.crew)}</td><td class="wrap">${esc(r.e.club)}</td>
+      <td class="n"><b>${r.pos ?? ""}</b></td><td class="n">${r.e.bow}</td><td>${esc(r.e.event)}</td><td class="wr">${hl(r.e.crew, t)}</td><td class="wr">${esc(r.e.club)}</td>
       <td class="n">${r.e.division}</td><td class="t">${fmtClock(r.t.start)}</td><td class="t">${fmtClock(r.t.finish)}</td>
-      <td class="t"><b>${r.rt != null ? fmtRace(r.rt) : esc(r.note)}</b></td>
+      <td class="t"><b>${timeOr(r.rt, r)}</b></td>
       <td class="t">${r.pt != null ? `<b>${fmtRace(r.pt)}</b>${r.pen ? `<br><small>penalty +${r.pen} s</small>` : ""}` : ""}</td>
       <td class="t">${r.adj != null ? `<b>${fmtRace(r.adj)}</b>${r.hc ? `<br><small>handicap -${r.hc} s</small>` : ""}` : ""}</td><td class="n">${r.posEv ?? ""}</td></tr>`;
   }).join("");
-  $("#tbl").innerHTML = `<thead><tr><th class="n" title="Overall, all divisions, on Time + penalty">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th>Start</th><th>Finish</th><th>Race time</th><th title="Race time plus any penalty - decides overall Pos">Time + penalty</th><th title="Time + penalty, minus any handicap - decides Pos in event">Adjusted time</th><th class="n" title="On adjusted time, within the event or its event combination">Pos in event</th></tr></thead><tbody>${body || `<tr><td colspan="12" class="empty">No crews loaded yet.</td></tr>`}</tbody>`;
+  const head = basic
+    ? `<th class="n" title="Overall, all divisions, on Time + penalty">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th title="Race time + penalty - handicap">Adjusted time</th>`
+    : `<th class="n" title="Overall, all divisions, on Time + penalty">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th>Start</th><th>Finish</th><th>Race time</th><th title="Race time plus any penalty - decides overall Pos">Time + penalty</th><th title="Time + penalty, minus any handicap - decides Pos in event">Adjusted time</th><th class="n" title="On adjusted time, within the event or its event combination">Pos in event</th>`;
+  $("#tbl").innerHTML = `<thead><tr>${head}</tr></thead><tbody>${body || `<tr><td colspan="${cols}" class="empty">${all.length ? "No crews match these filters." : "No crews loaded yet."}</td></tr>`}</tbody>`;
 }
 onChange(draw); draw();
 

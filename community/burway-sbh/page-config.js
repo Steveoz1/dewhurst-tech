@@ -54,10 +54,10 @@ function draw() {
       return `<tr data-bow="${e.bow}" class="${e.status === "Withdrawn" ? "withdrawn" : ""}">
         <td><input class="bowin ${locked ? "locked" : ""}" data-f="bow" inputmode="numeric" value="${e.bow}" ${locked ? `readonly title="Has a time in A or B - Bow# can't change"` : ""}></td>
         <td><input data-f="event" value="${esc(e.event)}"></td>
-        <td class="wrap"><input data-f="crew" value="${esc(e.crew)}"></td>
-        <td class="wrap"><input data-f="club" value="${esc(e.club)}"></td>
+        <td class="wr"><input data-f="crew" value="${esc(e.crew)}"></td>
+        <td class="wr"><input data-f="club" value="${esc(e.club)}"></td>
         <td><select data-f="division">${DIVS.map(d => `<option value="${d}" ${Number(e.division) === d ? "selected" : ""}>${d}</option>`).join("")}</select></td>
-        <td class="wrap">${(() => { const c = comboOf(e.event); return c ? esc(c.name) : "<small>-</small>"; })()}</td>
+        <td class="wr">${(() => { const c = comboOf(e.event); return c ? esc(c.name) : "<small>-</small>"; })()}</td>
         <td class="n">${(() => { const c = comboOf(e.event); return c && c.handicap ? c.handicap : "0"; })()}</td>
         <td><select data-f="status">${STATUSES.map(s => `<option ${s === (e.status || "") ? "selected" : ""}>${s}</option>`).join("")}</select></td>
         <td><input data-f="penalty" inputmode="decimal" value="${penaltyOf(e) || 0}" style="width:70px;min-width:0;text-align:right"></td>

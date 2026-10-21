@@ -1,7 +1,7 @@
 /* sw.js - keeps a copy of the SBH timing pages on the phone so they open with no signal.
    Scope: /community/burway-sbh/ only. Race data itself is handled by Firebase's own offline cache.
    Bump VERSION on every publish so phones pick up the new files. */
-const VERSION = "sbh-2026-10-21g";
+const VERSION = "sbh-2026-10-21h";
 const FB = "https://www.gstatic.com/firebasejs/12.19.0/";
 const LOCAL = [
   "./", "index.html", "config.html", "start.html", "finish.html", "results.html", "adjudicate.html", "handicap.html", "burway-emblem.png",

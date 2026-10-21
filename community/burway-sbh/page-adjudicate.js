@@ -48,11 +48,11 @@ function draw() {
     show.map(r => {
       const d = diff(r);
       return `<tr data-bow="${r.e.bow}">
-        <td class="n"><b>${r.e.bow}</b></td><td class="wrap">${esc(r.e.crew)}<br><small>${esc(r.e.event)} · Div ${r.e.division}</small></td>
+        <td class="n"><b>${r.e.bow}</b></td><td class="wr">${esc(r.e.crew)}<br><small>${esc(r.e.event)} · Div ${r.e.division}</small></td>
         <td class="t">${fmtClock(r.a.t.start)}</td><td class="t">${fmtClock(r.a.t.finish)}</td><td class="t"><b>${r.a.rt != null ? fmtRace(r.a.rt) : esc(r.a.note)}</b></td><td class="n">${r.a.pos ?? ""}</td>
         <td class="t">${fmtClock(r.b.t.start)}</td><td class="t">${fmtClock(r.b.t.finish)}</td><td class="t"><b>${r.b.rt != null ? fmtRace(r.b.rt) : esc(r.b.note)}</b></td><td class="n">${r.b.pos ?? ""}</td>
         <td class="n ${d != null && Math.abs(d) > 1 ? "bad" : ""}">${d != null ? (d > 0 ? "+" : "") + d.toFixed(1) : ""}</td>
-        <td class="wrap">${r.flags.map(f => `<span class="flag ${f.lvl}">${esc(f.t)}</span>`).join(" ") || `<span class="ok">OK</span>`}</td>
+        <td class="wr">${r.flags.map(f => `<span class="flag ${f.lvl}">${esc(f.t)}</span>`).join(" ") || `<span class="ok">OK</span>`}</td>
         <td><button type="button" class="btn small rev">Review</button></td></tr>`;
     }).join("") || `<tr><td colspan="13" class="empty">${onlyFlagged ? "Nothing to look at - A and B agree for every crew in this view." : "No crews in this division."}</td></tr>`
   }</tbody>`;
@@ -139,7 +139,7 @@ async function review(bow) {
         : t.kind === "void" ? `undo ${t.field}` : t.kind === "status" ? `status ${t.value}`
         : t.kind === "adjust" ? `ADJUDICATION ${t.field} → ${t.field === "status" ? (t.value || "none") : (fmtClock(t.value) || "cleared")} · "${esc(t.reason)}"` : t.kind;
       $("#hist", d).innerHTML = all.length ? `<table class="sbh-t"><thead><tr><th>Logged</th><th>Inst</th><th>What</th><th>Who</th><th>Phone</th></tr></thead><tbody>${
-        all.map(t => `<tr><td class="t">${fmtClock(when(t))}</td><td>${t.instance}</td><td class="wrap">${what(t)}</td><td>${esc((t.user || "").replace("@dewhurst.tech", ""))}</td><td>${esc(t.deviceId || "")}</td></tr>`).join("")}</tbody></table>`
+        all.map(t => `<tr><td class="t">${fmtClock(when(t))}</td><td>${t.instance}</td><td class="wr">${what(t)}</td><td>${esc((t.user || "").replace("@dewhurst.tech", ""))}</td><td>${esc(t.deviceId || "")}</td></tr>`).join("")}</tbody></table>`
         : "No taps logged for this crew.";
     } catch (err) { $("#hist", d).textContent = "Couldn't load the tap log: " + (err.code || err.message || err); }
     finally { histBusy = false; }
