@@ -1,5 +1,5 @@
 /* Race Configuration page (brief E2: F-K1 to F-K6) */
-import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, isTimed,
+import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, isTimed, comboOf, penaltyOf,
          saveEntries, parseCSV, downloadCSV, STATUSES, DIVS, toast, confirmBox, typedConfirm,
          resetField, officialInstance, saveRace } from "./sbh.js";
 
@@ -14,6 +14,7 @@ app.innerHTML = `
     <input id="csvfile" type="file" accept=".csv,text/csv" hidden>
     <button type="button" class="btn small" id="addbtn">Add a crew</button>
     <button type="button" class="btn small" id="expbtn">Export CSV</button>
+    <a class="btn small" href="handicap.html">Handicap Configuration</a>
     <span class="count" id="count"></span>
   </div>
   <div id="imp"></div>
@@ -47,7 +48,7 @@ function draw() {
   const list = entryList(div);
   const all = Object.values(S.entries);
   $("#count").textContent = `${all.length} crews · ` + DIVS.map(d => `Div ${d}: ${all.filter(e => Number(e.division) === d).length}`).join(" · ");
-  tbl.innerHTML = `<thead><tr><th>Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th>Division</th><th>Status</th><th>Notes</th></tr></thead><tbody>${
+  tbl.innerHTML = `<thead><tr><th>Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th>Division</th><th>Event combo</th><th class="n">Handicap (s)</th><th>Status</th><th class="n">Penalty (s)</th><th>Notes</th></tr></thead><tbody>${
     list.map(e => {
       const locked = isTimed(e.bow);
       return `<tr data-bow="${e.bow}" class="${e.status === "Withdrawn" ? "withdrawn" : ""}">
@@ -56,9 +57,12 @@ function draw() {
         <td class="wrap"><input data-f="crew" value="${esc(e.crew)}"></td>
         <td class="wrap"><input data-f="club" value="${esc(e.club)}"></td>
         <td><select data-f="division">${DIVS.map(d => `<option value="${d}" ${Number(e.division) === d ? "selected" : ""}>${d}</option>`).join("")}</select></td>
+        <td class="wrap">${(() => { const c = comboOf(e.event); return c ? esc(c.name) : "<small>-</small>"; })()}</td>
+        <td class="n">${(() => { const c = comboOf(e.event); return c && c.handicap ? c.handicap : "0"; })()}</td>
         <td><select data-f="status">${STATUSES.map(s => `<option ${s === (e.status || "") ? "selected" : ""}>${s}</option>`).join("")}</select></td>
+        <td><input data-f="penalty" inputmode="decimal" value="${penaltyOf(e) || 0}" style="width:70px;min-width:0;text-align:right"></td>
         <td><input data-f="notes" value="${esc(e.notes || "")}"></td></tr>`;
-    }).join("") || `<tr><td colspan="7" class="empty">No crews yet. Use Import CSV to load the Raceclocker upload file.</td></tr>`
+    }).join("") || `<tr><td colspan="10" class="empty">No crews yet. Use Import CSV to load the Raceclocker upload file.</td></tr>`
   }</tbody>`;
 }
 let dirty = false;
@@ -82,6 +86,7 @@ tbl.addEventListener("change", e => {
   }
   let v = el.value; if (typeof v === "string") v = v.trim();
   if (f === "division") v = Number(v);
+  if (f === "penalty") { const n = Number(String(v).replace(",", ".")); if (!isFinite(n) || n < 0 || n > 3600) { toast("Penalty is seconds, e.g. 10 or 5.5"); el.value = penaltyOf(entry); return; } v = n; }
   if (f === "crew" && !v) { toast("Crew name can't be blank."); el.value = entry.crew; return; }
   saveEntries({ [bow]: { [f]: v, ...stamp } });
 });
@@ -179,7 +184,7 @@ $("#csvfile").addEventListener("change", async e => {
 
 /* ---------- export (F-K6) ---------- */
 $("#expbtn").addEventListener("click", () => {
-  const rows = [["Bow#", "Event", "Crew Name", "Club", "Division", "Status", "Notes"]];
-  for (const e of entryList("all")) rows.push([e.bow, e.event, e.crew, e.club, "Division " + e.division, e.status || "", e.notes || ""]);
+  const rows = [["Bow#", "Event", "Crew Name", "Club", "Division", "Event combo", "Handicap (s)", "Status", "Penalty (s)", "Notes"]];
+  for (const e of entryList("all")) { const c = comboOf(e.event); rows.push([e.bow, e.event, e.crew, e.club, "Division " + e.division, c ? c.name : "", c ? c.handicap : 0, e.status || "", penaltyOf(e), e.notes || ""]); }
   downloadCSV("SBH2026-configuration.csv", rows);
 });

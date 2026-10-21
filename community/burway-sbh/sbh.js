@@ -282,6 +282,26 @@ export function isTimed(bow) {               // F-K5
 
 const OUT_ST = ["DNS", "DNF", "DSQ", "Withdrawn"];
 /** Compute results for one instance: race time, position in division, position in event. */
+/* Event combinations and handicaps (Handicap Configuration page). Stored in config/race:
+   combos: { id: { name, events: { "<event name>": handicapSeconds } } }. An event belongs to at most one combo. */
+export function combos() {
+  const out = [];
+  for (const [id, c] of Object.entries(S.race.combos || {})) if (c && typeof c === "object") {
+    const events = {}; for (const [ev, h] of Object.entries(c.events || {})) if (h != null) events[ev] = Number(h) || 0;
+    out.push({ id, name: c.name || "", events, created: c.created || 0 });
+  }
+  return out.sort((x, y) => x.created - y.created || x.name.localeCompare(y.name));
+}
+export function comboOf(event) {
+  for (const c of combos()) if (event in c.events) return { id: c.id, name: c.name, handicap: c.events[event] };
+  return null;
+}
+export const penaltyOf = e => Number(e && e.penalty) || 0;
+
+/* Results for one instance.
+   rt  = race time (finish - start), tenths of a second. pos = place in division on race time.
+   adj = adjusted time = race time - handicap + penalty (tenths). posEv = place on adjusted time
+         among crews in the same event - or the same event combination, where the event is in one. */
 export function computeResults(inst) {
   const rows = entryList("all").map(e => {
     const t = timing(inst, e.bow); const st = statusOf(inst, e.bow);
@@ -289,17 +309,18 @@ export function computeResults(inst) {
     let note = st;
     if (rt != null && rt <= 0) { note = "Check"; rt = null; }
     if (!note && rt == null) note = t.start != null ? (t.finish != null ? "" : "On water") : "";
-    return { e, t, st, rt, note, pos: null, posEv: null };
+    const combo = comboOf(e.event); const hc = combo ? combo.handicap : 0; const pen = penaltyOf(e);
+    const adj = rt == null ? null : rt - Math.round(hc * 10) + Math.round(pen * 10);
+    return { e, t, st, rt, adj, hc, pen, combo, group: combo ? "combo:" + combo.id : "event:" + e.event, note, pos: null, posEv: null };
   });
-  const rank = (group) => {
-    const g = group.filter(r => r.rt != null).sort((a, b) => a.rt - b.rt);
-    const out = new Map(); g.forEach((r, i) => out.set(r, i > 0 && g[i - 1].rt === r.rt ? out.get(g[i - 1]) : i + 1)); return out;
+  const rank = (group, key) => {
+    const g = group.filter(r => r[key] != null).sort((a, b) => a[key] - b[key]);
+    const out = new Map(); g.forEach((r, i) => out.set(r, i > 0 && g[i - 1][key] === r[key] ? out.get(g[i - 1]) : i + 1)); return out;
   };
   for (const d of DIVS) {
     const inDiv = rows.filter(r => Number(r.e.division) === d);
-    rank(inDiv).forEach((p, r) => (r.pos = p));
-    const evs = new Set(inDiv.map(r => r.e.event));
-    for (const ev of evs) rank(inDiv.filter(r => r.e.event === ev)).forEach((p, r) => (r.posEv = p));
+    rank(inDiv, "rt").forEach((p, r) => (r.pos = p));
+    for (const gk of new Set(inDiv.map(r => r.group))) rank(inDiv.filter(r => r.group === gk), "adj").forEach((p, r) => (r.posEv = p));
   }
   return rows;
 }
