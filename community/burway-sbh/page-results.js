@@ -1,11 +1,16 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
-import { boot, mountBar, onChange, S, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
+import { boot, mountBar, onChange, S, officialInstance, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
          raceTenths, fmtRace, fmtClock, downloadCSV, DIVS } from "./sbh.js";
 
 await boot({ watch: ["entries"] });
 watchTimings(S.instance);
 mountBar($("#bar"), { allowAll: true });
-onChange(() => watchTimings(S.instance));             // start listening to B only if someone asks for it
+/* Public viewers see the official instance only; signed-in officials can switch A/B. */
+onChange(() => {
+  if (!S.user) S.instance = officialInstance();
+  document.querySelector(".sbh-bar")?.classList.toggle("public", !S.user);
+  watchTimings(S.instance);                           // listen to B only if someone needs it
+});
 
 const OUT = ["DNS", "DNF", "DSQ", "Withdrawn"];
 let sort = "pos";
@@ -13,7 +18,7 @@ const app = $("#app");
 app.innerHTML = `
   <p class="prov">Provisional - subject to penalties and handicaps.</p>
   <div class="strip">
-    <div class="seg sortseg" role="group" aria-label="Sort" style="border-color:#0E162133">
+    <div class="seg light sortseg" role="group" aria-label="Sort">
       <button type="button" data-s="pos" class="on">By position</button><button type="button" data-s="bow">By Bow#</button><button type="button" data-s="event">By event</button></div>
     <button type="button" class="btn small" id="exp">Export CSV</button>
     <span class="note" id="inst"></span>
@@ -47,7 +52,7 @@ const byPos = (a, b) => (a.pos == null) - (b.pos == null) || (a.pos || 0) - (b.p
 
 function draw() {
   const div = currentDivision();
-  $("#inst").textContent = `Showing instance ${S.instance} times`;
+  $("#inst").textContent = S.user ? `Showing instance ${S.instance} times · official instance for the public: ${officialInstance()}` : "";
   let rows = compute(S.instance).filter(r => div === "all" || Number(r.e.division) === Number(div));
   if (sort === "bow") rows.sort((a, b) => a.e.bow - b.e.bow);
   else if (sort === "event") rows.sort((a, b) => Number(a.e.division) - Number(b.e.division) || a.e.event.localeCompare(b.e.event) || (a.posEv == null) - (b.posEv == null) || (a.posEv || 0) - (b.posEv || 0) || a.e.bow - b.e.bow);

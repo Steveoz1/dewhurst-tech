@@ -57,6 +57,7 @@ export const S = {
   deviceId: LS.get("sbh.deviceId", null) || (() => { const d = rid(6); LS.set("sbh.deviceId", d); return d; })(),
   offset: LS.get("sbh.offset", null),        // { ms, rtt, at }
   entries: {},                                // bow(string) -> entry
+  race: {},                                   // config/race: { official: "A"|"B" }
   timings: { A: {}, B: {} },                  // bow(string) -> { start, startTap, finish, finishTap, status, statusTap }
   instance: LS.get("sbh.instance", "A") === "B" ? "B" : "A",
   division: SS.get("sbh.div", null),          // null = automatic (F-C3)
@@ -227,6 +228,8 @@ export async function boot({ watch = ["entries", "A", "B"] } = {}) {
     changed();
   });
   if (watch.includes("entries")) watchEntries();
+  S.backend.watchDoc("config/race", (data, meta) => { S.race = data || {}; changed(); });
+  onChange(paintWho);
   for (const i of ["A", "B"]) if (watch.includes(i)) watchTimings(i);
   addEventListener("online", () => { replayLedger(); changed(); });
   addEventListener("offline", changed);
@@ -251,6 +254,16 @@ export function watchTimings(inst) {
     S.timings[inst] = data || {}; noteMeta(meta); changed();
   });
 }
+
+function paintWho() {
+  const w = document.getElementById("who"); if (!w) return;
+  if (!S.user) { w.innerHTML = "Not signed in"; return; }
+  const r = S.role ? S.role[0].toUpperCase() + S.role.slice(1) : S.user.email;
+  w.innerHTML = `Signed in: <b>${esc(r)}</b> <button type="button" class="link">Sign out</button>`;
+  w.querySelector("button").onclick = async () => { if (await confirmBox("Sign out?", "You'll need the password to sign back in.", "Sign out")) S.backend.signOut(); };
+}
+export const officialInstance = () => (S.race.official === "B" ? "B" : "A");
+export function saveRace(patch) { writeOps("r" + rid(12), [{ path: "config/race", data: patch }], null); }
 
 /* ---- 8. Entries helpers ------------------------------------------- */
 export function entryList(div) {             // sorted by bow; div = 1|2|3|"all"
@@ -295,7 +308,7 @@ async function replayLedger() {
   try {
     await S.backend.pendingDone();            // let the SDK flush its own queue first
     for (const item of ledger()) {
-      if (item.id[0] === "e") { ledgerRemove(item.id); continue; }   // entries edits: SDK has flushed them
+      if (item.id[0] === "e" || item.id[0] === "r") { ledgerRemove(item.id); continue; }   // entries edits: SDK has flushed them
       let there = false;
       try { there = await S.backend.exists("taps/" + item.id); } catch (e) { break; }
       if (there) { ledgerRemove(item.id); continue; }
@@ -343,6 +356,17 @@ export function setStatus(bow, status, inst = S.instance) {
 export function undoNeedsConfirm(field, bow, inst = S.instance) {
   const t = myTaps[`${inst}:${bow}:${field}`];
   return !(t && Date.now() - t < UNDO_FREE_MS);
+}
+
+/** Admin: clear every start (or finish) time in one instance. Logged as one "reset" tap; nothing is deleted from the log. */
+export function resetField(field, inst) {
+  const T = S.timings[inst] || {}; const patch = {}; let n = 0;
+  for (const [bow, t] of Object.entries(T)) if (t && t[field] != null) { patch[bow] = { [field]: null, [field + "Tap"]: null }; n++; }
+  if (!n) return 0;
+  const id = S.backend.newId();
+  const tap = { ...baseTap("reset", inst, null, null), field, value: n };
+  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: patch }], tap);
+  return n;
 }
 
 /** Admin: write a patch to the entries table (merge). null removes a bow. */
@@ -494,6 +518,20 @@ export function confirmBox(title, body = "", ok = "Yes", cancel = "Cancel") {
     d.querySelector(".no").addEventListener("click", () => done(false));
     d.querySelector(".yes").addEventListener("click", () => done(true));
     document.body.appendChild(d); d.querySelector(".yes").focus();
+  });
+}
+export function typedConfirm(title, body, word, ok = "Confirm") {
+  return new Promise(res => {
+    const d = document.createElement("div"); d.className = "sbh-modal";
+    d.innerHTML = `<div class="box" role="dialog" aria-modal="true"><h3>${esc(title)}</h3><p>${esc(body)}</p>
+      <p>Type <b>${esc(word)}</b> to confirm:</p><input class="typed" autocomplete="off" autocapitalize="characters" style="font:700 20px/1 var(--sans);padding:10px;width:100%;border:2px solid #0E1621;border-radius:10px;margin-bottom:12px">
+      <div class="row"><button type="button" class="btn big no">Cancel</button><button type="button" class="btn big yes danger" disabled>${esc(ok)}</button></div></div>`;
+    const inp = d.querySelector(".typed"), yes = d.querySelector(".yes");
+    inp.addEventListener("input", () => (yes.disabled = inp.value.trim().toUpperCase() !== word.toUpperCase()));
+    const done = v => { d.remove(); res(v); };
+    d.querySelector(".no").addEventListener("click", () => done(false));
+    yes.addEventListener("click", () => done(true));
+    document.body.appendChild(d); inp.focus();
   });
 }
 export function menuBox(title, items) {       // items: [{label, value, danger}]

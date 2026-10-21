@@ -1,6 +1,7 @@
 /* Race Configuration page (brief E2: F-K1 to F-K6) */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, isTimed,
-         saveEntries, parseCSV, downloadCSV, STATUSES, DIVS, toast, confirmBox } from "./sbh.js";
+         saveEntries, parseCSV, downloadCSV, STATUSES, DIVS, toast, confirmBox, typedConfirm,
+         resetField, officialInstance, saveRace } from "./sbh.js";
 
 const app = $("#app");
 await boot({ watch: ["entries", "A", "B"] });
@@ -28,6 +29,15 @@ app.innerHTML = `
     <button type="button" class="btn primary" id="a-save">Add crew</button>
     <button type="button" class="btn" id="a-cancel">Cancel</button>
     <span id="a-msg" class="bad"></span>
+  </div>
+  <div class="panel" id="admin">
+    <h3>Public results</h3>
+    <p>Visitors who aren't signed in see one instance's times. <span class="seg light" id="offseg" role="group" aria-label="Official instance"><button type="button" data-i="A">A</button><button type="button" data-i="B">B</button></span></p>
+    <h3 style="margin-top:14px">Reset times</h3>
+    <p>Clears times so crews show as not started / not finished. The taps stay in the audit log.</p>
+    <p>Instance: <span class="seg light" id="rseg" role="group" aria-label="Instance to reset"><button type="button" data-i="A">A</button><button type="button" data-i="B">B</button></span></p>
+    <button type="button" class="btn danger" id="rstart"></button>
+    <button type="button" class="btn danger" id="rfinish"></button>
   </div>
   <p class="note">Edits save when you leave a box. Withdraw a crew with the Status column - crews are never deleted. A crew's Bow# is locked once it has a time in A or B.</p>
   <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>`;
@@ -92,6 +102,30 @@ $("#a-save").addEventListener("click", () => {
   $$("#addp input").forEach(i => (i.value = "")); $("#addp").hidden = true; toast(`Bow ${bow} added`);
 });
 
+/* ---------- public instance + reset (F-K9, punch list 3 and 5) ---------- */
+let rInst = S.instance;
+function paintAdmin() {
+  $$("#offseg button").forEach(b => b.classList.toggle("on", b.dataset.i === officialInstance()));
+  $$("#rseg button").forEach(b => b.classList.toggle("on", b.dataset.i === rInst));
+  const n = f => Object.values(S.timings[rInst] || {}).filter(t => t && t[f] != null).length;
+  $("#rstart").textContent = `Reset all START times in ${rInst} (${n("start")})`;
+  $("#rfinish").textContent = `Reset all FINISH times in ${rInst} (${n("finish")})`;
+}
+onChange(paintAdmin); paintAdmin();
+$$("#offseg button").forEach(b => b.addEventListener("click", async () => {
+  if (b.dataset.i === officialInstance()) return;
+  if (await confirmBox(`Show instance ${b.dataset.i} to the public?`, "The public Results page switches straight away.", `Show ${b.dataset.i}`)) saveRace({ official: b.dataset.i });
+}));
+$$("#rseg button").forEach(b => b.addEventListener("click", () => { rInst = b.dataset.i; paintAdmin(); }));
+for (const [id, field, label] of [["#rstart", "start", "START"], ["#rfinish", "finish", "FINISH"]]) {
+  $(id).addEventListener("click", async () => {
+    const n = Object.values(S.timings[rInst] || {}).filter(t => t && t[field] != null).length;
+    if (!n) { toast(`No ${label.toLowerCase()} times in ${rInst} to reset`); return; }
+    if (!(await typedConfirm(`Reset all ${n} ${label} times in instance ${rInst}?`, `Every crew in ${rInst} will show as not ${field === "start" ? "started" : "finished"}. This can't be undone from the pages.`, `RESET ${rInst}`, "Reset"))) return;
+    toast(`${resetField(field, rInst)} ${label.toLowerCase()} times cleared in ${rInst}`);
+  });
+}
+
 /* ---------- import (F-K2) ---------- */
 $("#csvfile").addEventListener("change", async e => {
   const file = e.target.files[0]; if (!file) return;
@@ -103,7 +137,7 @@ $("#csvfile").addEventListener("change", async e => {
   if (Object.values(need).some(i => i < 0)) {
     imp.innerHTML = `<div class="panel"><h3 class="bad">That file doesn't have the expected columns</h3><p>Expected: Bow#, Event, Crew Name, Club, Division. Found: ${esc(head.join(", "))}</p></div>`; return;
   }
-  const good = [], bad = [], seen = new Set();
+  const rowsOK = [], bad = [], seen = new Set();
   rows.forEach((r, i) => {
     const g = k => (r[need[k]] || "").trim();                 // trim every field
     const bow = parseInt(g("bow"), 10); const dm = g("division").match(/[1-3]/);
@@ -111,24 +145,42 @@ $("#csvfile").addEventListener("change", async e => {
     const line = `Line ${i + 2}`;
     if (!Number.isInteger(bow) || String(bow) !== g("bow")) bad.push(`${line}: Bow# "${g("bow")}" is not a whole number`);
     else if (seen.has(bow)) bad.push(`${line}: Bow ${bow} appears twice in the file - second one rejected`);
-    else if (S.entries[String(bow)]) bad.push(`${line}: Bow ${bow} is already in the table - rejected`);
     else if (!rec.division) bad.push(`${line}: Bow ${bow} has no valid division ("${g("division")}")`);
     else if (!rec.crew) bad.push(`${line}: Bow ${bow} has no crew name`);
-    else { seen.add(bow); good.push(rec); }
+    else { seen.add(bow); rowsOK.push(rec); }
   });
-  const byDiv = DIVS.map(d => `Div ${d}: ${good.filter(r => r.division === d).length}`).join(" · ");
-  imp.innerHTML = `<div class="panel"><h3>Ready to import ${good.length} crews</h3>
-    <p>${byDiv}${bad.length ? ` · <span class="bad">${bad.length} rejected</span>` : ""}</p>
-    ${bad.length ? `<ul>${bad.map(b => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}
-    <button type="button" class="btn primary" id="doimp" ${good.length ? "" : "disabled"}>Import ${good.length} crews</button>
-    <button type="button" class="btn" id="noimp">Cancel</button></div>`;
-  $("#noimp").addEventListener("click", () => (imp.innerHTML = ""));
-  $("#doimp").addEventListener("click", async () => {
-    if (!(await confirmBox(`Import ${good.length} crews?`, byDiv, "Import"))) return;
-    const patch = {}; const stamp = { updatedAt: Date.now(), updatedBy: S.user.email };
-    for (const r of good) if (!S.entries[String(r.bow)]) patch[String(r.bow)] = { ...r, ...stamp };
-    saveEntries(patch); imp.innerHTML = ""; toast(`${Object.keys(patch).length} crews imported`);
-  });
+  const existing = Object.keys(S.entries).length;
+  const timed = Object.values(S.entries).filter(e => isTimed(e.bow)).length;
+  let mode = existing ? "append" : "replace";
+  const drawImp = () => {
+    const good = mode === "append" ? rowsOK.filter(r => !S.entries[String(r.bow)]) : rowsOK;
+    const skipped = mode === "append" ? rowsOK.length - good.length : 0;
+    const removed = mode === "replace" ? Object.keys(S.entries).filter(k => !seen.has(Number(k))).length : 0;
+    const blocked = mode === "replace" && timed > 0;
+    const byDiv = DIVS.map(d => `Div ${d}: ${good.filter(r => r.division === d).length}`).join(" · ");
+    imp.innerHTML = `<div class="panel"><h3>Import ${esc(file.name)}</h3>
+      ${existing ? `<p>The table already has ${existing} crews. <span class="seg light" id="modeseg" role="group" aria-label="Import mode">
+        <button type="button" data-m="append" class="${mode === "append" ? "on" : ""}">Add to the list</button><button type="button" data-m="replace" class="${mode === "replace" ? "on" : ""}">Replace the whole list</button></span></p>
+        <p class="note" style="margin:0 0 8px">${mode === "append" ? "New bow numbers are added. Bows already in the table are left as they are." : "The table becomes exactly this file. Crews not in the file are removed; crews in it are overwritten."}</p>` : ""}
+      <p><b>${good.length} crews to ${mode === "append" ? "add" : "load"}</b> - ${byDiv}${skipped ? ` · ${skipped} already in the table (skipped)` : ""}${removed ? ` · <span class="bad">${removed} removed</span>` : ""}${bad.length ? ` · <span class="bad">${bad.length} rejected</span>` : ""}</p>
+      ${bad.length ? `<ul>${bad.map(b => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}
+      ${blocked ? `<p class="bad">${timed} crews have start or finish times. Reset the times (above) before replacing the list.</p>` : ""}
+      <button type="button" class="btn primary" id="doimp" ${good.length && !blocked ? "" : "disabled"}>${mode === "append" ? "Add" : "Load"} ${good.length} crews</button>
+      <button type="button" class="btn" id="noimp">Cancel</button></div>`;
+    $$("#modeseg button").forEach(b => b.addEventListener("click", () => { mode = b.dataset.m; drawImp(); }));
+    $("#noimp").addEventListener("click", () => (imp.innerHTML = ""));
+    $("#doimp").addEventListener("click", async () => {
+      const stamp = { updatedAt: Date.now(), updatedBy: S.user.email };
+      const patch = {};
+      if (mode === "replace" && existing) {
+        if (!(await typedConfirm(`Replace the whole list with ${good.length} crews?`, `${removed} crews not in the file will be removed from the table.`, "REPLACE", "Replace"))) return;
+        for (const k of Object.keys(S.entries)) if (!seen.has(Number(k))) patch[k] = null;
+      } else if (!(await confirmBox(`${mode === "append" ? "Add" : "Load"} ${good.length} crews?`, byDiv, mode === "append" ? "Add" : "Load"))) return;
+      for (const r of good) patch[String(r.bow)] = { ...r, ...stamp };
+      saveEntries(patch); imp.innerHTML = ""; toast(`${good.length} crews ${mode === "append" ? "added" : "loaded"}`);
+    });
+  };
+  drawImp();
 });
 
 /* ---------- export (F-K6) ---------- */

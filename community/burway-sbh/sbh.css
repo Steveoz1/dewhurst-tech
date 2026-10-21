@@ -4,7 +4,7 @@
   --bad:#b3261e; --bad-bg:#fde7e6; --next:#ffcc00; --ink:#0E1621; --line:#c9d1da;
 }
 body.sbh{background:#fff;color:var(--ink)}
-body.sbh .nav{position:static}
+body.sbh .nav{position:relative;z-index:60}
 body.sbh.timing .nav .brand img{width:186px;height:56px}
 .sbh-main{max-width:1100px;margin:0 auto;padding:0 0 40px}
 .sbh-main.wide{max-width:none}
@@ -139,3 +139,16 @@ table.sbh-t{border-collapse:collapse;width:100%;font-size:15px}
 .tile b{display:block;font:800 22px/1.2 var(--sans);margin-bottom:6px}
 .tile span{font-size:15px;color:#445}
 .tile:hover{background:#f4f6f8}
+
+/* in-tool page links + who is signed in */
+.sbh-tools{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;padding:8px 12px;background:#eef2f6;border-bottom:1px solid var(--line);font:600 14px/1.6 var(--sans)}
+.sbh-tools a{color:var(--ink);text-decoration:none;padding:2px 0;border-bottom:2px solid transparent}
+.sbh-tools a[aria-current="page"]{border-bottom-color:var(--ink);font-weight:800}
+.sbh-tools .who{margin-left:auto;font-weight:500;color:#334}
+/* light-background toggles (Results sort, Configuration options) */
+.seg.light{border:2px solid var(--ink);border-radius:10px;background:#fff}
+.seg.light button{color:var(--ink);background:#fff}
+.seg.light button+button{border-left:1px solid #b9c3cd}
+.seg.light button.on{background:var(--ink);color:#fff}
+.sbh-bar.public .inst{display:none}
+.official{font-weight:700}
