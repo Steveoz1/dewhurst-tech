@@ -299,9 +299,9 @@ export function comboOf(event) {
 export const penaltyOf = e => Number(e && e.penalty) || 0;
 
 /* Results for one instance.
-   rt  = race time (finish - start), tenths of a second. pos = place in division on race time.
-   adj = adjusted time = race time - handicap + penalty (tenths). posEv = place on adjusted time
-         among crews in the same event - or the same event combination, where the event is in one. */
+   rt  = race time (finish - start), tenths of a second. pt = race time + penalty. pos = place across the whole event (all divisions) on pt.
+   adj = adjusted time = race time + penalty - handicap (tenths). posEv = place on adjusted time
+         among crews in the same event - or the same event combination - across all divisions. */
 export function computeResults(inst) {
   const rows = entryList("all").map(e => {
     const t = timing(inst, e.bow); const st = statusOf(inst, e.bow);
@@ -310,18 +310,17 @@ export function computeResults(inst) {
     if (rt != null && rt <= 0) { note = "Check"; rt = null; }
     if (!note && rt == null) note = t.start != null ? (t.finish != null ? "" : "On water") : "";
     const combo = comboOf(e.event); const hc = combo ? combo.handicap : 0; const pen = penaltyOf(e);
-    const adj = rt == null ? null : rt - Math.round(hc * 10) + Math.round(pen * 10);
-    return { e, t, st, rt, adj, hc, pen, combo, group: combo ? "combo:" + combo.id : "event:" + e.event, note, pos: null, posEv: null };
+    const pt = rt == null ? null : rt + Math.round(pen * 10);            // time + penalty: used for overall Pos
+    const adj = rt == null ? null : pt - Math.round(hc * 10);            // adjusted: penalty and handicap, used for Pos in event
+    return { e, t, st, rt, pt, adj, hc, pen, combo, group: combo ? "combo:" + combo.id : "event:" + e.event, note, pos: null, posEv: null };
   });
   const rank = (group, key) => {
     const g = group.filter(r => r[key] != null).sort((a, b) => a[key] - b[key]);
     const out = new Map(); g.forEach((r, i) => out.set(r, i > 0 && g[i - 1][key] === r[key] ? out.get(g[i - 1]) : i + 1)); return out;
   };
-  for (const d of DIVS) {
-    const inDiv = rows.filter(r => Number(r.e.division) === d);
-    rank(inDiv, "rt").forEach((p, r) => (r.pos = p));
-    for (const gk of new Set(inDiv.map(r => r.group))) rank(inDiv.filter(r => r.group === gk), "adj").forEach((p, r) => (r.posEv = p));
-  }
+  // Steve, 21 Oct: positions span the whole event - divisions are only start groups, and all times combine at the end of the day.
+  rank(rows, "pt").forEach((p, r) => (r.pos = p));                     // overall: penalties count, handicaps don't (Steve, 21 Oct)
+  for (const gk of new Set(rows.map(r => r.group))) rank(rows.filter(r => r.group === gk), "adj").forEach((p, r) => (r.posEv = p));
   return rows;
 }
 

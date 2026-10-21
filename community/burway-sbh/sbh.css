@@ -165,8 +165,9 @@ table.sbh-t{border-collapse:collapse;width:100%;font-size:15px}
 /* Burway banner replaces the Dewhurst.tech menu on every SBH page (Steve, 21 Oct) */
 .bbanner{background:#222c4a;border-bottom:5px solid #f2d000}
 .bbanner a{display:flex;align-items:center;gap:12px;max-width:1100px;margin:0 auto;padding:10px 16px;color:#fff;text-decoration:none;font:800 21px/1.2 var(--sans);letter-spacing:.2px}
-.bbanner img{width:48px;height:48px;object-fit:contain;flex:none}
-@media (max-width:520px){.bbanner a{font-size:18px;padding:8px 12px}.bbanner img{width:40px;height:40px}}
+.bbanner img{height:48px;width:auto;flex:none}
+.bbanner span{border-left:2px solid #ffffff40;padding-left:14px}
+@media (max-width:520px){.bbanner a{font-size:18px;padding:8px 12px}.bbanner img{height:38px}.bbanner span{padding-left:10px}}
 .sbh-tools .home{border:2px solid var(--ink);border-radius:10px;padding:6px 14px;font-weight:800;background:#fff;min-height:40px;display:inline-flex;align-items:center}
 .sbh-tools .pt{font:800 16px/1.2 var(--sans)}
 .tile[hidden]{display:none}
