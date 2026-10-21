@@ -1,0 +1,86 @@
+/* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
+import { boot, mountBar, onChange, S, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS } from "./sbh.js";
+
+await boot({ watch: ["entries"] });
+watchTimings(S.instance);
+mountBar($("#bar"), { allowAll: true });
+onChange(() => watchTimings(S.instance));             // start listening to B only if someone asks for it
+
+const OUT = ["DNS", "DNF", "DSQ", "Withdrawn"];
+let sort = "pos";
+const app = $("#app");
+app.innerHTML = `
+  <p class="prov">Provisional - subject to penalties and handicaps.</p>
+  <div class="strip">
+    <div class="seg sortseg" role="group" aria-label="Sort" style="border-color:#0E162133">
+      <button type="button" data-s="pos" class="on">By position</button><button type="button" data-s="bow">By Bow#</button><button type="button" data-s="event">By event</button></div>
+    <button type="button" class="btn small" id="exp">Export CSV</button>
+    <span class="note" id="inst"></span>
+  </div>
+  <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>`;
+$$(".sortseg button").forEach(b => b.addEventListener("click", () => { sort = b.dataset.s; $$(".sortseg button").forEach(x => x.classList.toggle("on", x === b)); draw(); }));
+
+/** Compute results for one instance: race time, position in division, position in event. */
+export function compute(inst) {
+  const rows = entryList("all").map(e => {
+    const t = timing(inst, e.bow); const st = statusOf(inst, e.bow);
+    let rt = OUT.includes(st) ? null : raceTenths(t.start, t.finish);
+    let note = st;
+    if (rt != null && rt <= 0) { note = "Check"; rt = null; }
+    if (!note && rt == null) note = t.start != null ? (t.finish != null ? "" : "On water") : "";
+    return { e, t, st, rt, note, pos: null, posEv: null };
+  });
+  const rank = (group) => {
+    const g = group.filter(r => r.rt != null).sort((a, b) => a.rt - b.rt);
+    const out = new Map(); g.forEach((r, i) => out.set(r, i > 0 && g[i - 1].rt === r.rt ? out.get(g[i - 1]) : i + 1)); return out;
+  };
+  for (const d of DIVS) {
+    const inDiv = rows.filter(r => Number(r.e.division) === d);
+    rank(inDiv).forEach((p, r) => (r.pos = p));
+    const evs = new Set(inDiv.map(r => r.e.event));
+    for (const ev of evs) rank(inDiv.filter(r => r.e.event === ev)).forEach((p, r) => (r.posEv = p));
+  }
+  return rows;
+}
+const byPos = (a, b) => (a.pos == null) - (b.pos == null) || (a.pos || 0) - (b.pos || 0) || a.e.bow - b.e.bow;
+
+function draw() {
+  const div = currentDivision();
+  $("#inst").textContent = `Showing instance ${S.instance} times`;
+  let rows = compute(S.instance).filter(r => div === "all" || Number(r.e.division) === Number(div));
+  if (sort === "bow") rows.sort((a, b) => a.e.bow - b.e.bow);
+  else if (sort === "event") rows.sort((a, b) => Number(a.e.division) - Number(b.e.division) || a.e.event.localeCompare(b.e.event) || (a.posEv == null) - (b.posEv == null) || (a.posEv || 0) - (b.posEv || 0) || a.e.bow - b.e.bow);
+  else rows.sort((a, b) => Number(a.e.division) - Number(b.e.division) || byPos(a, b));
+  let lastDiv = null, lastEv = null;
+  const body = rows.map(r => {
+    let h = "";
+    if (div === "all" && sort !== "bow" && r.e.division !== lastDiv) { h += `<tr class="divh"><td colspan="10">Division ${r.e.division}</td></tr>`; lastDiv = r.e.division; lastEv = null; }
+    if (sort === "event" && r.e.event !== lastEv) { h += `<tr class="divh" style="--x:1"><td colspan="10" style="background:#eef2f6;color:#0E1621">${esc(r.e.event)}</td></tr>`; lastEv = r.e.event; }
+    return h + `<tr class="${r.rt == null ? "out" : ""}">
+      <td class="n"><b>${r.pos ?? ""}</b></td><td class="n">${r.e.bow}</td><td>${esc(r.e.event)}</td><td class="wrap">${esc(r.e.crew)}</td><td class="wrap">${esc(r.e.club)}</td>
+      <td class="n">${r.e.division}</td><td class="t">${fmtClock(r.t.start)}</td><td class="t">${fmtClock(r.t.finish)}</td>
+      <td class="t"><b>${r.rt != null ? fmtRace(r.rt) : esc(r.note)}</b></td><td class="n">${r.posEv ?? ""}</td></tr>`;
+  }).join("");
+  $("#tbl").innerHTML = `<thead><tr><th class="n">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th>Start</th><th>Finish</th><th>Race time</th><th class="n">Pos in event</th></tr></thead><tbody>${body || `<tr><td colspan="10" class="empty">No crews loaded yet.</td></tr>`}</tbody>`;
+}
+onChange(draw); draw();
+
+/* F-R7: all divisions, both instances side by side */
+$("#exp").addEventListener("click", async () => {
+  const other = S.instance === "A" ? "B" : "A";
+  watchTimings(other);
+  if (!Object.keys(S.timings[other] || {}).length) S.timings[other] = await S.backend.getOnce("timings/" + other);
+  const A = new Map(compute("A").map(r => [r.e.bow, r])), B = new Map(compute("B").map(r => [r.e.bow, r]));
+  const P = S.instance === "A" ? A : B;
+  const rows = [["Bow#", "Event", "Crew Name", "Club", "Division", "Status", "A Start", "A Finish", "A Time", "B Start", "B Finish", "B Time", `Position (${S.instance})`, `Position in event (${S.instance})`]];
+  for (const e of entryList("all").sort((a, b) => a.division - b.division || a.bow - b.bow)) {
+    const a = A.get(e.bow), b = B.get(e.bow), p = P.get(e.bow);
+    const status = [a.st && `A:${a.st}`, b.st && b.st !== a.st && `B:${b.st}`].filter(Boolean).join(" ") || (e.status || "");
+    rows.push([e.bow, e.event, e.crew, e.club, "Division " + e.division, a.st === b.st ? (a.st || "") : status,
+      fmtClock(a.t.start), fmtClock(a.t.finish), a.rt != null ? fmtRace(a.rt) : "",
+      fmtClock(b.t.start), fmtClock(b.t.finish), b.rt != null ? fmtRace(b.rt) : "",
+      p.pos ?? "", p.posEv ?? ""]);
+  }
+  downloadCSV("SBH2026-results.csv", rows);
+});
