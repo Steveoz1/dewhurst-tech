@@ -152,3 +152,12 @@ table.sbh-t{border-collapse:collapse;width:100%;font-size:15px}
 .seg.light button.on{background:var(--ink);color:#fff}
 .sbh-bar.public .inst{display:none}
 .official{font-weight:700}
+
+/* Race Adjudication */
+.sbh-modal .box.wide{max-width:900px;max-height:92vh;overflow:auto}
+.sbh-modal:has(.box.wide){align-items:center}
+.flag{display:inline-block;padding:2px 8px;border-radius:6px;font:700 12.5px/1.5 var(--sans);margin:1px 0;white-space:nowrap}
+.flag.red{background:var(--bad-bg);color:var(--bad)}
+.flag.amber{background:var(--warn-bg);color:#5c3700}
+.seg.light{display:inline-flex;vertical-align:middle}
+.sbh-modal select{width:auto;max-width:180px}

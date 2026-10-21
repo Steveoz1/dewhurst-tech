@@ -262,7 +262,7 @@ function paintWho() {
   w.innerHTML = `Signed in: <b>${esc(r)}</b> <button type="button" class="link">Sign out</button>`;
   w.querySelector("button").onclick = async () => { if (await confirmBox("Sign out?", "You'll need the password to sign back in.", "Sign out")) S.backend.signOut(); };
 }
-export const officialInstance = () => (S.race.official === "B" ? "B" : "A");
+export const officialInstance = () => "A";      // Steve, 21 Oct: the public sees instance A only
 export function saveRace(patch) { writeOps("r" + rid(12), [{ path: "config/race", data: patch }], null); }
 
 /* ---- 8. Entries helpers ------------------------------------------- */
@@ -278,6 +278,30 @@ export function statusOf(inst, bow) {        // instance status wins over entry 
 }
 export function isTimed(bow) {               // F-K5
   return ["A", "B"].some(i => { const t = timing(i, bow); return t.start != null || t.finish != null; });
+}
+
+const OUT_ST = ["DNS", "DNF", "DSQ", "Withdrawn"];
+/** Compute results for one instance: race time, position in division, position in event. */
+export function computeResults(inst) {
+  const rows = entryList("all").map(e => {
+    const t = timing(inst, e.bow); const st = statusOf(inst, e.bow);
+    let rt = OUT_ST.includes(st) ? null : raceTenths(t.start, t.finish);
+    let note = st;
+    if (rt != null && rt <= 0) { note = "Check"; rt = null; }
+    if (!note && rt == null) note = t.start != null ? (t.finish != null ? "" : "On water") : "";
+    return { e, t, st, rt, note, pos: null, posEv: null };
+  });
+  const rank = (group) => {
+    const g = group.filter(r => r.rt != null).sort((a, b) => a.rt - b.rt);
+    const out = new Map(); g.forEach((r, i) => out.set(r, i > 0 && g[i - 1].rt === r.rt ? out.get(g[i - 1]) : i + 1)); return out;
+  };
+  for (const d of DIVS) {
+    const inDiv = rows.filter(r => Number(r.e.division) === d);
+    rank(inDiv).forEach((p, r) => (r.pos = p));
+    const evs = new Set(inDiv.map(r => r.e.event));
+    for (const ev of evs) rank(inDiv.filter(r => r.e.event === ev)).forEach((p, r) => (r.posEv = p));
+  }
+  return rows;
 }
 
 /* ---- 9. Tap writing: local ledger first, then server (T-T4) ------- */
@@ -367,6 +391,15 @@ export function resetField(field, inst) {
   const tap = { ...baseTap("reset", inst, null, null), field, value: n };
   writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: patch }], tap);
   return n;
+}
+
+/** Admin (Race Adjudication, F-K7): set or clear one start/finish/status in one instance, with a reason.
+    Logged as an "adjust" tap; earlier taps are untouched. value = corrected ms, a status string, or null. */
+export function adjust(inst, bow, field, value, reason, source = null) {
+  const id = S.backend.newId();
+  const tap = { ...baseTap("adjust", inst, bow, null), field, value: value == null ? null : value, reason: reason || "", source };
+  if (field !== "status") tap.tCorrected = value;
+  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: { [String(bow)]: { [field]: value == null ? null : value, [field + "Tap"]: value == null ? null : id } } }], tap);
 }
 
 /** Admin: write a patch to the entries table (merge). null removes a bow. */

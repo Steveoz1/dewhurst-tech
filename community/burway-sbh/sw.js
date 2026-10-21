@@ -1,11 +1,11 @@
 /* sw.js - keeps a copy of the SBH timing pages on the phone so they open with no signal.
    Scope: /community/burway-sbh/ only. Race data itself is handled by Firebase's own offline cache.
    Bump VERSION on every publish so phones pick up the new files. */
-const VERSION = "sbh-2026-10-21b";
+const VERSION = "sbh-2026-10-21c";
 const FB = "https://www.gstatic.com/firebasejs/12.19.0/";
 const LOCAL = [
-  "./", "index.html", "config.html", "start.html", "finish.html", "results.html",
-  "sbh.js", "sbh.css", "page-config.js", "page-start.js", "page-finish.js", "page-results.js",
+  "./", "index.html", "config.html", "start.html", "finish.html", "results.html", "adjudicate.html",
+  "sbh.js", "sbh.css", "page-config.js", "page-start.js", "page-finish.js", "page-results.js", "page-adjudicate.js",
   "../../assets/site.css", "../../assets/favicon-32.png", "../../brand-lockup-2.w338-h84-c0.jpg",
   "../../assets/fonts/inter-latin-400-normal.woff2", "../../assets/fonts/inter-latin-500-normal.woff2",
   "../../assets/fonts/inter-latin-600-normal.woff2", "../../assets/fonts/inter-latin-700-normal.woff2",

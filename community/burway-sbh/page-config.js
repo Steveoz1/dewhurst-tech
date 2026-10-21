@@ -31,9 +31,7 @@ app.innerHTML = `
     <span id="a-msg" class="bad"></span>
   </div>
   <div class="panel" id="admin">
-    <h3>Public results</h3>
-    <p>Visitors who aren't signed in see one instance's times. <span class="seg light" id="offseg" role="group" aria-label="Official instance"><button type="button" data-i="A">A</button><button type="button" data-i="B">B</button></span></p>
-    <h3 style="margin-top:14px">Reset times</h3>
+    <h3>Reset times</h3>
     <p>Clears times so crews show as not started / not finished. The taps stay in the audit log.</p>
     <p>Instance: <span class="seg light" id="rseg" role="group" aria-label="Instance to reset"><button type="button" data-i="A">A</button><button type="button" data-i="B">B</button></span></p>
     <button type="button" class="btn danger" id="rstart"></button>
@@ -105,17 +103,13 @@ $("#a-save").addEventListener("click", () => {
 /* ---------- public instance + reset (F-K9, punch list 3 and 5) ---------- */
 let rInst = S.instance;
 function paintAdmin() {
-  $$("#offseg button").forEach(b => b.classList.toggle("on", b.dataset.i === officialInstance()));
   $$("#rseg button").forEach(b => b.classList.toggle("on", b.dataset.i === rInst));
   const n = f => Object.values(S.timings[rInst] || {}).filter(t => t && t[f] != null).length;
   $("#rstart").textContent = `Reset all START times in ${rInst} (${n("start")})`;
   $("#rfinish").textContent = `Reset all FINISH times in ${rInst} (${n("finish")})`;
 }
 onChange(paintAdmin); paintAdmin();
-$$("#offseg button").forEach(b => b.addEventListener("click", async () => {
-  if (b.dataset.i === officialInstance()) return;
-  if (await confirmBox(`Show instance ${b.dataset.i} to the public?`, "The public Results page switches straight away.", `Show ${b.dataset.i}`)) saveRace({ official: b.dataset.i });
-}));
+
 $$("#rseg button").forEach(b => b.addEventListener("click", () => { rInst = b.dataset.i; paintAdmin(); }));
 for (const [id, field, label] of [["#rstart", "start", "START"], ["#rfinish", "finish", "FINISH"]]) {
   $(id).addEventListener("click", async () => {

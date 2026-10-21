@@ -1,5 +1,5 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
-import { boot, mountBar, onChange, S, officialInstance, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
+import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
          raceTenths, fmtRace, fmtClock, downloadCSV, DIVS } from "./sbh.js";
 
 await boot({ watch: ["entries"] });
@@ -26,33 +26,11 @@ app.innerHTML = `
   <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>`;
 $$(".sortseg button").forEach(b => b.addEventListener("click", () => { sort = b.dataset.s; $$(".sortseg button").forEach(x => x.classList.toggle("on", x === b)); draw(); }));
 
-/** Compute results for one instance: race time, position in division, position in event. */
-export function compute(inst) {
-  const rows = entryList("all").map(e => {
-    const t = timing(inst, e.bow); const st = statusOf(inst, e.bow);
-    let rt = OUT.includes(st) ? null : raceTenths(t.start, t.finish);
-    let note = st;
-    if (rt != null && rt <= 0) { note = "Check"; rt = null; }
-    if (!note && rt == null) note = t.start != null ? (t.finish != null ? "" : "On water") : "";
-    return { e, t, st, rt, note, pos: null, posEv: null };
-  });
-  const rank = (group) => {
-    const g = group.filter(r => r.rt != null).sort((a, b) => a.rt - b.rt);
-    const out = new Map(); g.forEach((r, i) => out.set(r, i > 0 && g[i - 1].rt === r.rt ? out.get(g[i - 1]) : i + 1)); return out;
-  };
-  for (const d of DIVS) {
-    const inDiv = rows.filter(r => Number(r.e.division) === d);
-    rank(inDiv).forEach((p, r) => (r.pos = p));
-    const evs = new Set(inDiv.map(r => r.e.event));
-    for (const ev of evs) rank(inDiv.filter(r => r.e.event === ev)).forEach((p, r) => (r.posEv = p));
-  }
-  return rows;
-}
 const byPos = (a, b) => (a.pos == null) - (b.pos == null) || (a.pos || 0) - (b.pos || 0) || a.e.bow - b.e.bow;
 
 function draw() {
   const div = currentDivision();
-  $("#inst").textContent = S.user ? `Showing instance ${S.instance} times · official instance for the public: ${officialInstance()}` : "";
+  $("#inst").textContent = S.user ? `Showing instance ${S.instance} times · the public always sees A` : "";
   let rows = compute(S.instance).filter(r => div === "all" || Number(r.e.division) === Number(div));
   if (sort === "bow") rows.sort((a, b) => a.e.bow - b.e.bow);
   else if (sort === "event") rows.sort((a, b) => Number(a.e.division) - Number(b.e.division) || a.e.event.localeCompare(b.e.event) || (a.posEv == null) - (b.posEv == null) || (a.posEv || 0) - (b.posEv || 0) || a.e.bow - b.e.bow);
