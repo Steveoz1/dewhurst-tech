@@ -1,6 +1,6 @@
 /* Starter page (brief E3: F-S1 to F-S8, plus F-S9 jump box which shares the Finisher's code) */
 import { boot, mountBar, requireRole, onChange, changed, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         logTime, voidField, setStatus, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, idleFor } from "./sbh.js";
+         logTime, voidField, setStatus, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, idleFor } from "./sbh.js?v=20261021i";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { allowAll: true, confirmSwitch: true });

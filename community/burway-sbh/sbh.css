@@ -178,23 +178,39 @@ table.sbh-t{border-collapse:collapse;width:100%;font-size:15px}
 .rfilters .clear{white-space:nowrap;padding:6px}
 .rstatus{margin:0}
 mark{background:#f2d000;color:#222c4a;padding:0 1px;border-radius:2px}
-.sbh-t td.meta{display:none}
 .sbh-t tr.grp td{background:#eef2f6;color:var(--ink);font-weight:800;white-space:normal}
 .seg.view button{font-size:15px}
 @media (max-width:640px){
   .rfilters{grid-template-columns:1fr 1fr auto;gap:6px;padding:8px 10px 2px}
   .rfilters .q{grid-column:1 / -1}
   .rfilters input,.rfilters select{padding:7px 8px}
-  /* Basic view on a phone: two-line cards - position, crew and adjusted time, then the details underneath */
-  #tbl.basic thead{display:none}
-  #tbl.basic,#tbl.basic tbody{display:block}
-  #tbl.basic tr{display:grid;grid-template-columns:3ch 1fr auto;column-gap:12px;row-gap:2px;padding:10px 12px;border-bottom:1px solid var(--line)}
-  #tbl.basic td{display:block;border:0;padding:0;white-space:normal;min-width:0;text-align:left}
-  #tbl.basic td.pos{grid-column:1;grid-row:1 / span 2;font-size:20px;color:#222c4a;text-align:left}
-  #tbl.basic td.nm{grid-column:2;grid-row:1;font-weight:700;font-size:16px}
-  #tbl.basic td.tm{grid-column:3;grid-row:1;text-align:right;font-size:16px}
-  #tbl.basic td.meta{display:block;grid-column:2 / span 2;grid-row:2;font-size:13px;color:#5b6475}
-  #tbl.basic td.bw,#tbl.basic td.ev,#tbl.basic td.cl,#tbl.basic td.dv{display:none}
-  #tbl.basic tr.grp,#tbl.basic tr.grp td,#tbl.basic td.empty{display:block}
-  #tbl.basic tr.grp{padding:8px 12px;background:#eef2f6}
+}
+
+/* Results - Basic view: cards (Burway event-page layout); lined up as columns on wider screens */
+.rcards{border-top:1px solid var(--line)}
+.rc{display:grid;grid-template-columns:3.2ch 1fr auto;column-gap:14px;align-items:start;padding:12px 12px;border-bottom:1px solid var(--line)}
+.rc .p{font:800 22px/1.15 var(--sans);color:#222c4a}
+.rc .m{min-width:0}
+.rc .nm{font:700 17px/1.3 var(--sans);color:var(--ink);overflow-wrap:anywhere}
+.rc .ev,.rc .cl,.rc .sm{font:400 15px/1.45 var(--sans);color:#5b6475}
+.rc .sm span+span::before{content:" · "}
+.rc .sm i{font-style:normal}
+.rc .tm{font:700 17px/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);text-align:right;white-space:nowrap}
+.rc.out .tm{font:600 14px/1.3 var(--sans);color:#5b6475}
+.rc.out .nm{color:#5b6475}
+.rg{padding:12px 12px 10px;background:#eef2f6;border-bottom:3px solid #f2d000;font:800 17px/1.3 var(--sans);color:#222c4a}
+.rg small{display:block;font-weight:500;font-size:13px;color:#5b6475}
+.rh{display:none}
+@media (min-width:760px){
+  .rh,.rc{display:grid;grid-template-columns:4ch 7ch 13ch minmax(0,1.4fr) minmax(0,1.6fr) 5ch 12ch;column-gap:14px;align-items:center}
+  .rh{padding:8px 12px;background:#eef2f6;font:700 13px/1.2 var(--sans);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--line)}
+  .rc{padding:8px 12px}
+  .rc .m,.rc .sm{display:contents}
+  .rc .p,.rc .bw,.rc .ev,.rc .nm,.rc .cl,.rc .dv,.rc .tm{grid-row:1}
+  .rc .sm span+span::before{content:none}
+  .rc .p,.rh .p{grid-column:1}.rc .bw,.rh .bw{grid-column:2}.rc .ev,.rh .ev{grid-column:3}.rc .nm,.rh .nm{grid-column:4}
+  .rc .cl,.rh .cl{grid-column:5}.rc .dv,.rh .dv{grid-column:6}.rc .tm,.rh .tm{grid-column:7;text-align:right}
+  .rc .p{font-size:17px}.rc .nm{font-size:15px}.rc .ev,.rc .cl,.rc .bw,.rc .dv{font-size:15px;color:var(--ink)}.rc .tm{font-size:15px}
+  .rc .bw,.rc .dv{font:400 15px/1.45 var(--sans)}
+  .rc .bw i,.rc .dv i{display:none}
 }

@@ -1,7 +1,7 @@
 /* sw.js - keeps a copy of the SBH timing pages on the phone so they open with no signal.
    Scope: /community/burway-sbh/ only. Race data itself is handled by Firebase's own offline cache.
    Bump VERSION on every publish so phones pick up the new files. */
-const VERSION = "sbh-2026-10-21h";
+const VERSION = "sbh-20261021i";
 const FB = "https://www.gstatic.com/firebasejs/12.19.0/";
 const LOCAL = [
   "./", "index.html", "config.html", "start.html", "finish.html", "results.html", "adjudicate.html", "handicap.html", "burway-emblem.png",
@@ -45,7 +45,7 @@ async function cacheFirst(req) {
 /* Fresh copy when the signal is decent; the kept copy after 3 s or when offline. */
 async function networkFirst(req) {
   const c = await caches.open(VERSION);
-  const net = fetch(req).then(res => { if (res.ok) c.put(req, res.clone()); return res; });
+  const net = fetch(req, { cache: "no-cache" }).then(res => { if (res.ok) c.put(req, res.clone()); return res; });
   net.catch(() => {});
   const timer = new Promise(r => setTimeout(r, 3000));
   try {

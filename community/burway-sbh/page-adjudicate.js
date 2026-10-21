@@ -1,7 +1,7 @@
 /* Race Adjudication page (admin only): compare A with B, flag differences, correct a time with a reason.
    Brief F-R8 (A/B check) + F-K7 (timing correction panel). Public results always show A. */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS } from "./sbh.js";
+         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS } from "./sbh.js?v=20261021i";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { instance: false, allowAll: true });

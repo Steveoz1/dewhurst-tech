@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js?v=20261021i";
 
 await boot({ watch: ["entries"] });
 watchTimings(S.instance);
@@ -39,7 +39,8 @@ app.innerHTML = `
     <span class="note rstatus" id="rstatus" aria-live="polite"></span>
     <span class="note" id="inst"></span>
   </div>
-  <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>`;
+  <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>
+  <div class="rcards" id="cards" hidden></div>`;
 $$(".sortseg button").forEach(b => b.addEventListener("click", () => { sort = b.dataset.s; $$(".sortseg button").forEach(x => x.classList.toggle("on", x === b)); draw(); }));
 const q = $(".rfilters .q"), fc = $(".rfilters .fc"), fe = $(".rfilters .fe");
 q.addEventListener("input", draw); fc.addEventListener("change", draw); fe.addEventListener("change", draw);
@@ -83,31 +84,40 @@ function draw() {
   if (sort === "bow") rows.sort((a, b) => a.e.bow - b.e.bow);
   else if (sort === "event") rows.sort((a, b) => gname(a).localeCompare(gname(b)) || (a.posEv == null) - (b.posEv == null) || (a.posEv || 0) - (b.posEv || 0) || a.e.bow - b.e.bow);
   else rows.sort(byPos);
-  const basic = view === "basic"; const cols = basic ? 7 : 12;
-  $("#tbl").classList.toggle("basic", basic);
+  const basic = view === "basic";
+  $("#tbl").hidden = basic; $("#cards").hidden = !basic;
   let lastEv = null;
+  const groupHead = r => {
+    if (sort !== "event" || gname(r) === lastEv) return "";
+    lastEv = gname(r);
+    const evs = r.combo ? Object.keys(((S.race.combos || {})[r.combo.id] || {}).events || {}) : [];
+    return { name: gname(r), sub: evs.length ? evs.join(", ") : "" };
+  };
+  if (basic) {
+    /* Basic: one card per crew - the Burway event-page layout. Same markup on every screen; CSS lines it up as columns on a computer. */
+    const html = rows.map(r => {
+      const g = groupHead(r);
+      return (g ? `<div class="rg">${esc(g.name)}${g.sub ? ` <small>${esc(g.sub)}</small>` : ""}</div>` : "") +
+        `<div class="rc${r.rt == null ? " out" : ""}">
+          <div class="p">${r.pos ?? ""}</div>
+          <div class="m"><div class="nm">${hl(r.e.crew, t)}</div><div class="ev">${esc(r.e.event)}</div><div class="cl">${esc(r.e.club)}</div>
+            <div class="sm"><span class="bw"><i>Bow </i>${r.e.bow}</span><span class="dv"><i>Division </i>${r.e.division}</span></div></div>
+          <div class="tm">${timeOr(r.adj, r)}</div></div>`;
+    }).join("");
+    $("#cards").innerHTML = `<div class="rh"><div class="p">Pos</div><div class="bw">Bow#</div><div class="ev">Event</div><div class="nm">Crew name</div><div class="cl">Club</div><div class="dv">Div</div><div class="tm">Adjusted time</div></div>` +
+      (html || `<div class="empty">${all.length ? "No crews match these filters." : "No crews loaded yet."}</div>`);
+    return;
+  }
   const body = rows.map(r => {
-    let h = "";
-    if (sort === "event" && gname(r) !== lastEv) {
-      const evs = r.combo ? Object.keys(((S.race.combos || {})[r.combo.id] || {}).events || {}) : [];
-      h += `<tr class="grp"><td colspan="${cols}">${esc(gname(r))}${evs.length ? ` <small>(${esc(evs.join(", "))})</small>` : ""}</td></tr>`; lastEv = gname(r);
-    }
-    if (basic) return h + `<tr class="${r.rt == null ? "out" : ""}">
-      <td class="n pos"><b>${r.pos ?? ""}</b></td><td class="n bw">${r.e.bow}</td><td class="ev">${esc(r.e.event)}</td>
-      <td class="wr nm">${hl(r.e.crew, t)}</td><td class="wr cl">${esc(r.e.club)}</td><td class="n dv">${r.e.division}</td>
-      <td class="t tm"><b>${timeOr(r.adj, r)}</b></td>
-      <td class="meta">Bow ${r.e.bow} · ${esc(r.e.event)} · ${esc(r.e.club)} · Div ${r.e.division}</td></tr>`;
-    return h + `<tr class="${r.rt == null ? "out" : ""}">
+    const g = groupHead(r);
+    return (g ? `<tr class="grp"><td colspan="12">${esc(g.name)}${g.sub ? ` <small>(${esc(g.sub)})</small>` : ""}</td></tr>` : "") + `<tr class="${r.rt == null ? "out" : ""}">
       <td class="n"><b>${r.pos ?? ""}</b></td><td class="n">${r.e.bow}</td><td>${esc(r.e.event)}</td><td class="wr">${hl(r.e.crew, t)}</td><td class="wr">${esc(r.e.club)}</td>
       <td class="n">${r.e.division}</td><td class="t">${fmtClock(r.t.start)}</td><td class="t">${fmtClock(r.t.finish)}</td>
       <td class="t"><b>${timeOr(r.rt, r)}</b></td>
       <td class="t">${r.pt != null ? `<b>${fmtRace(r.pt)}</b>${r.pen ? `<br><small>penalty +${r.pen} s</small>` : ""}` : ""}</td>
       <td class="t">${r.adj != null ? `<b>${fmtRace(r.adj)}</b>${r.hc ? `<br><small>handicap -${r.hc} s</small>` : ""}` : ""}</td><td class="n">${r.posEv ?? ""}</td></tr>`;
   }).join("");
-  const head = basic
-    ? `<th class="n" title="Overall, all divisions, on Time + penalty">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th title="Race time + penalty - handicap">Adjusted time</th>`
-    : `<th class="n" title="Overall, all divisions, on Time + penalty">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th>Start</th><th>Finish</th><th>Race time</th><th title="Race time plus any penalty - decides overall Pos">Time + penalty</th><th title="Time + penalty, minus any handicap - decides Pos in event">Adjusted time</th><th class="n" title="On adjusted time, within the event or its event combination">Pos in event</th>`;
-  $("#tbl").innerHTML = `<thead><tr>${head}</tr></thead><tbody>${body || `<tr><td colspan="${cols}" class="empty">${all.length ? "No crews match these filters." : "No crews loaded yet."}</td></tr>`}</tbody>`;
+  $("#tbl").innerHTML = `<thead><tr><th class="n" title="Overall, all divisions, on Time + penalty">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th>Start</th><th>Finish</th><th>Race time</th><th title="Race time plus any penalty - decides overall Pos">Time + penalty</th><th title="Time + penalty, minus any handicap - decides Pos in event">Adjusted time</th><th class="n" title="On adjusted time, within the event or its event combination">Pos in event</th></tr></thead><tbody>${body || `<tr><td colspan="12" class="empty">${all.length ? "No crews match these filters." : "No crews loaded yet."}</td></tr>`}</tbody>`;
 }
 onChange(draw); draw();
 
