@@ -160,26 +160,20 @@ async function firebaseBackend(cfg) {
     import(base + "firebase-app.js"), import(base + "firebase-firestore.js"), import(base + "firebase-auth.js")
   ]);
   const app = appM.initializeApp(cfg);
-  // Connection: ordinary repeated requests ("long polling") instead of Firebase's always-open streaming connection,
-  // which silently stalls on some Safari/iPad set-ups (signed in, but no data and "Offline" - iPad testing, 22 Oct).
-  // Safe mode (set automatically if a page can't reach the database): no on-device database cache for 12 hours -
-  // unsent taps are still kept on the phone by the tap ledger and re-sent.
+  // ROLLED BACK 22 Oct 13:05 to the connection settings that worked on iPhones (multi-tab cache, Firebase's normal
+  // connection). The 22 Oct morning experiments - single-tab cache + releasing it on page exit, then forced long
+  // polling - broke every iPhone/iPad while still working on a PC. Safe mode (no on-device cache) stays available
+  // by choice from the red banner.
   const safe = (LS.get("sbh.safeMode", 0) || 0) > Date.now();
-  const net = { experimentalForceLongPolling: true };
   let db, persistent = !safe;
   try {
     db = safe
-      ? fs.initializeFirestore(app, { ...net, localCache: fs.memoryLocalCache() })
-      // Single-tab cache that the newest page always takes over (Safari keeps the previous page frozen in memory).
-      : fs.initializeFirestore(app, { ...net, localCache: fs.persistentLocalCache({ tabManager: fs.persistentSingleTabManager({ forceOwnership: true }) }) });
+      ? fs.initializeFirestore(app, { localCache: fs.memoryLocalCache() })
+      : fs.initializeFirestore(app, { localCache: fs.persistentLocalCache({ tabManager: fs.persistentMultipleTabManager() }) });
   } catch (e) {
     console.warn("Persistent cache unavailable, using memory", e); persistent = false; noteError(e);
-    db = fs.initializeFirestore(app, { ...net, localCache: fs.memoryLocalCache() });
+    db = fs.initializeFirestore(app, { localCache: fs.memoryLocalCache() });
   }
-  // Let go of the cache cleanly when leaving a page (unsent taps stay safely stored and go on the next page),
-  // and reload a page Safari brings back from its frozen state, so it reconnects properly.
-  addEventListener("pagehide", () => { try { fs.terminate(db); } catch (e) {} });
-  addEventListener("pageshow", e => { if (e.persisted) location.reload(); });
   const auth = au.getAuth(app);
   const ref = p => fs.doc(db, ...p.split("/"));
   return {

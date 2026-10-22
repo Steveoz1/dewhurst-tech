@@ -1,6 +1,6 @@
 /* Handicap Configuration (admin): event combination groups, each event with a handicap in seconds.
    Adjusted time = race time - handicap + penalty. Crews in a combination are placed together for "Pos in event". */
-import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, combos, saveRace, toast, confirmBox } from "./sbh.js?v=20261022g";
+import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, combos, saveRace, toast, confirmBox } from "./sbh.js?v=20261022h";
 
 await boot({ watch: ["entries"] });
 mountBar($("#bar"), { instance: false, division: false });
