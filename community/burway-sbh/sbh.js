@@ -412,6 +412,7 @@ export function logTime(field, bow, tDevice, inst = S.instance) {
   const patch = { [String(bow)]: { [field]: tap.tCorrected, [field + "Tap"]: id } };
   writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: patch }], tap);
   myTaps[`${inst}:${bow}:${field}`] = Date.now();
+  setTimeout(changed, GUARD_MS + 100);                    // re-enable Undo once the guard has passed
   vibrate();
   return tap.tCorrected;
 }
@@ -428,6 +429,12 @@ export function setStatus(bow, status, inst = S.instance) {
   const id = S.backend.newId();
   const tap = { ...baseTap("status", inst, bow, null), value: status };
   writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: { [String(bow)]: { status, statusTap: id } } }], tap);
+}
+/** Double-tap guard: true for 2 s after this phone logged that start/finish (Undo sits where the button was). */
+export const GUARD_MS = 2000;
+export function justTapped(field, bow, inst = S.instance) {
+  const t = myTaps[`${inst}:${bow}:${field}`];
+  return !!(t && Date.now() - t < GUARD_MS);
 }
 export function undoNeedsConfirm(field, bow, inst = S.instance) {
   const t = myTaps[`${inst}:${bow}:${field}`];
@@ -490,6 +497,22 @@ export async function flagFlow(bow) {
   flagForReview(bow, txt); toast(`${bow} flagged for review`);
 }
 export const flagBadge = bow => flagsOf(bow).length ? `<div class="fl">⚑ Flagged for review</div>` : "";
+
+/** Race Adjudication: mark a crew as checked ("Resolved"). Stored with instance A (the official record) together with
+    a fingerprint of the differences seen at the time; if anything changes afterwards the crew is flagged again.
+    Also resolves any open "Flag for review" notes on the crew. */
+export function markReviewed(bow, sig, note) {
+  const id = S.backend.newId();
+  const tap = { ...baseTap("reviewed", "A", bow, null), value: note || "", note: sig };
+  writeOps(id, [{ path: "taps/" + id, create: true, data: tap },
+    { path: "timings/A", data: { [String(bow)]: { reviewed: { sig, note: note || "", at: Date.now(), by: S.user ? S.user.email : "" } } } }], tap);
+  for (const f of flagsOf(bow)) resolveFlag(bow, f.id, f.inst);
+}
+export function reopenReview(bow) {
+  const id = S.backend.newId();
+  const tap = { ...baseTap("review-reopened", "A", bow, null) };
+  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/A", data: { [String(bow)]: { reviewed: null } } }], tap);
+}
 
 /** Admin: clear every start (or finish) time in one instance. Logged as one "reset" tap; nothing is deleted from the log. */
 export function resetField(field, inst) {

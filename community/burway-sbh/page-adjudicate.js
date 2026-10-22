@@ -1,7 +1,7 @@
 /* Race Adjudication page (admin only): compare A with B, flag differences, correct a time with a reason.
    Brief F-R8 (A/B check) + F-K7 (timing correction panel). Public results always show A. */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag } from "./sbh.js?v=20261022h";
+         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag, markReviewed, reopenReview, textPrompt } from "./sbh.js?v=20261022i";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { instance: false, allowAll: true });
@@ -15,7 +15,18 @@ app.innerHTML = `
     <span class="seg light" id="fseg" role="group" aria-label="Show"><button type="button" data-f="1">Needs a look</button><button type="button" data-f="0">All crews</button></span>
     <span class="count" id="count"></span>
   </div>
-  <p class="note">A is the official record shown to the public. Flags: a start or finish more than 1.0 s apart, a time in one instance only, or statuses that disagree. Tap <b>Review</b> to correct A (or B) - every change needs a reason and the original taps stay in the log.</p>
+  <p class="note">A is the official record shown to the public. Tap <b>Review</b> to correct A (or B) - every change needs a reason and the original taps stay in the log. Tap <b>Resolve</b> once a crew has been checked and A is right.</p>
+  <details class="rules"><summary>When does a crew "need a look"? (the rules)</summary>
+    <table class="sbh-t"><thead><tr><th>#</th><th>A crew is flagged when…</th><th>Shown as</th><th>Colour</th></tr></thead><tbody>
+      <tr><td>1</td><td class="wr">A and B both have a <b>start</b>, more than <b>1.0 s</b> apart</td><td>"Start differs 1.4 s"</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>2</td><td class="wr">A and B both have a <b>finish</b>, more than <b>1.0 s</b> apart</td><td>"Finish differs 2.5 s"</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>3</td><td class="wr"><b>B has a start or finish that A doesn't</b> (A is what the public sees)</td><td>"A start / finish missing"</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>4</td><td class="wr"><b>A has a start or finish that B doesn't</b></td><td>"B start / finish missing"</td><td><span class="flag amber">Amber</span></td></tr>
+      <tr><td>5</td><td class="wr">The <b>statuses differ</b> between A and B (DNS / DNF / DSQ in one but not the other)</td><td>"Status A: DNF / B: –"</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>6</td><td class="wr">A starter or finisher used <b>Flag for review</b> on the crew (A or B), not yet resolved</td><td>"⚑ Flagged for review"</td><td><span class="flag red">Red</span></td></tr>
+    </tbody></table>
+    <p class="note">Starts and finishes are compared separately; the A−B column (race-time difference) is information only. Withdrawn applies to both A and B, so it never shows as a difference. A flag clears when its cause is fixed. <b>Resolve</b> marks a crew as checked: it leaves "Needs a look" and any review notes are closed — but if its times or statuses change afterwards, it comes back. Source: design brief F-R12.</p>
+  </details>
   <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>`;
 $$("#fseg button").forEach(b => b.addEventListener("click", () => { onlyFlagged = b.dataset.f === "1"; draw(); }));
 
@@ -28,8 +39,16 @@ function flagsFor(bow) {
   }
   const sa = statusOf("A", bow), sb = statusOf("B", bow);
   if (sa !== sb) f.push({ t: `Status A: ${sa || "-"} / B: ${sb || "-"}`, lvl: "red" });
-  const fl = flagsOf(bow); if (fl.length) f.push({ t: `⚑ Flagged for review${fl.length > 1 ? ` (${fl.length})` : ""}`, lvl: "red" });
+  const fl = flagsOf(bow); if (fl.length) f.push({ t: `⚑ Flagged for review${fl.length > 1 ? ` (${fl.length})` : ""}`, lvl: "red", review: true });
   return f;
+}
+/* Fingerprint of the differences (not the review notes) - a Resolve only holds while this stays the same */
+const sigOf = flags => flags.filter(f => !f.review).map(f => f.t).join(" | ");
+function resolvedState(bow, flags) {
+  const rv = timing("A", bow).reviewed;
+  if (!rv) return null;
+  const ok = rv.sig === sigOf(flags) && !flags.some(f => f.review);
+  return { ...rv, ok };
 }
 
 function draw() {
@@ -37,8 +56,8 @@ function draw() {
   const div = currentDivision();
   const A = new Map(computeResults("A").map(r => [r.e.bow, r])), B = new Map(computeResults("B").map(r => [r.e.bow, r]));
   const crews = entryList(div);
-  const rows = crews.map(e => ({ e, a: A.get(e.bow), b: B.get(e.bow), flags: flagsFor(e.bow) }));
-  const flagged = rows.filter(r => r.flags.length);
+  const rows = crews.map(e => { const flags = flagsFor(e.bow); return { e, a: A.get(e.bow), b: B.get(e.bow), flags, rs: resolvedState(e.bow, flags) }; });
+  const flagged = rows.filter(r => r.flags.length && !(r.rs && r.rs.ok));
   $("#count").textContent = `${flagged.length} to look at · ${crews.length} crews`;
   const show = onlyFlagged ? flagged : rows;
   const diff = r => r.a.rt != null && r.b.rt != null ? (r.a.rt - r.b.rt) / 10 : null;
@@ -53,8 +72,10 @@ function draw() {
         <td class="t">${fmtClock(r.a.t.start)}</td><td class="t">${fmtClock(r.a.t.finish)}</td><td class="t"><b>${r.a.rt != null ? fmtRace(r.a.rt) : esc(r.a.note)}</b></td><td class="n">${r.a.pos ?? ""}</td>
         <td class="t">${fmtClock(r.b.t.start)}</td><td class="t">${fmtClock(r.b.t.finish)}</td><td class="t"><b>${r.b.rt != null ? fmtRace(r.b.rt) : esc(r.b.note)}</b></td><td class="n">${r.b.pos ?? ""}</td>
         <td class="n ${d != null && Math.abs(d) > 1 ? "bad" : ""}">${d != null ? (d > 0 ? "+" : "") + d.toFixed(1) : ""}</td>
-        <td class="wr">${r.flags.map(f => `<span class="flag ${f.lvl}">${esc(f.t)}</span>`).join(" ") || `<span class="ok">OK</span>`}</td>
-        <td><button type="button" class="btn small rev">Review</button></td></tr>`;
+        <td class="wr">${r.rs && r.rs.ok
+            ? `<span class="flag ok">✓ Resolved</span> <small>${esc((r.rs.by || "").replace("@dewhurst.tech", ""))} ${esc(fmtClock(r.rs.at).slice(0, 5))}${r.rs.note ? " · " + esc(r.rs.note) : ""}</small>`
+            : (r.flags.map(f => `<span class="flag ${f.lvl}">${esc(f.t)}</span>`).join(" ") || `<span class="ok">OK</span>`) + (r.rs && !r.rs.ok && r.flags.length ? ` <small class="bad">changed since resolved</small>` : "")}</td>
+        <td style="white-space:nowrap"><button type="button" class="btn small rev">Review</button>${r.flags.length && !(r.rs && r.rs.ok) ? ` <button type="button" class="btn small primary res">Resolve</button>` : ""}</td></tr>`;
     }).join("") || `<tr><td colspan="13" class="empty">${onlyFlagged ? "Nothing to look at - A and B agree for every crew in this view." : "No crews in this division."}</td></tr>`
   }</tbody>`;
 }
@@ -63,7 +84,18 @@ onChange(() => { if (!reviewing) draw(); });
 draw();
 
 /* ---------- Review one crew ---------- */
-$("#tbl").addEventListener("click", e => { const b = e.target.closest(".rev"); if (b) review(Number(b.closest("tr").dataset.bow)); });
+$("#tbl").addEventListener("click", e => {
+  const tr = e.target.closest("tr[data-bow]"); if (!tr) return; const bow = Number(tr.dataset.bow);
+  if (e.target.closest(".rev")) review(bow);
+  else if (e.target.closest(".res")) resolveCrew(bow);
+});
+async function resolveCrew(bow) {
+  const flags = flagsFor(bow), e = S.entries[String(bow)] || {};
+  const list = flags.map(f => f.t).join("; ");
+  const note = await textPrompt(`Resolve ${bow} · ${e.crew || ""}?`, `Confirms this crew has been checked and instance A has the correct times. Flags now: ${list}. Optional note:`, "Resolve", "e.g. A finish correct - B finisher late");
+  if (note == null) return;
+  markReviewed(bow, sigOf(flags), note); toast(`${bow} resolved`);
+}
 
 /* Turn a typed UK time (HH:MM:SS or HH:MM:SS.s) into ms on the same day as `ref`. */
 function parseUK(text, ref) {
@@ -85,6 +117,7 @@ async function review(bow) {
     <label style="display:grid;gap:4px;margin:10px 0;font-weight:700">Reason (needed for any change)
       <input id="reason" placeholder="e.g. A finisher missed the crew - taken from B" style="font:500 16px/1.2 var(--sans);padding:10px;border:2px solid #b9c3cd;border-radius:8px"></label>
     <div id="flagbox"></div>
+    <div id="resbox" style="margin-top:12px"></div>
     <h3 style="font-size:16px;margin-top:14px">Every tap for bow ${bow}</h3><div id="hist" class="note">Loading…</div>
     <div class="row" style="margin-top:12px"><button type="button" class="btn big no">Close</button><span></span></div></div>`;
   document.body.appendChild(d);
@@ -103,8 +136,16 @@ async function review(bow) {
       if (await confirmBox("Mark this flag as resolved?", "It stays in the tap log.", "Resolved")) { resolveFlag(bow, b.dataset.id, b.dataset.inst); toast("Flag resolved"); }
     }));
   }
+  function paintRes() {
+    const flags = flagsFor(bow), rs = resolvedState(bow, flags);
+    $("#resbox", d).innerHTML = rs && rs.ok
+      ? `<p class="ok">✓ Resolved by ${esc((rs.by || "").replace("@dewhurst.tech", ""))} at ${esc(fmtClock(rs.at).slice(0, 8))}${rs.note ? ` - "${esc(rs.note)}"` : ""} <button type="button" class="btn small reopen">Reopen</button></p>`
+      : flags.length ? `<button type="button" class="btn primary resolve-crew">Resolve - checked, A is correct</button>` : `<p class="ok">No flags on this crew.</p>`;
+    $(".resolve-crew", d)?.addEventListener("click", async () => { await resolveCrew(bow); });
+    $(".reopen", d)?.addEventListener("click", async () => { if (await confirmBox(`Reopen ${bow}?`, "It goes back into Needs a look if it still has flags.", "Reopen")) { reopenReview(bow); toast("Reopened"); } });
+  }
   function paint() {
-    paintFlags();
+    paintFlags(); paintRes();
     const src = tgt === "A" ? "B" : "A"; const t = timing(tgt, bow), s = timing(src, bow);
     const row = (f, label) => `<tr><th>${label}</th><td class="t">${fmtClock(t[f]) || "-"}</td><td class="t">${fmtClock(s[f]) || "-"}</td>
       <td>${s[f] != null ? `<button type="button" class="btn small use" data-f="${f}">Use ${src}'s ${label.toLowerCase()}</button> ` : ""}
@@ -149,7 +190,7 @@ async function review(bow) {
       all.sort((x, y) => when(x) - when(y));
       const what = t => t.kind === "start" || t.kind === "finish" ? `${t.kind} ${fmtClock(t.tCorrected)}`
         : t.kind === "void" ? `undo ${t.field}` : t.kind === "status" ? `status ${t.value}`
-        : t.kind === "swap" ? `SWAP ${t.field} with ${t.value}` : t.kind === "flag" ? `FLAGGED for review${t.value ? `: "${esc(t.value)}"` : ""}` : t.kind === "flag-resolved" ? "flag resolved" : t.kind === "adjust" ? `ADJUDICATION ${t.field} → ${t.field === "status" ? (t.value || "none") : (fmtClock(t.value) || "cleared")} · "${esc(t.reason)}"` : t.kind;
+        : t.kind === "swap" ? `SWAP ${t.field} with ${t.value}` : t.kind === "flag" ? `FLAGGED for review${t.value ? `: "${esc(t.value)}"` : ""}` : t.kind === "flag-resolved" ? "flag resolved" : t.kind === "reviewed" ? `RESOLVED${t.value ? `: "${esc(t.value)}"` : ""}` : t.kind === "review-reopened" ? "review reopened" : t.kind === "adjust" ? `ADJUDICATION ${t.field} → ${t.field === "status" ? (t.value || "none") : (fmtClock(t.value) || "cleared")} · "${esc(t.reason)}"` : t.kind;
       $("#hist", d).innerHTML = all.length ? `<table class="sbh-t"><thead><tr><th>Logged</th><th>Inst</th><th>What</th><th>Who</th><th>Phone</th></tr></thead><tbody>${
         all.map(t => `<tr><td class="t">${fmtClock(when(t))}</td><td>${t.instance}</td><td class="wr">${what(t)}</td><td>${esc((t.user || "").replace("@dewhurst.tech", ""))}</td><td>${esc(t.deviceId || "")}</td></tr>`).join("")}</tbody></table>`
         : "No taps logged for this crew.";

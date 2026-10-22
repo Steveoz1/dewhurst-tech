@@ -1,6 +1,6 @@
 /* Finisher page (brief E4: F-F1 to F-F5) */
 import { boot, mountBar, requireRole, onChange, changed, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         logTime, voidField, setStatus, swapFlow, flagFlow, flagBadge, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, fmtRace, raceTenths, idleFor } from "./sbh.js?v=20261022h";
+         logTime, voidField, setStatus, justTapped, swapFlow, flagFlow, flagBadge, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, fmtRace, raceTenths, idleFor } from "./sbh.js?v=20261022i";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { allowAll: true, confirmSwitch: true });
@@ -27,7 +27,7 @@ function row(e, mode) {
   const info = `<div class="bow">${e.bow}</div><div class="info"><div class="ev">${esc(e.event)}</div><div class="nm">${esc(e.crew)}</div><div class="cl">${esc(e.club)}</div>${time}${flagBadge(e.bow)}</div>`;
   const more = `<button class="mini more" type="button" aria-label="More">⋯</button>`;
   if (mode === "out") return `<li class="crew out" data-bow="${e.bow}">${info}<div class="acts"><span class="st">${st}</span>${more}</div></li>`;
-  if (mode === "done") return `<li class="crew done" data-bow="${e.bow}">${info}<div class="acts"><button class="mini undo" type="button">Undo</button>${more}</div></li>`;
+  if (mode === "done") return `<li class="crew done" data-bow="${e.bow}">${info}<div class="acts"><button class="mini undo${justTapped("finish", e.bow) ? " locked" : ""}" type="button">Undo</button>${more}</div></li>`;
   return `<li class="crew${pinned === e.bow ? " pinned" : ""}" data-bow="${e.bow}">${info}<div class="acts"><button class="go" type="button">${rearm.has(e.bow) ? "RE-FINISH" : "FINISH"}</button>${more}</div></li>`;
 }
 
@@ -79,6 +79,7 @@ async function onFinish(bow, t) {
 lists.addEventListener("click", async e => {
   const li = e.target.closest("li[data-bow]"); if (!li) return; const bow = Number(li.dataset.bow);
   if (e.target.closest(".undo")) {
+    if (justTapped("finish", bow)) { toast("Just logged - Undo is available in a moment"); return; }   // double-tap guard
     if (undoNeedsConfirm("finish", bow) && !(await confirmBox(`Clear finish for ${bow}?`, "The original tap stays in the log.", "Clear finish"))) return;
     held.delete(bow); voidField("finish", bow); toast(`Finish cleared for ${bow}`);
   } else if (e.target.closest(".more")) {

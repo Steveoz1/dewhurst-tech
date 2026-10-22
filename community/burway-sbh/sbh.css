@@ -224,3 +224,9 @@ mark{background:#f2d000;color:#222c4a;padding:0 1px;border-radius:2px}
 .bbanner a:not([href]){cursor:default}
 
 .btn[hidden]{display:none!important}
+
+.flag.ok{background:#e2f4e7;color:var(--go)}
+details.rules{margin:4px 12px 12px;border:1px solid var(--line);border-radius:10px;background:#fafbfc}
+details.rules>summary{cursor:pointer;padding:10px 12px;font-weight:700}
+details.rules .sbh-t{margin:0 0 6px}
+.mini.locked{opacity:.35}
