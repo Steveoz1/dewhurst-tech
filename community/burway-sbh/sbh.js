@@ -162,11 +162,18 @@ async function firebaseBackend(cfg) {
   const app = appM.initializeApp(cfg);
   let db, persistent = true;
   try {
-    db = fs.initializeFirestore(app, { localCache: fs.persistentLocalCache({ tabManager: fs.persistentMultipleTabManager() }) });
+    // Single-tab cache that the newest page always takes over. Safari (iPad/iPhone) keeps the previous page
+    // frozen in memory when you move between pages; with the multi-tab manager that frozen page kept hold of
+    // the offline cache, so the new page sat "Offline" with no data (found in testing on an iPad, 22 Oct).
+    db = fs.initializeFirestore(app, { localCache: fs.persistentLocalCache({ tabManager: fs.persistentSingleTabManager({ forceOwnership: true }) }) });
   } catch (e) {
     console.warn("Persistent cache unavailable, using memory", e); persistent = false;
     db = fs.initializeFirestore(app, { localCache: fs.memoryLocalCache() });
   }
+  // Let go of the cache cleanly when leaving a page (unsent taps stay safely stored and go on the next page),
+  // and reload a page Safari brings back from its frozen state, so it reconnects properly.
+  addEventListener("pagehide", () => { try { fs.terminate(db); } catch (e) {} });
+  addEventListener("pageshow", e => { if (e.persisted) location.reload(); });
   const auth = au.getAuth(app);
   const ref = p => fs.doc(db, ...p.split("/"));
   return {
