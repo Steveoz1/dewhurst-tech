@@ -181,6 +181,7 @@ async function firebaseBackend(cfg) {
     newId: () => fs.doc(fs.collection(db, "taps")).id,
     onAuth(cb) { au.onAuthStateChanged(auth, u => cb(u ? { email: u.email, uid: u.uid } : null)); },
     signIn: (email, pw) => au.signInWithEmailAndPassword(auth, email, pw),
+    reauth: pw => au.reauthenticateWithCredential(auth.currentUser, au.EmailAuthProvider.credential(auth.currentUser.email, pw)),
     signOut: () => au.signOut(auth),
     watchDoc(path, cb, onErr) {
       return fs.onSnapshot(ref(path), { includeMetadataChanges: true },
@@ -192,6 +193,7 @@ async function firebaseBackend(cfg) {
       const b = fs.writeBatch(db);
       for (const op of ops) {
         if (op.create) b.set(ref(op.path), { ...op.data, createdAt: fs.serverTimestamp() });
+        else if (op.replace) b.set(ref(op.path), op.data);           // whole document replaced (system reset)
         else b.set(ref(op.path), op.data, { merge: true });
       }
       return b.commit();
@@ -244,8 +246,9 @@ export async function boot({ watch = ["entries", "A", "B"] } = {}) {
     changed();
   });
   if (watch.includes("entries")) watchEntries();
-  S.backend.watchDoc("config/race", (data, meta) => { S.race = data || {}; changed(); });
+  S.backend.watchDoc("config/race", (data, meta) => { S.race = data || {}; dropStaleLedger(); changed(); });
   onChange(paintWho);
+  for (const item of ledger()) overlayAdd(item.id, item.ops);   // taps still waiting to send show as done after a reload (S-2)
   for (const i of ["A", "B"]) if (watch.includes(i)) watchTimings(i);
   addEventListener("online", () => { replayLedger(); changed(); });
   addEventListener("offline", changed);
@@ -283,8 +286,43 @@ export function watchEntries() {
 export function watchTimings(inst) {
   if (watching[inst]) return; watching[inst] = true;
   S.backend.watchDoc("timings/" + inst, (data, meta) => {
-    S.timings[inst] = data || {}; noteMeta(meta); changed();
+    S.timings[inst] = data || {}; settleOverlay(inst); noteMeta(meta); changed();
   });
+}
+
+/* Snag S-2 (club test 22 Oct): show a tap on screen the moment it is stored on this phone, not when the
+   server (or the database's own cache) gets round to confirming it. Each start/finish/status write is laid
+   over the received timings until the received data shows the same value, or the write is confirmed or refused. */
+const overlay = { A: {}, B: {} };             // inst -> bow -> field -> { v, id }
+function overlayAdd(id, ops) {
+  for (const op of ops) {
+    const m = /^timings\/(A|B)$/.exec(op.path); if (!m) continue;
+    for (const [bow, fields] of Object.entries(op.data || {})) for (const [f, v] of Object.entries(fields || {}))
+      if (v === null || typeof v !== "object") ((overlay[m[1]][bow] ||= {})[f] = { v, id });
+  }
+  for (const i of ["A", "B"]) applyOverlay(i);
+}
+function overlayDrop(id) {
+  for (const i of ["A", "B"]) for (const [bow, fs] of Object.entries(overlay[i])) {
+    for (const f of Object.keys(fs)) if (fs[f].id === id) delete fs[f];
+    if (!Object.keys(fs).length) delete overlay[i][bow];
+  }
+}
+function settleOverlay(inst) {                // drop what the received data already shows, then lay the rest on top
+  const T = S.timings[inst] || {};
+  for (const [bow, fs] of Object.entries(overlay[inst])) {
+    for (const [f, o] of Object.entries(fs)) if ((T[bow] || {})[f] === o.v || ((T[bow] || {})[f] == null && o.v == null)) delete fs[f];
+    if (!Object.keys(fs).length) delete overlay[inst][bow];
+  }
+  applyOverlay(inst);
+}
+function applyOverlay(inst) {
+  const T = S.timings[inst] = { ...(S.timings[inst] || {}) };
+  for (const [bow, fs] of Object.entries(overlay[inst])) {
+    const row = { ...(T[bow] || {}) };
+    for (const [f, o] of Object.entries(fs)) row[f] = o.v;
+    T[bow] = row;
+  }
 }
 
 function paintWho() {
@@ -295,6 +333,33 @@ function paintWho() {
   w.querySelector("button").onclick = async () => { if (await confirmBox("Sign out?", "You'll need the password to sign back in.", "Sign out")) S.backend.signOut(); };
 }
 export const officialInstance = () => "A";      // Steve, 21 Oct: the public sees instance A only
+/* After a system reset, anything this phone still holds from before it is thrown away, so old test taps can't come back. */
+function dropStaleLedger() {
+  const at = S.race.resetAt; if (!at) return;
+  const L = ledger(), keep = L.filter(x => !(x.at < at));
+  if (keep.length !== L.length) { LS.set(LEDGER, keep); for (const x of L) if (x.at < at) overlayDrop(x.id); for (const i of ["A", "B"]) settleOverlay(i); }
+}
+
+/** Race Configuration › Start a new race (added 22 Oct after the club test). Admin only, after the password is re-entered.
+    level "keep": crews stay exactly as listed (bow, event, crew, club, division); everything else goes —
+                  all times and statuses in A and B, review flags and Resolves, penalties, notes, handicap groups.
+    level "all":  the crew list goes too - a completely empty system, ready for a fresh import.
+    The tap log is never deleted (security rules); taps from before the reset are hidden from the history. */
+export function resetSystem(level) {
+  const now = serverNow();
+  const keep = {};
+  if (level === "keep") for (const e of Object.values(S.entries)) keep[String(e.bow)] = { bow: e.bow, event: e.event || "", crew: e.crew || "", club: e.club || "", division: e.division ?? null, status: "", notes: "" };
+  const race = {}; for (const [k, v] of Object.entries(S.race || {})) if (k !== "combos") race[k] = v;
+  Object.assign(race, { resetAt: now, resetBy: S.user ? S.user.email : "", resetLevel: level });
+  const id = S.backend.newId();
+  const tap = { ...baseTap("system-reset", "A", null, null), value: level, note: `${Object.keys(S.entries).length} crews before; ${level === "keep" ? "crew list kept" : "crew list wiped"}` };
+  LS.set(LEDGER, []); for (const i of ["A", "B"]) overlay[i] = {};          // nothing from before the reset is sent from this phone either
+  writeOps(id, [{ path: "taps/" + id, create: true, data: tap },
+    { path: "timings/A", replace: true, data: {} }, { path: "timings/B", replace: true, data: {} },
+    { path: "config/entries", replace: true, data: keep }, { path: "config/race", replace: true, data: race }], tap);
+}
+export const reauth = pw => S.backend.reauth(pw);
+
 export function saveRace(patch) { writeOps("r" + rid(12), [{ path: "config/race", data: patch }], null); }
 
 /* ---- 8. Entries helpers ------------------------------------------- */
@@ -359,19 +424,20 @@ export function computeResults(inst) {
 /* ---- 9. Tap writing: local ledger first, then server (T-T4) ------- */
 const LEDGER = "sbh.ledger", LOG = "sbh.log";
 export const ledger = () => LS.get(LEDGER, []);
-function ledgerRemove(id) { LS.set(LEDGER, ledger().filter(x => x.id !== id)); changed(); }
+function ledgerRemove(id) { LS.set(LEDGER, ledger().filter(x => x.id !== id)); overlayDrop(id); changed(); }
 
 function writeOps(id, ops, tap) {
   // 1) keep it on the phone, synchronously, before anything is sent
   const L = ledger(); L.push({ id, ops, at: Date.now() });
   const okLocal = LS.set(LEDGER, L);
+  overlayAdd(id, ops);                        // on screen now (S-2)
   if (tap) { const log = LS.get(LOG, []); log.push({ id, ...tap }); if (log.length > 5000) log.splice(0, log.length - 5000); LS.set(LOG, log); }
   if (!okLocal) showBanner("This phone's storage is full - taps are not backed up locally. Keep the paper sheet going.", "amber");
   // 2) hand to the backend (it also queues offline)
   S.backend.commit(ops).then(() => ledgerRemove(id)).catch(err => {
     console.error("commit failed", err);
     const code = (err && err.code) || String(err);
-    if (/permission/i.test(code)) { S.ledgerError = "Server refused a tap (" + code + "). Sign out and back in."; LS.set(LEDGER, ledger().filter(x => x.id !== id)); }
+    if (/permission/i.test(code)) { S.ledgerError = "Server refused a tap (" + code + "). Sign out and back in."; LS.set(LEDGER, ledger().filter(x => x.id !== id)); overlayDrop(id); }
     else S.ledgerError = "Tap not yet saved: " + code;
     changed();
   });
@@ -385,6 +451,7 @@ async function replayLedger() {
     await S.backend.pendingDone();            // let the SDK flush its own queue first
     for (const item of ledger()) {
       if (item.id[0] === "e" || item.id[0] === "r") { ledgerRemove(item.id); continue; }   // entries edits: SDK has flushed them
+      if (S.race.resetAt && item.at < S.race.resetAt) { ledgerRemove(item.id); continue; }   // from before a system reset: never send
       let there = false;
       try { there = await S.backend.exists("taps/" + item.id); } catch (e) { break; }
       if (there) { ledgerRemove(item.id); continue; }

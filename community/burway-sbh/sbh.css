@@ -230,3 +230,15 @@ details.rules{margin:4px 12px 12px;border:1px solid var(--line);border-radius:10
 details.rules>summary{cursor:pointer;padding:10px 12px;font-weight:700}
 details.rules .sbh-t{margin:0 0 6px}
 .mini.locked{opacity:.35}
+
+/* Club test 22 Oct (S-1/S-4): a row must be the same height before and after a tap, so nothing below it moves */
+.crew{grid-template-columns:62px minmax(0,1fr) 154px}
+.crew .acts{justify-content:flex-end}
+.fin .crew .tm{min-height:2.4em}
+
+/* Race Adjudication review window feedback (22 Oct) */
+.rvmsg{margin:8px 0;padding:0;font-weight:600}
+.rvmsg.good{padding:10px 12px;border-radius:8px;background:#e2f4e7;color:#0d5a26;border:2px solid var(--go)}
+.rvmsg.badmsg{padding:10px 12px;border-radius:8px;background:#fde8e8;color:#8a1111;border:2px solid var(--bad)}
+input.need{border-color:var(--bad)!important;background:#fff5f5}
+td.changed{background:#fff3b0;outline:2px solid #e0b400}

@@ -1,5 +1,5 @@
 /* Home page: show only the pages the signed-in role can use. */
-import { boot, onChange, S, $, $$ } from "./sbh.js?v=20261022i";
+import { boot, onChange, S, $, $$ } from "./sbh.js?v=20261022k";
 await boot({ watch: [] });
 function draw() {
   const role = S.user ? S.role : null;

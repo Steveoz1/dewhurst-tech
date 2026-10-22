@@ -1,6 +1,6 @@
 /* Starter page (brief E3: F-S1 to F-S8, plus F-S9 jump box which shares the Finisher's code) */
 import { boot, mountBar, requireRole, onChange, changed, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         logTime, voidField, setStatus, justTapped, swapFlow, flagFlow, flagBadge, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, idleFor } from "./sbh.js?v=20261022i";
+         logTime, voidField, setStatus, justTapped, swapFlow, flagFlow, flagBadge, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock } from "./sbh.js?v=20261022k";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { allowAll: true, confirmSwitch: true });
@@ -14,7 +14,7 @@ app.innerHTML = `
   <ul class="crews" id="list"></ul>`;
 const list = $("#list");
 const rearm = new Set();       // bows where "replace start" was chosen
-let pinned = null, pinTimer = null, nextBow = null, wantScroll = false;
+let pinned = null, pinTimer = null, nextBow = null;
 
 function rowHTML(e, isNext) {
   const t = timing(S.instance, e.bow); const st = statusOf(S.instance, e.bow);
@@ -49,17 +49,9 @@ async function onStart(bow, t) {
   rearm.delete(bow);
   const tc = logTime("start", bow, t);
   toast(`${bow} started ${fmtClock(tc)}`);
-  wantScroll = true; scrollSoon();
 }
 
-/* F-S4: keep the next crew near the top - but only once the starter's thumb is off the screen */
-function scrollSoon() {
-  if (!wantScroll) return;
-  if (idleFor() < 1200 || S.pointerDown) { setTimeout(scrollSoon, 300); return; }
-  wantScroll = false;
-  const li = nextBow != null && list.querySelector(`li[data-bow="${nextBow}"]`);
-  if (li) { const top = li.getBoundingClientRect().top + scrollY - ($("#bar").offsetHeight + 8); scrollTo({ top, behavior: "smooth" }); }
-}
+/* F-S4 (changed after the club test, snag S-1): the next crew is highlighted but the page never scrolls by itself. */
 
 list.addEventListener("click", async e => {
   const li = e.target.closest("li[data-bow]"); if (!li) return; const bow = Number(li.dataset.bow);

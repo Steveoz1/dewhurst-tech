@@ -1,7 +1,7 @@
 /* Race Adjudication page (admin only): compare A with B, flag differences, correct a time with a reason.
    Brief F-R8 (A/B check) + F-K7 (timing correction panel). Public results always show A. */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag, markReviewed, reopenReview, textPrompt } from "./sbh.js?v=20261022i";
+         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag, markReviewed, reopenReview, textPrompt } from "./sbh.js?v=20261022k";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { instance: false, allowAll: true });
@@ -93,8 +93,8 @@ async function resolveCrew(bow) {
   const flags = flagsFor(bow), e = S.entries[String(bow)] || {};
   const list = flags.map(f => f.t).join("; ");
   const note = await textPrompt(`Resolve ${bow} · ${e.crew || ""}?`, `Confirms this crew has been checked and instance A has the correct times. Flags now: ${list}. Optional note:`, "Resolve", "e.g. A finish correct - B finisher late");
-  if (note == null) return;
-  markReviewed(bow, sigOf(flags), note); toast(`${bow} resolved`);
+  if (note == null) return false;
+  markReviewed(bow, sigOf(flags), note); toast(`${bow} resolved`); return true;
 }
 
 /* Turn a typed UK time (HH:MM:SS or HH:MM:SS.s) into ms on the same day as `ref`. */
@@ -113,7 +113,9 @@ async function review(bow) {
   d.innerHTML = `<div class="box wide" role="dialog" aria-modal="true">
     <h3>Bow ${bow} · ${esc(e.crew)}</h3><p>${esc(e.event)} · ${esc(e.club)} · Division ${e.division}</p>
     <p>Correct instance: <span class="seg light" id="tseg"><button type="button" data-i="A" class="on">A</button><button type="button" data-i="B">B</button></span></p>
+    <p id="nowflags" class="note" style="margin:6px 0"></p>
     <div id="rv"></div>
+    <p id="rvmsg" class="rvmsg" aria-live="polite"></p>
     <label style="display:grid;gap:4px;margin:10px 0;font-weight:700">Reason (needed for any change)
       <input id="reason" placeholder="e.g. A finisher missed the crew - taken from B" style="font:500 16px/1.2 var(--sans);padding:10px;border:2px solid #b9c3cd;border-radius:8px"></label>
     <div id="flagbox"></div>
@@ -125,7 +127,21 @@ async function review(bow) {
   const close = () => { d.remove(); reviewing = false; draw(); };
   d.querySelector(".no").addEventListener("click", close);
   $$("#tseg button", d).forEach(b => b.addEventListener("click", () => { tgt = b.dataset.i; $$("#tseg button", d).forEach(x => x.classList.toggle("on", x === b)); paint(); }));
-  const reason = () => { const r = $("#reason", d).value.trim(); if (!r) { toast("Add a reason first"); $("#reason", d).focus(); } return r; };
+  /* Feedback shown inside this window (pop-up notes sit behind it) - Steve, 22 Oct: "no indication it was acknowledged" */
+  let lastChanged = null;                              // highlight the cell just changed, for a few seconds
+  const say = (html, ok = true) => { const m = $("#rvmsg", d); m.className = "rvmsg " + (ok ? "good" : "badmsg"); m.innerHTML = html; m.scrollIntoView({ block: "nearest" }); };
+  const reason = () => {
+    const el = $("#reason", d), r = el.value.trim();
+    el.classList.toggle("need", !r);
+    if (!r) { say("Nothing changed - type a <b>Reason</b> first (it is kept with the change).", false); el.focus(); }
+    return r;
+  };
+  const done = (what, f) => {
+    say(`✓ Saved: ${what}.<br>${tgt === "A" ? "Public Results use A, so they now show this." : "B is the check copy - public Results (A) are not affected."} The change and your reason are in the tap list below.`);
+    $("#reason", d).classList.remove("need");
+    lastChanged = { f, tgt, until: Date.now() + 8000 }; paint();
+    setTimeout(loadHist, 1500);
+  };
 
   function paintFlags() {
     const fl = flagsOf(bow);
@@ -133,7 +149,7 @@ async function review(bow) {
       `<p class="flagnote" style="max-width:none">⚑ ${esc(f.inst)} · ${esc(f.by)} · ${esc(fmtClock(f.at).slice(0, 8))}: ${esc(f.text || "(no notes)")}
        <button type="button" class="btn small resolve" data-inst="${f.inst}" data-id="${esc(f.id)}">Mark resolved</button></p>`).join("") : "";
     $$(".resolve", d).forEach(b => b.addEventListener("click", async () => {
-      if (await confirmBox("Mark this flag as resolved?", "It stays in the tap log.", "Resolved")) { resolveFlag(bow, b.dataset.id, b.dataset.inst); toast("Flag resolved"); }
+      if (await confirmBox("Mark this flag as resolved?", "It stays in the tap log.", "Resolved")) { resolveFlag(bow, b.dataset.id, b.dataset.inst); say("✓ That review note is marked resolved."); }
     }));
   }
   function paintRes() {
@@ -141,40 +157,43 @@ async function review(bow) {
     $("#resbox", d).innerHTML = rs && rs.ok
       ? `<p class="ok">✓ Resolved by ${esc((rs.by || "").replace("@dewhurst.tech", ""))} at ${esc(fmtClock(rs.at).slice(0, 8))}${rs.note ? ` - "${esc(rs.note)}"` : ""} <button type="button" class="btn small reopen">Reopen</button></p>`
       : flags.length ? `<button type="button" class="btn primary resolve-crew">Resolve - checked, A is correct</button>` : `<p class="ok">No flags on this crew.</p>`;
-    $(".resolve-crew", d)?.addEventListener("click", async () => { await resolveCrew(bow); });
-    $(".reopen", d)?.addEventListener("click", async () => { if (await confirmBox(`Reopen ${bow}?`, "It goes back into Needs a look if it still has flags.", "Reopen")) { reopenReview(bow); toast("Reopened"); } });
+    $(".resolve-crew", d)?.addEventListener("click", async () => { if (await resolveCrew(bow)) say(`✓ Bow ${bow} resolved - it leaves Needs a look.`); });
+    $(".reopen", d)?.addEventListener("click", async () => { if (await confirmBox(`Reopen ${bow}?`, "It goes back into Needs a look if it still has flags.", "Reopen")) { reopenReview(bow); say("✓ Reopened - back in Needs a look if it still has differences."); } });
   }
   function paint() {
     paintFlags(); paintRes();
+    const nf = flagsFor(bow);
+    $("#nowflags", d).innerHTML = "<b>Differences now:</b> " + (nf.length ? nf.map(f => `<span class="flag ${f.lvl}">${esc(f.t)}</span>`).join(" ") : `<span class="ok">none - A and B agree</span>`);
     const src = tgt === "A" ? "B" : "A"; const t = timing(tgt, bow), s = timing(src, bow);
-    const row = (f, label) => `<tr><th>${label}</th><td class="t">${fmtClock(t[f]) || "-"}</td><td class="t">${fmtClock(s[f]) || "-"}</td>
+    const row = (f, label) => `<tr><th>${label}</th><td class="t" data-cell="${f}">${fmtClock(t[f]) || "-"}</td><td class="t">${fmtClock(s[f]) || "-"}</td>
       <td>${s[f] != null ? `<button type="button" class="btn small use" data-f="${f}">Use ${src}'s ${label.toLowerCase()}</button> ` : ""}
         <input class="typed" data-f="${f}" placeholder="HH:MM:SS.s" style="width:120px;font:600 15px/1 ui-monospace,monospace;padding:8px;border:2px solid #b9c3cd;border-radius:8px">
         <button type="button" class="btn small set" data-f="${f}">Set</button>
         ${t[f] != null ? `<button type="button" class="btn small danger clr" data-f="${f}">Clear</button>` : ""}</td></tr>`;
     $("#rv", d).innerHTML = `<div class="tblwrap"><table class="sbh-t"><thead><tr><th></th><th>${tgt} (changing)</th><th>${src}</th><th>Change ${tgt}</th></tr></thead><tbody>
       ${row("start", "Start")}${row("finish", "Finish")}
-      <tr><th>Status</th><td>${esc(statusOf(tgt, bow) || "-")}</td><td>${esc(statusOf(src, bow) || "-")}</td>
+      <tr><th>Status</th><td data-cell="status">${esc(statusOf(tgt, bow) || "-")}</td><td>${esc(statusOf(src, bow) || "-")}</td>
         <td><select id="st" style="font:inherit;padding:8px">${STATUSES.filter(x => x !== "Withdrawn").map(x => `<option value="${x}" ${x === (t.status || "") ? "selected" : ""}>${x || "(none)"}</option>`).join("")}</select>
         <button type="button" class="btn small" id="setst">Set status</button></td></tr></tbody></table></div>`;
+    if (lastChanged && lastChanged.tgt === tgt && Date.now() < lastChanged.until) d.querySelector(`td[data-cell="${lastChanged.f}"]`)?.classList.add("changed");
     $$(".use", d).forEach(b => b.addEventListener("click", async () => {
       const f = b.dataset.f, r = reason(); if (!r) return; const v = timing(src, bow)[f];
-      if (await confirmBox(`Set ${tgt} ${f} for ${bow} to ${fmtClock(v)}?`, `Copied from ${src}. Reason: ${r}`, "Set")) { adjust(tgt, bow, f, v, r, src + ":" + (timing(src, bow)[f + "Tap"] || "")); toast("Saved"); setTimeout(loadHist, 1500); }
+      if (await confirmBox(`Set ${tgt} ${f} for ${bow} to ${fmtClock(v)}?`, `Copied from ${src}. Reason: ${r}`, "Set")) { adjust(tgt, bow, f, v, r, src + ":" + (timing(src, bow)[f + "Tap"] || "")); done(`${tgt} ${f} for ${bow} is now ${fmtClock(v)} (copied from ${src})`, f); }
     }));
     $$(".set", d).forEach(b => b.addEventListener("click", async () => {
       const f = b.dataset.f, inp = d.querySelector(`.typed[data-f="${f}"]`);
       const ref = timing(tgt, bow)[f] ?? timing(src, bow)[f] ?? timing(tgt, bow).start ?? Date.now();
       const v = parseUK(inp.value, ref); if (v == null) { toast("Type the time as HH:MM:SS.s, e.g. 10:14:07.3"); inp.focus(); return; }
       const r = reason(); if (!r) return;
-      if (await confirmBox(`Set ${tgt} ${f} for ${bow} to ${fmtClock(v)}?`, `Reason: ${r}`, "Set")) { adjust(tgt, bow, f, v, r, "typed"); inp.value = ""; toast("Saved"); setTimeout(loadHist, 1500); }
+      if (await confirmBox(`Set ${tgt} ${f} for ${bow} to ${fmtClock(v)}?`, `Reason: ${r}`, "Set")) { adjust(tgt, bow, f, v, r, "typed"); done(`${tgt} ${f} for ${bow} is now ${fmtClock(v)} (typed)`, f); }
     }));
     $$(".clr", d).forEach(b => b.addEventListener("click", async () => {
       const f = b.dataset.f, r = reason(); if (!r) return;
-      if (await confirmBox(`Clear ${tgt} ${f} for ${bow}?`, `Reason: ${r}`, "Clear")) { adjust(tgt, bow, f, null, r); toast("Cleared"); setTimeout(loadHist, 1500); }
+      if (await confirmBox(`Clear ${tgt} ${f} for ${bow}?`, `Reason: ${r}`, "Clear")) { adjust(tgt, bow, f, null, r); done(`${tgt} ${f} for ${bow} cleared`, f); }
     }));
     $("#setst", d).addEventListener("click", async () => {
       const v = $("#st", d).value || null, r = reason(); if (!r) return;
-      if (await confirmBox(`Set ${tgt} status for ${bow} to ${v || "(none)"}?`, `Reason: ${r}`, "Set")) { adjust(tgt, bow, "status", v, r); toast("Saved"); setTimeout(loadHist, 1500); }
+      if (await confirmBox(`Set ${tgt} status for ${bow} to ${v || "(none)"}?`, `Reason: ${r}`, "Set")) { adjust(tgt, bow, "status", v, r); done(`${tgt} status for ${bow} is now ${v || "(none)"}`, "status"); }
     });
   }
   paint();
@@ -187,6 +206,8 @@ async function review(bow) {
     try {
       const all = [...await S.backend.tapsFor("A", bow), ...await S.backend.tapsFor("B", bow)];
       const when = t => t.createdAt?.toMillis ? t.createdAt.toMillis() : (t.createdAt || t.tDevice || 0);
+      const before = S.race.resetAt ? all.filter(t => when(t) < S.race.resetAt).length : 0;
+      if (before) all.splice(0, all.length, ...all.filter(t => when(t) >= S.race.resetAt));   // taps from before the last "Start a new race" stay on the server, hidden here
       all.sort((x, y) => when(x) - when(y));
       const what = t => t.kind === "start" || t.kind === "finish" ? `${t.kind} ${fmtClock(t.tCorrected)}`
         : t.kind === "void" ? `undo ${t.field}` : t.kind === "status" ? `status ${t.value}`

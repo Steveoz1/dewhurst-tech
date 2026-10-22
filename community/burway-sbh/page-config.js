@@ -1,7 +1,7 @@
 /* Race Configuration page (brief E2: F-K1 to F-K6) */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, isTimed, comboOf, penaltyOf, flagsOf, fmtClock,
-         saveEntries, parseCSV, downloadCSV, STATUSES, DIVS, toast, confirmBox, typedConfirm,
-         resetField, officialInstance, saveRace } from "./sbh.js?v=20261022i";
+         saveEntries, parseCSV, downloadCSV, STATUSES, DIVS, toast, confirmBox, typedConfirm, resetSystem, reauth,
+         resetField, officialInstance, saveRace } from "./sbh.js?v=20261022k";
 
 const app = $("#app");
 await boot({ watch: ["entries", "A", "B"] });
@@ -37,6 +37,15 @@ app.innerHTML = `
     <p>Instance: <span class="seg light" id="rseg" role="group" aria-label="Instance to reset"><button type="button" data-i="A">A</button><button type="button" data-i="B">B</button></span></p>
     <button type="button" class="btn danger" id="rstart"></button>
     <button type="button" class="btn danger" id="rfinish"></button>
+  </div>
+  <div class="panel" id="newrace">
+    <h3>Start a new race (clear the system)</h3>
+    <p>For a clean slate before race day. Both need a typed confirmation and the admin password. Before you use either, make sure every timing phone shows <b>All saved</b>, then close the timing pages on them; reopen them afterwards.</p>
+    <p><button type="button" class="btn danger" id="clr-keep">Clear everything except the crew list</button><br>
+      <small>Keeps each crew's Bow#, Event, Crew name, Club and Division as listed below. Clears all start and finish times and statuses (DNS/DNF/DSQ/Withdrawn) in A and B, review flags and Resolves, penalties, notes, and handicap groups.</small></p>
+    <p><button type="button" class="btn danger" id="clr-all">Wipe everything, crew list too</button><br>
+      <small>As above, and the crew list is emptied too, ready for a fresh CSV import.</small></p>
+    <p class="note" id="lastreset"></p>
   </div>
   <p class="note">Edits save when you leave a box. Withdraw a crew with the Status column - crews are never deleted. A crew's Bow# is locked once it has a time in A or B.</p>
   <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>`;
@@ -108,12 +117,53 @@ $("#a-save").addEventListener("click", () => {
 /* ---------- public instance + reset (F-K9, punch list 3 and 5) ---------- */
 let rInst = S.instance;
 function paintAdmin() {
-  $$("#rseg button").forEach(b => b.classList.toggle("on", b.dataset.i === rInst));
+
+$$("#rseg button").forEach(b => b.classList.toggle("on", b.dataset.i === rInst));
   const n = f => Object.values(S.timings[rInst] || {}).filter(t => t && t[f] != null).length;
   $("#rstart").textContent = `Reset all START times in ${rInst} (${n("start")})`;
   $("#rfinish").textContent = `Reset all FINISH times in ${rInst} (${n("finish")})`;
 }
 onChange(paintAdmin); paintAdmin();
+
+/* ---------- Start a new race (22 Oct, after the club test) ---------- */
+function passwordPrompt(title) {
+  return new Promise(res => {
+    const d = document.createElement("div"); d.className = "sbh-modal";
+    d.innerHTML = `<div class="box" role="dialog" aria-modal="true"><h3>${esc(title)}</h3><p>Enter the admin password to confirm it's you.</p>
+      <form><input type="password" autocomplete="current-password" class="typed" aria-label="Admin password"
+        style="font:500 18px/1.3 var(--sans);padding:10px;width:100%;border:2px solid #0E1621;border-radius:10px;margin-bottom:12px">
+      <div class="row"><button type="button" class="btn big no">Cancel</button><button class="btn big danger yes">Confirm</button></div></form></div>`;
+    const done = v => { d.remove(); res(v); };
+    d.querySelector(".no").addEventListener("click", () => done(null));
+    d.querySelector("form").addEventListener("submit", e => { e.preventDefault(); done(d.querySelector("input").value); });
+    document.body.appendChild(d); d.querySelector("input").focus();
+  });
+}
+function systemCounts() {
+  const timed = entryList("all").filter(e => isTimed(e.bow)).length;
+  const pens = entryList("all").filter(e => penaltyOf(e)).length;
+  const groups = Object.keys(S.race.combos || {}).length;
+  return `${entryList("all").length} crews · ${timed} with times · ${pens} with penalties · ${groups} handicap group${groups === 1 ? "" : "s"}`;
+}
+for (const [id, level, phrase, title] of [["#clr-keep", "keep", "CLEAR RACE", "Clear everything except the crew list?"], ["#clr-all", "all", "WIPE ALL", "Wipe everything, crew list too?"]]) {
+  $(id).addEventListener("click", async () => {
+    const body = `Now: ${systemCounts()}. ` + (level === "keep"
+      ? "Afterwards: the same crews (Bow#, Event, Crew, Club, Division) and nothing else - no times, statuses, flags, penalties, notes or handicap groups, in A or B."
+      : "Afterwards: an empty system - no crews, times, penalties or handicap groups. You'll need to import the CSV again.")
+      + " This can't be undone from the pages. The tap log stays on the server (hidden).";
+    if (!(await typedConfirm(title, body, phrase, level === "keep" ? "Clear" : "Wipe"))) return;
+    const pw = await passwordPrompt(title.replace("?", ""));
+    if (pw == null) return;
+    try { await reauth(pw); }
+    catch (e) { toast(/wrong-password|invalid-credential|invalid-login/i.test(e.code || "") ? "Wrong password - nothing was cleared" : "Couldn't check the password (" + (e.code || e) + ") - nothing was cleared. Needs a connection."); return; }
+    resetSystem(level);
+    toast(level === "keep" ? "Cleared - crew list kept" : "Wiped - import the CSV to start again");
+  });
+}
+function paintLastReset() {
+  const r = S.race; $("#lastreset").textContent = r.resetAt ? `Last cleared ${new Date(r.resetAt).toLocaleString("en-GB")} by ${(r.resetBy || "").replace("@dewhurst.tech", "")} (${r.resetLevel === "keep" ? "crew list kept" : "everything wiped"}).` : "";
+}
+onChange(paintLastReset);
 
 $$("#rseg button").forEach(b => b.addEventListener("click", () => { rInst = b.dataset.i; paintAdmin(); }));
 for (const [id, field, label] of [["#rstart", "start", "START"], ["#rfinish", "finish", "FINISH"]]) {
