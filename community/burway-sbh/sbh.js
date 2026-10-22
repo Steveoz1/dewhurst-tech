@@ -160,15 +160,21 @@ async function firebaseBackend(cfg) {
     import(base + "firebase-app.js"), import(base + "firebase-firestore.js"), import(base + "firebase-auth.js")
   ]);
   const app = appM.initializeApp(cfg);
-  let db, persistent = true;
+  // Connection: ordinary repeated requests ("long polling") instead of Firebase's always-open streaming connection,
+  // which silently stalls on some Safari/iPad set-ups (signed in, but no data and "Offline" - iPad testing, 22 Oct).
+  // Safe mode (set automatically if a page can't reach the database): no on-device database cache for 12 hours -
+  // unsent taps are still kept on the phone by the tap ledger and re-sent.
+  const safe = (LS.get("sbh.safeMode", 0) || 0) > Date.now();
+  const net = { experimentalForceLongPolling: true };
+  let db, persistent = !safe;
   try {
-    // Single-tab cache that the newest page always takes over. Safari (iPad/iPhone) keeps the previous page
-    // frozen in memory when you move between pages; with the multi-tab manager that frozen page kept hold of
-    // the offline cache, so the new page sat "Offline" with no data (found in testing on an iPad, 22 Oct).
-    db = fs.initializeFirestore(app, { localCache: fs.persistentLocalCache({ tabManager: fs.persistentSingleTabManager({ forceOwnership: true }) }) });
+    db = safe
+      ? fs.initializeFirestore(app, { ...net, localCache: fs.memoryLocalCache() })
+      // Single-tab cache that the newest page always takes over (Safari keeps the previous page frozen in memory).
+      : fs.initializeFirestore(app, { ...net, localCache: fs.persistentLocalCache({ tabManager: fs.persistentSingleTabManager({ forceOwnership: true }) }) });
   } catch (e) {
-    console.warn("Persistent cache unavailable, using memory", e); persistent = false;
-    db = fs.initializeFirestore(app, { localCache: fs.memoryLocalCache() });
+    console.warn("Persistent cache unavailable, using memory", e); persistent = false; noteError(e);
+    db = fs.initializeFirestore(app, { ...net, localCache: fs.memoryLocalCache() });
   }
   // Let go of the cache cleanly when leaving a page (unsent taps stay safely stored and go on the next page),
   // and reload a page Safari brings back from its frozen state, so it reconnects properly.
@@ -177,7 +183,7 @@ async function firebaseBackend(cfg) {
   const auth = au.getAuth(app);
   const ref = p => fs.doc(db, ...p.split("/"));
   return {
-    kind: "firebase", persistent,
+    kind: "firebase", persistent, safe,
     newId: () => fs.doc(fs.collection(db, "taps")).id,
     onAuth(cb) { au.onAuthStateChanged(auth, u => cb(u ? { email: u.email, uid: u.uid } : null)); },
     signIn: (email, pw) => au.signInWithEmailAndPassword(auth, email, pw),
@@ -185,7 +191,7 @@ async function firebaseBackend(cfg) {
     watchDoc(path, cb, onErr) {
       return fs.onSnapshot(ref(path), { includeMetadataChanges: true },
         snap => cb(snap.exists() ? snap.data() : {}, { pending: snap.metadata.hasPendingWrites, fromCache: snap.metadata.fromCache }),
-        err => { console.error(path, err); onErr && onErr(err); });
+        err => { console.error(path, err); noteError(err); onErr && onErr(err); });
     },
     async getOnce(path) { const s = await fs.getDoc(ref(path)); return s.exists() ? s.data() : {}; },
     commit(ops) {
@@ -212,6 +218,14 @@ async function firebaseBackend(cfg) {
     }
   };
 }
+
+/* Last error seen, shown to signed-in officials in the status panel (helps diagnose a phone on the day) */
+export function noteError(e) {
+  const msg = (e && (e.code || e.name) ? (e.code || e.name) + ": " : "") + (e && e.message ? e.message : String(e));
+  S.lastError = { msg: msg.slice(0, 200), at: Date.now() }; try { changed(); } catch (x) {}
+}
+addEventListener("unhandledrejection", ev => noteError(ev.reason));
+addEventListener("error", ev => { if (ev.error) noteError(ev.error); });
 
 /* ---- 7. Start-up --------------------------------------------------- */
 let readyResolve; export const ready = new Promise(r => (readyResolve = r));
@@ -243,6 +257,22 @@ export async function boot({ watch = ["entries", "A", "B"] } = {}) {
   addEventListener("offline", changed);
   setInterval(() => { if (S.user) measureOffset(); }, OFFSET_EVERY);
   setInterval(updateLight, 2000);
+  /* Watchdog: if the page still hasn't reached the database 15 s after opening while the phone says it's online,
+     say so, and offer safe mode (no on-device database cache). Not automatic: on a weak river-bank signal the
+     on-device cache is what lets a page open with its crew list. */
+  if (!S.mock) setTimeout(() => {
+    if (S.fromCache && navigator.onLine) {
+      noteError({ code: "no-connection", message: "Couldn't reach the race database within 15 s of opening" });
+      const ban = document.querySelector(".sbh-banner");
+      if (ban && S.user) {
+        ban.className = "sbh-banner red"; ban.hidden = false; ban.dataset.auto = ""; ban.dataset.conn = "1";
+        ban.innerHTML = S.backend.safe
+          ? `Can't reach the race database. Check the signal, then pull down to refresh.`
+          : `Can't reach the race database. Check the signal. If other phones are fine, <button type="button" class="link gosafe" style="color:inherit;font-weight:800">try safe mode</button>.`;
+        ban.querySelector(".gosafe")?.addEventListener("click", () => { LS.set("sbh.safeMode", Date.now() + 12 * 3600 * 1000); location.reload(); });
+      }
+    }
+  }, 15000);
   readyResolve();
 }
 
@@ -554,6 +584,7 @@ function paintBar(host) {
   } else if (S.ledgerError) {
     showBanner(S.ledgerError, "red", ban);
   } else if (ban && ban.dataset.auto) { ban.hidden = true; }
+  if (ban && ban.dataset.conn && !S.fromCache) { ban.hidden = true; delete ban.dataset.conn; }   // connection came back
   if (!$(".sbh-settings", host).hidden) paintSettings(host);
 }
 export function showBanner(text, tone = "amber", el = $(".sbh-banner")) {
@@ -581,12 +612,16 @@ function paintSettings(host) {
       <dt>Clock offset</dt><dd>${o ? `${o.ms > 0 ? "+" : ""}${o.ms} ms (round trip ${o.rtt} ms, checked ${fmtClock(o.at).slice(0, 8)})` : "not checked yet"}
         ${S.user ? `<button type="button" class="link chk">Check now</button>` : ""}</dd>
       <dt>Waiting to send</dt><dd>${ledger().length}</dd>
-      <dt>Backend</dt><dd>${S.mock ? "LOCAL TEST MODE" : "Firebase" + (S.backend && S.backend.persistent === false ? " (no offline cache!)" : "")}</dd>
+      <dt>Backend</dt><dd>${S.mock ? "LOCAL TEST MODE" : "Firebase" + (S.backend && S.backend.safe ? " - SAFE MODE (no on-device cache)" : S.backend && S.backend.persistent === false ? " (no offline cache!)" : "")}
+        ${S.backend && S.backend.safe ? `<button type="button" class="link nosafe">Leave safe mode</button>` : ""}</dd>
+      <dt>Connected</dt><dd>${navigator.onLine ? (S.fromCache ? "No - waiting for the database" : "Yes") : "No - phone offline"}</dd>
+      <dt>Last error</dt><dd>${S.lastError ? esc(fmtClock(S.lastError.at).slice(0, 8) + " " + S.lastError.msg) : "none"}</dd>
     </dl>
     ${S.user ? `<button type="button" class="btn small dl">Download this phone's tap log (CSV)</button>` : ""}
     <button type="button" class="btn small close">Close</button>`;
   p.querySelector(".so")?.addEventListener("click", async () => { if (await confirmBox("Sign out?", "You'll need the password to sign back in.", "Sign out")) S.backend.signOut(); });
   p.querySelector(".chk")?.addEventListener("click", () => measureOffset());
+  p.querySelector(".nosafe")?.addEventListener("click", () => { LS.set("sbh.safeMode", 0); location.reload(); });
   p.querySelector(".dl")?.addEventListener("click", downloadLocalLog);
   p.querySelector(".close").addEventListener("click", () => (p.hidden = true));
 }
