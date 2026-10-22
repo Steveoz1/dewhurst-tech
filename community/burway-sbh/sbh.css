@@ -222,3 +222,5 @@ mark{background:#f2d000;color:#222c4a;padding:0 1px;border-radius:2px}
 
 .sbh-tools .home[hidden],.sbh-tools .who[hidden]{display:none!important}
 .bbanner a:not([href]){cursor:default}
+
+.btn[hidden]{display:none!important}

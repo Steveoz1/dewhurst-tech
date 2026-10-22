@@ -1,16 +1,19 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js?v=20261022c";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js?v=20261022d";
 
+S.instance = "A";                                    // the public only ever sees A; officials can switch once signed in
 await boot({ watch: ["entries"] });
-watchTimings(S.instance);
-mountBar($("#bar"), { division: false });         // no division filter: one table for the whole event
+watchTimings("A");
+mountBar($("#bar"), { division: false, instanceHidden: true });         // no division filter: one table for the whole event
 /* Public viewers see the official instance only; signed-in officials can switch A/B. */
 onChange(() => {
   if (!S.user) S.instance = officialInstance();
   document.querySelector(".sbh-bar")?.classList.toggle("public", !S.user);
   const inst = document.querySelector(".sbh-bar .inst");      // A/B switch only for signed-in officials
   if (inst) inst.hidden = !S.user;
+  const exp = document.getElementById("exp"); if (exp) exp.hidden = !S.user;    // CSV export (A and B) for officials only
+  const panel = document.querySelector(".sbh-settings"); if (panel && !S.user) panel.hidden = true;
   /* Public visitors get no way off Results: no Home button, no sign-in note, banner not a link (Steve, 22 Oct) */
   const home = document.querySelector(".sbh-tools .home"), who = document.getElementById("who"), ban = document.querySelector(".bbanner a");
   if (home) home.hidden = !S.user;
@@ -43,7 +46,7 @@ app.innerHTML = `
   <div class="strip">
     <div class="seg light sortseg" role="group" aria-label="Sort">
       <button type="button" data-s="pos" class="on">By position</button><button type="button" data-s="bow">By Bow#</button><button type="button" data-s="event">By event</button></div>
-    <button type="button" class="btn small" id="exp">Export CSV</button>
+    <button type="button" class="btn small" id="exp" hidden>Export CSV</button>
     <span class="note rstatus" id="rstatus" aria-live="polite"></span>
   </div>
   <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>

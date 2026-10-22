@@ -150,7 +150,8 @@ export function idleFor() { return Date.now() - lastActivity; }
 /* ---- 6. Backend ---------------------------------------------------- */
 function wantMock() {
   const q = new URLSearchParams(location.search);
-  return q.has("mock") || /^PASTE/.test(FIREBASE_CONFIG.apiKey);
+  const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  return local && (q.has("mock") || /^PASTE/.test(FIREBASE_CONFIG.apiKey));     // test mode only ever on a local machine
 }
 
 async function firebaseBackend(cfg) {
@@ -502,10 +503,10 @@ export async function measureOffset() {
 }
 
 /* ---- 11. Common UI: top bar, sync light, sign-in, dialogs ---------- */
-export function mountBar(host, { instance = true, division = true, allowAll = false, confirmSwitch = false } = {}) {
+export function mountBar(host, { instance = true, division = true, allowAll = false, confirmSwitch = false, instanceHidden = false } = {}) {
   host.innerHTML = `
     <div class="sbh-bar">
-      ${instance ? `<div class="seg inst" role="group" aria-label="Instance">
+      ${instance ? `<div class="seg inst" role="group" aria-label="Instance"${instanceHidden ? " hidden" : ""}>
         <button type="button" data-i="A">A</button><button type="button" data-i="B">B</button></div>` : ""}
       ${division ? `<div class="seg div" role="group" aria-label="Division">
         ${DIVS.map(d => `<button type="button" data-d="${d}" aria-label="Division ${d}"><small>Div</small>${d}</button>`).join("")}
@@ -524,7 +525,7 @@ export function mountBar(host, { instance = true, division = true, allowAll = fa
     const d = b.dataset.d === "all" ? "all" : Number(b.dataset.d);
     S.division = d; SS.set("sbh.div", d); changed();
   }));
-  $(".sync", host).addEventListener("click", () => toggleSettings(host));
+  $(".sync", host).addEventListener("click", () => { if (S.user) toggleSettings(host); });   // details panel for signed-in officials only
   const clk = $(".clk", host);
   const tick = () => { clk.textContent = fmtClock(serverNow()); };
   tick(); setInterval(tick, 100);
