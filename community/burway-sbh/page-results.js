@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js?v=20261022d";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js?v=20261022e";
 
 S.instance = "A";                                    // the public only ever sees A; officials can switch once signed in
 await boot({ watch: ["entries"] });
@@ -15,8 +15,8 @@ onChange(() => {
   const exp = document.getElementById("exp"); if (exp) exp.hidden = !S.user;    // CSV export (A and B) for officials only
   const panel = document.querySelector(".sbh-settings"); if (panel && !S.user) panel.hidden = true;
   /* Public visitors get no way off Results: no Home button, no sign-in note, banner not a link (Steve, 22 Oct) */
-  const home = document.querySelector(".sbh-tools .home"), who = document.getElementById("who"), ban = document.querySelector(".bbanner a");
-  if (home) home.hidden = !S.user;
+  const admin = document.querySelector(".sbh-tools .admin"), who = document.getElementById("who"), ban = document.querySelector(".bbanner a");
+  if (admin) admin.hidden = !S.user;
   if (who) who.hidden = !S.user;
   if (ban) { if (S.user) ban.setAttribute("href", "./"); else ban.removeAttribute("href"); }
   watchTimings(S.instance);                           // listen to B only if someone needs it

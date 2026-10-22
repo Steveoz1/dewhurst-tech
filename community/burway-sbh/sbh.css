@@ -168,7 +168,7 @@ table.sbh-t{border-collapse:collapse;width:100%;font-size:15px}
 .bbanner img{height:48px;width:auto;flex:none}
 .bbanner span{border-left:2px solid #ffffff40;padding-left:14px}
 @media (max-width:520px){.bbanner a{font-size:18px;padding:8px 12px}.bbanner img{height:38px}.bbanner span{padding-left:10px}}
-.sbh-tools .home{border:2px solid var(--ink);border-radius:10px;padding:6px 14px;font-weight:800;background:#fff;min-height:40px;display:inline-flex;align-items:center}
+.sbh-tools .home,.sbh-tools .admin{border:2px solid var(--ink);border-radius:10px;padding:6px 14px;font-weight:800;background:#fff;min-height:40px;display:inline-flex;align-items:center}
 .sbh-tools .pt{font:800 16px/1.2 var(--sans)}
 .tile[hidden]{display:none}
 
@@ -220,7 +220,7 @@ mark{background:#f2d000;color:#222c4a;padding:0 1px;border-radius:2px}
 .crew .fl,.flagnote{font:700 13px/1.4 var(--sans);color:#8a4b00}
 .flagnote{display:block;margin-top:3px;white-space:normal;max-width:320px}
 
-.sbh-tools .home[hidden],.sbh-tools .who[hidden]{display:none!important}
+.sbh-tools .home[hidden],.sbh-tools .admin[hidden],.sbh-tools .who[hidden]{display:none!important}
 .bbanner a:not([href]){cursor:default}
 
 .btn[hidden]{display:none!important}
