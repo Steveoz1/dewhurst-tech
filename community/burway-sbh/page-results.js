@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js?v=20261022b";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js?v=20261022c";
 
 await boot({ watch: ["entries"] });
 watchTimings(S.instance);
@@ -11,6 +11,11 @@ onChange(() => {
   document.querySelector(".sbh-bar")?.classList.toggle("public", !S.user);
   const inst = document.querySelector(".sbh-bar .inst");      // A/B switch only for signed-in officials
   if (inst) inst.hidden = !S.user;
+  /* Public visitors get no way off Results: no Home button, no sign-in note, banner not a link (Steve, 22 Oct) */
+  const home = document.querySelector(".sbh-tools .home"), who = document.getElementById("who"), ban = document.querySelector(".bbanner a");
+  if (home) home.hidden = !S.user;
+  if (who) who.hidden = !S.user;
+  if (ban) { if (S.user) ban.setAttribute("href", "./"); else ban.removeAttribute("href"); }
   watchTimings(S.instance);                           // listen to B only if someone needs it
 });
 

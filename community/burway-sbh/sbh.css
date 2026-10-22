@@ -219,3 +219,6 @@ mark{background:#f2d000;color:#222c4a;padding:0 1px;border-radius:2px}
 
 .crew .fl,.flagnote{font:700 13px/1.4 var(--sans);color:#8a4b00}
 .flagnote{display:block;margin-top:3px;white-space:normal;max-width:320px}
+
+.sbh-tools .home[hidden],.sbh-tools .who[hidden]{display:none!important}
+.bbanner a:not([href]){cursor:default}
