@@ -299,7 +299,7 @@ export function comboOf(event) {
 export const penaltyOf = e => Number(e && e.penalty) || 0;
 
 /* Results for one instance.
-   rt  = race time (finish - start), tenths of a second. pt = race time + penalty. pos = place across the whole event (all divisions) on pt.
+   rt  = race time (finish - start), tenths of a second. pt = race time + penalty. pos = place across the whole event (all divisions) on adjusted time.
    adj = adjusted time = race time + penalty - handicap (tenths). posEv = place on adjusted time
          among crews in the same event - or the same event combination - across all divisions. */
 export function computeResults(inst) {
@@ -319,7 +319,7 @@ export function computeResults(inst) {
     const out = new Map(); g.forEach((r, i) => out.set(r, i > 0 && g[i - 1][key] === r[key] ? out.get(g[i - 1]) : i + 1)); return out;
   };
   // Steve, 21 Oct: positions span the whole event - divisions are only start groups, and all times combine at the end of the day.
-  rank(rows, "pt").forEach((p, r) => (r.pos = p));                     // overall: penalties count, handicaps don't (Steve, 21 Oct)
+  rank(rows, "adj").forEach((p, r) => (r.pos = p));                    // overall: on adjusted time - penalties and handicaps (Steve, 22 Oct)
   for (const gk of new Set(rows.map(r => r.group))) rank(rows.filter(r => r.group === gk), "adj").forEach((p, r) => (r.posEv = p));
   return rows;
 }
@@ -401,6 +401,63 @@ export function undoNeedsConfirm(field, bow, inst = S.instance) {
   const t = myTaps[`${inst}:${bow}:${field}`];
   return !(t && Date.now() - t < UNDO_FREE_MS);
 }
+
+/** Swap one field (start or finish) between two crews in one instance - one atomic write, logged as a "swap" tap. */
+export function swapField(field, bowA, bowB, inst = S.instance) {
+  const a = timing(inst, bowA), b = timing(inst, bowB);
+  const id = S.backend.newId();
+  const tap = { ...baseTap("swap", inst, bowA, null), field, value: Number(bowB),
+    note: `${field} ${bowA}: ${a[field] ?? "-"} <-> ${bowB}: ${b[field] ?? "-"}` };
+  const patch = {
+    [String(bowA)]: { [field]: b[field] ?? null, [field + "Tap"]: b[field + "Tap"] ?? null },
+    [String(bowB)]: { [field]: a[field] ?? null, [field + "Tap"]: a[field + "Tap"] ?? null }
+  };
+  const id2 = S.backend.newId();                                         // a matching record for the other crew, so both histories show it
+  const tap2 = { ...tap, bow: Number(bowB), value: Number(bowA) };
+  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "taps/" + id2, create: true, data: tap2 }, { path: "timings/" + inst, data: patch }], tap);
+  myTaps[`${inst}:${bowA}:${field}`] = 0; myTaps[`${inst}:${bowB}:${field}`] = 0;
+}
+
+/** Flag a crew for review, with optional notes. Kept with the instance's timings (starters and finishers
+    can write there; the entries table is admin-only) and shown in Notes on Race Configuration and on Race Adjudication. */
+export function flagForReview(bow, text, inst = S.instance) {
+  const id = S.backend.newId();
+  const tap = { ...baseTap("flag", inst, bow, null), value: text || "" };
+  const flag = { text: text || "", by: S.role || (S.user ? S.user.email : ""), at: Date.now(), page: S.page, done: false };
+  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: { [String(bow)]: { flags: { [id]: flag } } } }], tap);
+}
+export function resolveFlag(bow, flagId, inst) {
+  const id = S.backend.newId();
+  const tap = { ...baseTap("flag-resolved", inst, bow, null), value: flagId };
+  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: { [String(bow)]: { flags: { [flagId]: { done: true, doneBy: S.user ? S.user.email : "" } } } } }], tap);
+}
+/** Open review flags for a crew, across A and B: [{inst, id, text, by, at}] */
+export function flagsOf(bow, onlyOpen = true) {
+  const out = [];
+  for (const inst of ["A", "B"]) for (const [id, f] of Object.entries(timing(inst, bow).flags || {}))
+    if (f && (!onlyOpen || !f.done)) out.push({ inst, id, ...f });
+  return out.sort((x, y) => x.at - y.at);
+}
+
+/* Shared crew-menu actions for Starter and Finisher (Steve, 22 Oct) */
+export async function swapFlow(field, bow) {
+  const label = field === "start" ? "start" : "finish";
+  const other = await numberPrompt(`Swap ${label} time for ${bow}`, `Which crew's bow number should ${bow} swap its ${label} time with?`);
+  if (other == null) return;
+  if (other === Number(bow)) { toast("That's the same crew"); return; }
+  if (!S.entries[String(other)]) { toast(`No bow ${other}`); return; }
+  const a = timing(S.instance, bow)[field], b = timing(S.instance, other)[field];
+  if (a == null && b == null) { toast(`Neither crew has a ${label} time`); return; }
+  if (await confirmBox(`Swap ${bow} with ${other}?`, `${bow}: ${fmtClock(a) || "no time"}  ⇄  ${other}: ${fmtClock(b) || "no time"}. Each crew takes the other's ${label} time.`, "Confirm")) {
+    swapField(field, bow, other); toast(`${label[0].toUpperCase() + label.slice(1)} times swapped: ${bow} ⇄ ${other}`);
+  }
+}
+export async function flagFlow(bow) {
+  const txt = await textPrompt(`Flag ${bow} for review`, "Optional: a few words on what happened. They go into the crew's notes for later review.", "Flag", "e.g. clashed blades at the bridge");
+  if (txt == null) return;
+  flagForReview(bow, txt); toast(`${bow} flagged for review`);
+}
+export const flagBadge = bow => flagsOf(bow).length ? `<div class="fl">⚑ Flagged for review</div>` : "";
 
 /** Admin: clear every start (or finish) time in one instance. Logged as one "reset" tap; nothing is deleted from the log. */
 export function resetField(field, inst) {
@@ -584,6 +641,38 @@ export function typedConfirm(title, body, word, ok = "Confirm") {
     const done = v => { d.remove(); res(v); };
     d.querySelector(".no").addEventListener("click", () => done(false));
     yes.addEventListener("click", () => done(true));
+    document.body.appendChild(d); inp.focus();
+  });
+}
+/** Ask for a bow number with the phone's number pad. Resolves to a number, or null if cancelled. */
+export function numberPrompt(title, body = "", ok = "Next") {
+  return new Promise(res => {
+    const d = document.createElement("div"); d.className = "sbh-modal";
+    d.innerHTML = `<div class="box" role="dialog" aria-modal="true"><h3>${esc(title)}</h3>${body ? `<p>${esc(body)}</p>` : ""}
+      <input class="typed" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" enterkeyhint="done"
+        style="font:800 30px/1 var(--sans);padding:12px;width:100%;border:2px solid #0E1621;border-radius:10px;margin-bottom:12px;text-align:center;letter-spacing:2px">
+      <div class="row"><button type="button" class="btn big no">Cancel</button><button type="button" class="btn big yes" disabled>${esc(ok)}</button></div></div>`;
+    const inp = d.querySelector(".typed"), yes = d.querySelector(".yes");
+    inp.addEventListener("input", () => { inp.value = inp.value.replace(/\D/g, ""); yes.disabled = !inp.value; });
+    const done = v => { d.remove(); res(v); };
+    d.querySelector(".no").addEventListener("click", () => done(null));
+    yes.addEventListener("click", () => done(Number(inp.value)));
+    inp.addEventListener("keydown", e => { if (e.key === "Enter" && inp.value) done(Number(inp.value)); });
+    document.body.appendChild(d); inp.focus();
+  });
+}
+/** Ask for a short note. Resolves to the text ("" allowed), or null if cancelled. */
+export function textPrompt(title, body = "", ok = "Save", placeholder = "") {
+  return new Promise(res => {
+    const d = document.createElement("div"); d.className = "sbh-modal";
+    d.innerHTML = `<div class="box" role="dialog" aria-modal="true"><h3>${esc(title)}</h3>${body ? `<p>${esc(body)}</p>` : ""}
+      <textarea class="typed" rows="3" maxlength="300" placeholder="${esc(placeholder)}"
+        style="font:500 17px/1.35 var(--sans);padding:10px;width:100%;border:2px solid #0E1621;border-radius:10px;margin-bottom:12px"></textarea>
+      <div class="row"><button type="button" class="btn big no">Cancel</button><button type="button" class="btn big yes">${esc(ok)}</button></div></div>`;
+    const inp = d.querySelector(".typed");
+    const done = v => { d.remove(); res(v); };
+    d.querySelector(".no").addEventListener("click", () => done(null));
+    d.querySelector(".yes").addEventListener("click", () => done(inp.value.trim()));
     document.body.appendChild(d); inp.focus();
   });
 }

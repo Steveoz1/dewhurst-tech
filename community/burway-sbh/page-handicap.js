@@ -1,6 +1,6 @@
 /* Handicap Configuration (admin): event combination groups, each event with a handicap in seconds.
    Adjusted time = race time - handicap + penalty. Crews in a combination are placed together for "Pos in event". */
-import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, combos, saveRace, toast, confirmBox } from "./sbh.js?v=20261021i";
+import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, combos, saveRace, toast, confirmBox } from "./sbh.js?v=20261022b";
 
 await boot({ watch: ["entries"] });
 mountBar($("#bar"), { instance: false, division: false });
@@ -15,7 +15,7 @@ app.innerHTML = `
     <div class="grid"><input id="nm" placeholder="Name, e.g. Open Masters C&D 2x" maxlength="80"></div>
     <button type="button" class="btn primary" id="create">Create group</button> <button type="button" class="btn" id="cancel">Cancel</button>
   </div>
-  <p class="note">Time + penalty = race time + penalty (decides overall Pos). Adjusted time = time + penalty − handicap (decides Pos in event). Handicaps are seconds taken off; penalties (set per crew on Race Configuration) are seconds added. Crews whose events are in the same group are placed together in "Pos in event". Events not in any group have no handicap. Each event can be in one group only.</p>
+  <p class="note">Adjusted time = race time + penalty − handicap. It decides both the overall Pos and Pos in event. Handicaps are seconds taken off; penalties (set per crew on Race Configuration) are seconds added. Crews whose events are in the same group are placed together in "Pos in event". Events not in any group have no handicap. Each event can be in one group only.</p>
   <div id="groups"></div>`;
 
 const allEvents = () => [...new Set(entryList("all").map(e => e.event))].sort((a, b) => a.localeCompare(b));

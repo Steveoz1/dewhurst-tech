@@ -1,6 +1,6 @@
 /* Starter page (brief E3: F-S1 to F-S8, plus F-S9 jump box which shares the Finisher's code) */
 import { boot, mountBar, requireRole, onChange, changed, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         logTime, voidField, setStatus, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, idleFor } from "./sbh.js?v=20261021i";
+         logTime, voidField, setStatus, swapFlow, flagFlow, flagBadge, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, idleFor } from "./sbh.js?v=20261022b";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { allowAll: true, confirmSwitch: true });
@@ -19,7 +19,7 @@ let pinned = null, pinTimer = null, nextBow = null, wantScroll = false;
 function rowHTML(e, isNext) {
   const t = timing(S.instance, e.bow); const st = statusOf(S.instance, e.bow);
   const info = `<div class="bow">${e.bow}</div><div class="info"><div class="ev">${esc(e.event)}</div><div class="nm">${esc(e.crew)}</div><div class="cl">${esc(e.club)}</div>
-    <div class="tm">${t.start != null ? fmtClock(t.start) : ""}</div></div>`;
+    <div class="tm">${t.start != null ? fmtClock(t.start) : ""}</div>${flagBadge(e.bow)}</div>`;
   if (OUT.includes(st)) return `<li class="crew out" data-bow="${e.bow}">${info}<div class="acts"><span class="st">${st}</span><button class="mini more" type="button" aria-label="More">⋯</button></div></li>`;
   if (t.start != null && !rearm.has(e.bow))
     return `<li class="crew done" data-bow="${e.bow}">${info}<div class="acts"><button class="mini undo" type="button">Undo</button><button class="mini more" type="button" aria-label="More">⋯</button></div></li>`;
@@ -70,11 +70,13 @@ list.addEventListener("click", async e => {
     const t = timing(S.instance, bow); const st = statusOf(S.instance, bow); const items = [];
     if (t.status) items.push({ label: `Clear ${t.status}`, value: "clear" });
     else if (st !== "Withdrawn") items.push({ label: "Mark DNS (did not start)", value: "DNS", danger: true });
-    if (t.start != null) items.push({ label: "Replace start time…", value: "rearm" });
-    if (!items.length) { toast("Withdrawn - change it on the Configuration page"); return; }
+    items.push({ label: "Swap start time…", value: "swap" });
+    items.push({ label: "Flag for review…", value: "flag" });
     const v = await menuBox(`Bow ${bow}`, items);
     if (v === "DNS" && await confirmBox(`Mark ${bow} as DNS?`, "", "Mark DNS")) setStatus(bow, "DNS");
     if (v === "clear" && await confirmBox(`Clear ${t.status} for ${bow}?`, "", "Clear")) setStatus(bow, "");
+    if (v === "swap") await swapFlow("start", bow);
+    if (v === "flag") await flagFlow(bow);
     if (v === "rearm") { rearm.add(bow); changed(); toast(`Tap RE-START when ${bow} crosses the line`); }
   }
 });

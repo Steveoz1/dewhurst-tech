@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js?v=20261021i";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js?v=20261022b";
 
 await boot({ watch: ["entries"] });
 watchTimings(S.instance);
@@ -9,12 +9,15 @@ mountBar($("#bar"), { division: false });         // no division filter: one tab
 onChange(() => {
   if (!S.user) S.instance = officialInstance();
   document.querySelector(".sbh-bar")?.classList.toggle("public", !S.user);
+  const inst = document.querySelector(".sbh-bar .inst");      // A/B switch only for signed-in officials
+  if (inst) inst.hidden = !S.user;
   watchTimings(S.instance);                           // listen to B only if someone needs it
 });
 
 const OUT = ["DNS", "DNF", "DSQ", "Withdrawn"];
 let sort = "pos";
-let view = LS.get("sbh.resultsView", "basic") === "details" ? "details" : "basic";
+const isPhone = () => matchMedia("(max-width: 759px)").matches;
+let view = isPhone() ? "basic" : (LS.get("sbh.resultsView", "basic") === "details" ? "details" : "basic");   // phones always open on Basic
 
 /* Basic / Details toggle, in front of the A/B toggle in the top bar */
 const vseg = document.createElement("div");
@@ -37,7 +40,6 @@ app.innerHTML = `
       <button type="button" data-s="pos" class="on">By position</button><button type="button" data-s="bow">By Bow#</button><button type="button" data-s="event">By event</button></div>
     <button type="button" class="btn small" id="exp">Export CSV</button>
     <span class="note rstatus" id="rstatus" aria-live="polite"></span>
-    <span class="note" id="inst"></span>
   </div>
   <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>
   <div class="rcards" id="cards" hidden></div>`;
@@ -74,7 +76,6 @@ const timeOr = (v, r) => v != null ? fmtRace(v) : esc(r.note);
 function draw() {
   fillOptions();
   $$("button", vseg).forEach(b => b.classList.toggle("on", b.dataset.v === view));
-  $("#inst").textContent = S.user ? `Instance ${S.instance} · the public always sees A` : "";
   const t = q.value.trim().toLowerCase();
   const all = compute(S.instance);
   let rows = all.filter(r => (!t || String(r.e.crew).toLowerCase().includes(t))
@@ -117,7 +118,7 @@ function draw() {
       <td class="t">${r.pt != null ? `<b>${fmtRace(r.pt)}</b>${r.pen ? `<br><small>penalty +${r.pen} s</small>` : ""}` : ""}</td>
       <td class="t">${r.adj != null ? `<b>${fmtRace(r.adj)}</b>${r.hc ? `<br><small>handicap -${r.hc} s</small>` : ""}` : ""}</td><td class="n">${r.posEv ?? ""}</td></tr>`;
   }).join("");
-  $("#tbl").innerHTML = `<thead><tr><th class="n" title="Overall, all divisions, on Time + penalty">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th>Start</th><th>Finish</th><th>Race time</th><th title="Race time plus any penalty - decides overall Pos">Time + penalty</th><th title="Time + penalty, minus any handicap - decides Pos in event">Adjusted time</th><th class="n" title="On adjusted time, within the event or its event combination">Pos in event</th></tr></thead><tbody>${body || `<tr><td colspan="12" class="empty">${all.length ? "No crews match these filters." : "No crews loaded yet."}</td></tr>`}</tbody>`;
+  $("#tbl").innerHTML = `<thead><tr><th class="n" title="Overall, all divisions, on Adjusted time">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th>Start</th><th>Finish</th><th>Race time</th><th title="Race time plus any penalty">Time + penalty</th><th title="Time + penalty, minus any handicap - decides Pos and Pos in event">Adjusted time</th><th class="n" title="On adjusted time, within the event or its event combination">Pos in event</th></tr></thead><tbody>${body || `<tr><td colspan="12" class="empty">${all.length ? "No crews match these filters." : "No crews loaded yet."}</td></tr>`}</tbody>`;
 }
 onChange(draw); draw();
 

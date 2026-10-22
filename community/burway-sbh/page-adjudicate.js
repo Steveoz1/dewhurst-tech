@@ -1,7 +1,7 @@
 /* Race Adjudication page (admin only): compare A with B, flag differences, correct a time with a reason.
    Brief F-R8 (A/B check) + F-K7 (timing correction panel). Public results always show A. */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS } from "./sbh.js?v=20261021i";
+         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag } from "./sbh.js?v=20261022b";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { instance: false, allowAll: true });
@@ -28,6 +28,7 @@ function flagsFor(bow) {
   }
   const sa = statusOf("A", bow), sb = statusOf("B", bow);
   if (sa !== sb) f.push({ t: `Status A: ${sa || "-"} / B: ${sb || "-"}`, lvl: "red" });
+  const fl = flagsOf(bow); if (fl.length) f.push({ t: `⚑ Flagged for review${fl.length > 1 ? ` (${fl.length})` : ""}`, lvl: "red" });
   return f;
 }
 
@@ -83,6 +84,7 @@ async function review(bow) {
     <div id="rv"></div>
     <label style="display:grid;gap:4px;margin:10px 0;font-weight:700">Reason (needed for any change)
       <input id="reason" placeholder="e.g. A finisher missed the crew - taken from B" style="font:500 16px/1.2 var(--sans);padding:10px;border:2px solid #b9c3cd;border-radius:8px"></label>
+    <div id="flagbox"></div>
     <h3 style="font-size:16px;margin-top:14px">Every tap for bow ${bow}</h3><div id="hist" class="note">Loading…</div>
     <div class="row" style="margin-top:12px"><button type="button" class="btn big no">Close</button><span></span></div></div>`;
   document.body.appendChild(d);
@@ -92,7 +94,17 @@ async function review(bow) {
   $$("#tseg button", d).forEach(b => b.addEventListener("click", () => { tgt = b.dataset.i; $$("#tseg button", d).forEach(x => x.classList.toggle("on", x === b)); paint(); }));
   const reason = () => { const r = $("#reason", d).value.trim(); if (!r) { toast("Add a reason first"); $("#reason", d).focus(); } return r; };
 
+  function paintFlags() {
+    const fl = flagsOf(bow);
+    $("#flagbox", d).innerHTML = fl.length ? `<h3 style="font-size:16px;margin-top:14px">Flagged for review</h3>` + fl.map(f =>
+      `<p class="flagnote" style="max-width:none">⚑ ${esc(f.inst)} · ${esc(f.by)} · ${esc(fmtClock(f.at).slice(0, 8))}: ${esc(f.text || "(no notes)")}
+       <button type="button" class="btn small resolve" data-inst="${f.inst}" data-id="${esc(f.id)}">Mark resolved</button></p>`).join("") : "";
+    $$(".resolve", d).forEach(b => b.addEventListener("click", async () => {
+      if (await confirmBox("Mark this flag as resolved?", "It stays in the tap log.", "Resolved")) { resolveFlag(bow, b.dataset.id, b.dataset.inst); toast("Flag resolved"); }
+    }));
+  }
   function paint() {
+    paintFlags();
     const src = tgt === "A" ? "B" : "A"; const t = timing(tgt, bow), s = timing(src, bow);
     const row = (f, label) => `<tr><th>${label}</th><td class="t">${fmtClock(t[f]) || "-"}</td><td class="t">${fmtClock(s[f]) || "-"}</td>
       <td>${s[f] != null ? `<button type="button" class="btn small use" data-f="${f}">Use ${src}'s ${label.toLowerCase()}</button> ` : ""}
@@ -137,7 +149,7 @@ async function review(bow) {
       all.sort((x, y) => when(x) - when(y));
       const what = t => t.kind === "start" || t.kind === "finish" ? `${t.kind} ${fmtClock(t.tCorrected)}`
         : t.kind === "void" ? `undo ${t.field}` : t.kind === "status" ? `status ${t.value}`
-        : t.kind === "adjust" ? `ADJUDICATION ${t.field} → ${t.field === "status" ? (t.value || "none") : (fmtClock(t.value) || "cleared")} · "${esc(t.reason)}"` : t.kind;
+        : t.kind === "swap" ? `SWAP ${t.field} with ${t.value}` : t.kind === "flag" ? `FLAGGED for review${t.value ? `: "${esc(t.value)}"` : ""}` : t.kind === "flag-resolved" ? "flag resolved" : t.kind === "adjust" ? `ADJUDICATION ${t.field} → ${t.field === "status" ? (t.value || "none") : (fmtClock(t.value) || "cleared")} · "${esc(t.reason)}"` : t.kind;
       $("#hist", d).innerHTML = all.length ? `<table class="sbh-t"><thead><tr><th>Logged</th><th>Inst</th><th>What</th><th>Who</th><th>Phone</th></tr></thead><tbody>${
         all.map(t => `<tr><td class="t">${fmtClock(when(t))}</td><td>${t.instance}</td><td class="wr">${what(t)}</td><td>${esc((t.user || "").replace("@dewhurst.tech", ""))}</td><td>${esc(t.deviceId || "")}</td></tr>`).join("")}</tbody></table>`
         : "No taps logged for this crew.";

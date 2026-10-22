@@ -1,7 +1,7 @@
 /* Race Configuration page (brief E2: F-K1 to F-K6) */
-import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, isTimed, comboOf, penaltyOf,
+import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, isTimed, comboOf, penaltyOf, flagsOf, fmtClock,
          saveEntries, parseCSV, downloadCSV, STATUSES, DIVS, toast, confirmBox, typedConfirm,
-         resetField, officialInstance, saveRace } from "./sbh.js?v=20261021i";
+         resetField, officialInstance, saveRace } from "./sbh.js?v=20261022b";
 
 const app = $("#app");
 await boot({ watch: ["entries", "A", "B"] });
@@ -61,7 +61,7 @@ function draw() {
         <td class="n">${(() => { const c = comboOf(e.event); return c && c.handicap ? c.handicap : "0"; })()}</td>
         <td><select data-f="status">${STATUSES.map(s => `<option ${s === (e.status || "") ? "selected" : ""}>${s}</option>`).join("")}</select></td>
         <td><input data-f="penalty" inputmode="decimal" value="${penaltyOf(e) || 0}" style="width:70px;min-width:0;text-align:right"></td>
-        <td><input data-f="notes" value="${esc(e.notes || "")}"></td></tr>`;
+        <td class="wr"><input data-f="notes" value="${esc(e.notes || "")}">${flagsOf(e.bow).map(f => `<span class="flagnote">⚑ ${esc(f.inst)} · ${esc(f.by)} ${esc(fmtClock(f.at).slice(0, 8))}: ${esc(f.text || "flagged for review")}</span>`).join("")}</td></tr>`;
     }).join("") || `<tr><td colspan="10" class="empty">No crews yet. Use Import CSV to load the Raceclocker upload file.</td></tr>`
   }</tbody>`;
 }
@@ -185,6 +185,6 @@ $("#csvfile").addEventListener("change", async e => {
 /* ---------- export (F-K6) ---------- */
 $("#expbtn").addEventListener("click", () => {
   const rows = [["Bow#", "Event", "Crew Name", "Club", "Division", "Event combo", "Handicap (s)", "Status", "Penalty (s)", "Notes"]];
-  for (const e of entryList("all")) { const c = comboOf(e.event); rows.push([e.bow, e.event, e.crew, e.club, "Division " + e.division, c ? c.name : "", c ? c.handicap : 0, e.status || "", penaltyOf(e), e.notes || ""]); }
+  for (const e of entryList("all")) { const c = comboOf(e.event); rows.push([e.bow, e.event, e.crew, e.club, "Division " + e.division, c ? c.name : "", c ? c.handicap : 0, e.status || "", penaltyOf(e), [e.notes || "", ...flagsOf(e.bow).map(f => `FLAG ${f.inst} ${f.by} ${fmtClock(f.at).slice(0, 8)}: ${f.text || "flagged for review"}`)].filter(Boolean).join(" | ")]); }
   downloadCSV("SBH2026-configuration.csv", rows);
 });

@@ -104,7 +104,7 @@ details.sec>summary::before{content:"▸ "}details.sec[open]>summary::before{con
 .sbh-modal .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .sbh-modal .col{display:grid;gap:10px}
 .sbh-modal .yes{background:var(--ink);color:#fff}
-.sbh-toast{pointer-events:none;position:fixed;left:50%;bottom:20px;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font:700 16px/1.2 var(--sans);transition:transform .2s;z-index:120}
+.sbh-toast{pointer-events:none;position:fixed;left:50%;bottom:20px;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font:700 16px/1.2 var(--sans);transition:transform .2s;z-index:90}
 .sbh-toast.show{transform:translate(-50%,0)}
 
 /* ---- tables: Configuration / Results ---- */
@@ -214,3 +214,8 @@ mark{background:#f2d000;color:#222c4a;padding:0 1px;border-radius:2px}
   .rc .bw,.rc .dv{font:400 15px/1.45 var(--sans)}
   .rc .bw i,.rc .dv i{display:none}
 }
+
+.seg[hidden]{display:none!important}
+
+.crew .fl,.flagnote{font:700 13px/1.4 var(--sans);color:#8a4b00}
+.flagnote{display:block;margin-top:3px;white-space:normal;max-width:320px}

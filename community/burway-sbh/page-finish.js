@@ -1,6 +1,6 @@
 /* Finisher page (brief E4: F-F1 to F-F5) */
 import { boot, mountBar, requireRole, onChange, changed, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         logTime, voidField, setStatus, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, fmtRace, raceTenths, idleFor } from "./sbh.js?v=20261021i";
+         logTime, voidField, setStatus, swapFlow, flagFlow, flagBadge, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, fmtRace, raceTenths, idleFor } from "./sbh.js?v=20261022b";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { allowAll: true, confirmSwitch: true });
@@ -24,7 +24,7 @@ function row(e, mode) {
   const rt = raceTenths(t.start, t.finish);
   const time = t.finish != null ? `<div class="tm">${fmtClock(t.finish)}${rt != null ? ` · ${fmtRace(rt)}` : ""}</div>`
              : `<div class="tm" style="color:#556;font-size:14px">${t.start != null ? "Started " + fmtClock(t.start) : ""}</div>`;
-  const info = `<div class="bow">${e.bow}</div><div class="info"><div class="ev">${esc(e.event)}</div><div class="nm">${esc(e.crew)}</div><div class="cl">${esc(e.club)}</div>${time}</div>`;
+  const info = `<div class="bow">${e.bow}</div><div class="info"><div class="ev">${esc(e.event)}</div><div class="nm">${esc(e.crew)}</div><div class="cl">${esc(e.club)}</div>${time}${flagBadge(e.bow)}</div>`;
   const more = `<button class="mini more" type="button" aria-label="More">⋯</button>`;
   if (mode === "out") return `<li class="crew out" data-bow="${e.bow}">${info}<div class="acts"><span class="st">${st}</span>${more}</div></li>`;
   if (mode === "done") return `<li class="crew done" data-bow="${e.bow}">${info}<div class="acts"><button class="mini undo" type="button">Undo</button>${more}</div></li>`;
@@ -85,11 +85,13 @@ lists.addEventListener("click", async e => {
     const t = timing(S.instance, bow); const st = statusOf(S.instance, bow); const items = [];
     if (t.status) items.push({ label: `Clear ${t.status}`, value: "clear" });
     else if (st !== "Withdrawn") { items.push({ label: "Mark DNF (did not finish)", value: "DNF", danger: true }); items.push({ label: "Mark DSQ (disqualified)", value: "DSQ", danger: true }); }
-    if (t.finish != null) items.push({ label: "Replace finish time…", value: "rearm" });
-    if (!items.length) { toast("Withdrawn - change it on the Configuration page"); return; }
+    items.push({ label: "Swap finish time…", value: "swap" });
+    items.push({ label: "Flag for review…", value: "flag" });
     const v = await menuBox(`Bow ${bow}`, items);
     if ((v === "DNF" || v === "DSQ") && await confirmBox(`Mark ${bow} as ${v}?`, "", `Mark ${v}`)) setStatus(bow, v);
     if (v === "clear" && await confirmBox(`Clear ${t.status} for ${bow}?`, "", "Clear")) setStatus(bow, "");
+    if (v === "swap") await swapFlow("finish", bow);
+    if (v === "flag") await flagFlow(bow);
     if (v === "rearm") { held.delete(bow); rearm.add(bow); changed(); toast(`Tap RE-FINISH when ${bow} crosses the line`); }
   }
 });
