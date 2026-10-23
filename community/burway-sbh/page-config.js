@@ -1,7 +1,7 @@
 /* Race Configuration page (brief E2: F-K1 to F-K6) */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, isTimed, comboOf, penaltyOf, flagsOf, fmtClock,
          saveEntries, parseCSV, downloadCSV, STATUSES, DIVS, toast, confirmBox, typedConfirm, resetSystem, reauth,
-         resetField, officialInstance, saveRace } from "./sbh.js?v=20261022k";
+         resetField, officialInstance, saveRace } from "./sbh.js?v=20261022l";
 
 const app = $("#app");
 await boot({ watch: ["entries", "A", "B"] });

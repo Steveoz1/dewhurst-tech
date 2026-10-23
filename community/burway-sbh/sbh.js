@@ -424,7 +424,11 @@ export function computeResults(inst) {
 /* ---- 9. Tap writing: local ledger first, then server (T-T4) ------- */
 const LEDGER = "sbh.ledger", LOG = "sbh.log";
 export const ledger = () => LS.get(LEDGER, []);
-function ledgerRemove(id) { LS.set(LEDGER, ledger().filter(x => x.id !== id)); overlayDrop(id); changed(); }
+function ledgerRemove(id) {
+  const left = ledger().filter(x => x.id !== id); LS.set(LEDGER, left); overlayDrop(id);
+  if (!left.length && S.ledgerError && !/refused/.test(S.ledgerError)) S.ledgerError = null;   // review R11: "not yet saved" clears once everything has gone
+  changed();
+}
 
 function writeOps(id, ops, tap) {
   // 1) keep it on the phone, synchronously, before anything is sent
@@ -437,7 +441,7 @@ function writeOps(id, ops, tap) {
   S.backend.commit(ops).then(() => ledgerRemove(id)).catch(err => {
     console.error("commit failed", err);
     const code = (err && err.code) || String(err);
-    if (/permission/i.test(code)) { S.ledgerError = "Server refused a tap (" + code + "). Sign out and back in."; LS.set(LEDGER, ledger().filter(x => x.id !== id)); overlayDrop(id); }
+    if (/permission/i.test(code)) { S.ledgerError = "Server refused a tap (" + code + "). Tell the race admin - don't sign out. Keep the paper sheet going."; LS.set(LEDGER, ledger().filter(x => x.id !== id)); overlayDrop(id); }
     else S.ledgerError = "Tap not yet saved: " + code;
     changed();
   });
@@ -450,7 +454,7 @@ async function replayLedger() {
   try {
     await S.backend.pendingDone();            // let the SDK flush its own queue first
     for (const item of ledger()) {
-      if (item.id[0] === "e" || item.id[0] === "r") { ledgerRemove(item.id); continue; }   // entries edits: SDK has flushed them
+      if (!item.ops.some(o => o.path.startsWith("taps/"))) { ledgerRemove(item.id); continue; }   // crew-list/handicap edits (no tap record): the database sends those itself. Review R3: was "id starts with e or r", which also caught ~1 in 31 real taps
       if (S.race.resetAt && item.at < S.race.resetAt) { ledgerRemove(item.id); continue; }   // from before a system reset: never send
       let there = false;
       try { there = await S.backend.exists("taps/" + item.id); } catch (e) { break; }
@@ -616,7 +620,7 @@ export async function measureOffset() {
     for (let i = 0; i < 3; i++) {
       const p = await Promise.race([S.backend.clockProbe(id), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 8000))]);
       const rtt = p.t1 - p.t0; const ms = Math.round(p.server - (p.t0 + p.t1) / 2);
-      if (rtt < 5000 && (!best || rtt < best.rtt)) best = { ms, rtt };
+      if (rtt < 1000 && (!best || rtt < best.rtt)) best = { ms, rtt };     // review R8: a slow round trip can be 1-2 s lopsided; keep the last good offset instead
     }
     if (best) { S.offset = { ...best, at: Date.now() }; LS.set("sbh.offset", S.offset); }
   } catch (e) { console.warn("offset", e); }
@@ -640,7 +644,7 @@ export function mountBar(host, { instance = true, division = true, allowAll = fa
   $$(".inst button", host).forEach(b => b.addEventListener("click", async () => {
     const i = b.dataset.i; if (i === S.instance) return;
     if (confirmSwitch && !(await confirmBox(`Switch this phone to instance ${i}?`, `Taps from now on go to instance ${i}. Only do this if you were told to.`, `Switch to ${i}`))) return;
-    S.instance = i; LS.set("sbh.instance", i); changed();
+    S.instance = i; if (confirmSwitch) LS.set("sbh.instance", i); changed();   // review R1: only Starter/Finisher remember A/B; other pages change it for this visit only
   }));
   $$(".div button", host).forEach(b => b.addEventListener("click", () => {
     const d = b.dataset.d === "all" ? "all" : Number(b.dataset.d);
