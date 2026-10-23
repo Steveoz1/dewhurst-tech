@@ -83,7 +83,7 @@ li.chk>.tg{margin-top:2px}li.chk>.lt{flex:1;min-width:0}.lt>p{margin:0}.lt ul{ma
 <header class="bar" id="top"><a class="back" href="index.html">Race Admin</a><h1>SBH 2026 Race Pack</h1><span class="prog" id="prog">0 / 95</span><button type="button" id="open-menu" aria-haspopup="dialog">Contents</button></header>
 <div class="pbar"><i id="pbar"></i></div>
 <main>
-  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack updated Fri 23 Oct, 17:15. Division start times: 10:00, 11:30, 13:30. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
+  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack updated Fri 23 Oct, 17:20. Division start times: 10:00, 11:30, 13:30. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
 
   <div class="card warn" id="firebase">
     <h2>Firebase capacity: the free plan is not enough for race day</h2>
@@ -843,6 +843,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <strong>Change log:</strong> 23 Oct 2026 (16:10) — F-R14 added (Results TV mode: cycle through pages, start/finish lists and river).
 <strong>Change log:</strong> 23 Oct 2026 (16:40) — F-R15 added (pre-start statuses on Results, from boating times).
 <strong>Change log:</strong> 23 Oct 2026 (17:10) — F-R15 "Boating now" added; F-R16 (when Results show Check) and F-K12 (crew ⋯ menu, swap bow numbers) added; F-R12 rules extended.
+<strong>Change log:</strong> 23 Oct 2026 (17:20) — F-R15: "Proceed to boating area" yellow, "Boating now" red on Results.
 <strong>Status:</strong> Agreed specification · <strong>Written:</strong> Wed 21 Oct 2026 · <strong>Needed by:</strong> Sat 24 Oct 2026, first start 10:00
 <strong>Owner:</strong> Steve Smith · <strong>Built and hosted by:</strong> Dewhurst.tech
 <strong>Location of record:</strong> the race folder (this file). This brief is the binding specification. If the system and this brief disagree, this brief wins until the owner changes it.</p>
@@ -1370,7 +1371,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <tr>
 <td data-label="ID">F-R15</td>
 <td data-label="Pri">M</td>
-<td data-label="Requirement"><strong>Status shown before a crew starts</strong> (Results, in the time column): more than 10 minutes before the crew's <strong>boating time</strong> — "Div 2 starts at 11:30"; from 10 minutes before boating time — "Proceed to boating area"; from the boating time until the division's start time — "Boating now"; from the division's start time until the crew's start is logged — "Waiting to start". Then "On water", then the time (or "Check"), as before. DNS / DNF / DSQ / Withdrawn still show the status. Boating times come from the Burway event page's race order (updated 23 Oct, after Divisions 2 and 3 moved); a crew with no boating time of its own (TBC, or added later) uses its division's first boating time (09:33, 11:06, 13:09). Added 23 Oct 2026.</td>
+<td data-label="Requirement"><strong>Status shown before a crew starts</strong> (Results, in the time column): more than 10 minutes before the crew's <strong>boating time</strong> — "Div 2 starts at 11:30"; from 10 minutes before boating time — "Proceed to boating area"; from the boating time until the division's start time — "Boating now" (on Results, "Proceed to boating area" is shown in yellow and "Boating now" in red, as on Race Adjudication); from the division's start time until the crew's start is logged — "Waiting to start". Then "On water", then the time (or "Check"), as before. DNS / DNF / DSQ / Withdrawn still show the status. Boating times come from the Burway event page's race order (updated 23 Oct, after Divisions 2 and 3 moved); a crew with no boating time of its own (TBC, or added later) uses its division's first boating time (09:33, 11:06, 13:09). Added 23 Oct 2026.</td>
 </tr>
 <tr>
 <td data-label="ID">F-R16</td>

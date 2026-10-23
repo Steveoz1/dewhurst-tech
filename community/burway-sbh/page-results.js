@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox, serverNow } from "./sbh.js?v=20261023q";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox, serverNow } from "./sbh.js?v=20261023r";
 
 S.instance = "A";                                    // the public only ever sees A; officials can switch once signed in
 await boot({ watch: ["entries"] });
@@ -100,7 +100,9 @@ function hl(s, t) {                                  // highlight the search tex
   s = String(s == null ? "" : s); const i = t ? s.toLowerCase().indexOf(t) : -1;
   return i < 0 ? esc(s) : esc(s.slice(0, i)) + "<mark>" + esc(s.slice(i, i + t.length)) + "</mark>" + esc(s.slice(i + t.length));
 }
-const timeOr = (v, r) => v != null ? fmtRace(v) : esc(r.note);
+/* Pre-start notes in the Adjudication page's flag colours (Steve, 23 Oct): "Proceed to boating area" yellow, "Boating now" red */
+const NOTE_FLAG = { "Proceed to boating area": "amber", "Boating now": "red" };
+const timeOr = (v, r) => v != null ? fmtRace(v) : NOTE_FLAG[r.note] ? `<span class="flag ${NOTE_FLAG[r.note]} rnote">${esc(r.note)}</span>` : esc(r.note);
 
 /* Results hidden / public (23 Oct): until the admin makes them public, the public sees an empty table - so test
    times are never shown. Signed-in officials (admin, starter, finisher) always see results; only the admin can switch. Stored in config/race.resultsPublic (admin-only write);

@@ -296,3 +296,4 @@ body.tv .rf-main{position:relative}.rf-pg{display:none}body.tv .rf-pg:not(:empty
 .rc.chk{outline:2px solid #c0392b;outline-offset:-3px;border-radius:6px}
 tr.chk td{border-top:2px solid #c0392b;border-bottom:2px solid #c0392b}tr.chk td:first-child{border-left:2px solid #c0392b}tr.chk td:last-child{border-right:2px solid #c0392b}
 .chk-l{display:block;color:#c0392b;font:800 12px/1.3 var(--sans);text-transform:uppercase;letter-spacing:.05em}
+.flag.rnote{white-space:normal;font-size:13px}

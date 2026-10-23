@@ -1,7 +1,7 @@
 /* Updates / Issues tracker (added 23 Oct). For the admin and the timing team: crew changes, system issues, anything else.
    Shared between phones; every new issue and every change is kept in the audit log (nothing is overwritten). */
 import { boot, mountBar, requireRole, onChange, changed, S, $, $$, esc, fmtClock, toast, confirmBox, downloadCSV,
-         ISSUE_CATS, ISSUE_STATUSES, logIssue, pendingIssueRecords, watchIssueRecords } from "./sbh.js?v=20261023q";
+         ISSUE_CATS, ISSUE_STATUSES, logIssue, pendingIssueRecords, watchIssueRecords } from "./sbh.js?v=20261023r";
 
 await boot({ watch: ["entries"] });
 mountBar($("#bar"), { instance: false, division: false });
