@@ -1,6 +1,6 @@
 /* Finisher page (brief E4: F-F1 to F-F5) */
 import { boot, mountBar, requireRole, onChange, changed, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         logTime, voidField, setStatus, justTapped, swapFlow, flagFlow, flagBadge, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, fmtRace, raceTenths } from "./sbh.js?v=20261023s";
+         logTime, voidField, setStatus, justTapped, swapFlow, quickFlag, hasOpenFlag, noteFlow, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, fmtRace, raceTenths } from "./sbh.js?v=20261023t";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { allowAll: true, confirmSwitch: true });
@@ -23,11 +23,11 @@ function rowHTML(e) {
   const rt = raceTenths(t.start, t.finish);
   const time = t.finish != null ? `<div class="tm">${fmtClock(t.finish)}${rt != null ? ` · ${fmtRace(rt)}` : ""}</div>`
              : `<div class="tm" style="color:#556">${t.start != null ? "Started " + fmtClock(t.start) : "No start yet"}</div>`;
-  const info = `<div class="bow">${e.bow}</div><div class="info"><div class="ev">${esc(e.event)}</div><div class="nm">${esc(e.crew)}</div><div class="cl">${esc(e.club)}</div>${time}${flagBadge(e.bow)}</div>`;
+  const info = `<div class="bow">${e.bow}</div><div class="info"><div class="ev">${esc(e.event)}</div><div class="nm">${esc(e.crew)}</div><div class="cl">${esc(e.club)}</div>${time}</div>`;
   const more = `<button class="mini more" type="button" aria-label="More">⋯</button>`;
   if (OUT.includes(st)) return `<li class="crew out" data-bow="${e.bow}">${info}<div class="acts"><span class="st">${st}</span>${more}</div></li>`;
   if (t.finish != null && !rearm.has(e.bow))
-    return `<li class="crew done" data-bow="${e.bow}">${info}<div class="acts"><button class="mini undo${justTapped("finish", e.bow) ? " locked" : ""}" type="button">Undo</button>${more}</div></li>`;
+    return `<li class="crew done" data-bow="${e.bow}">${info}<div class="acts"><button class="mini undo${justTapped("finish", e.bow) ? " locked" : ""}" type="button">Undo</button><button class="mini flagbtn${hasOpenFlag(e.bow) ? " on" : ""}${justTapped("finish", e.bow) ? " locked" : ""}" type="button" aria-label="${hasOpenFlag(e.bow) ? "Flagged for review" : "Flag for review"}">⚑</button>${more}</div></li>`;
   return `<li class="crew${pinned === e.bow ? " pinned" : ""}" data-bow="${e.bow}">${info}<div class="acts"><button class="go" type="button">${rearm.has(e.bow) ? "RE-FINISH" : "FINISH"}</button>${more}</div></li>`;
 }
 
@@ -59,17 +59,20 @@ list.addEventListener("click", async e => {
     if (justTapped("finish", bow)) { toast("Just logged - Undo is available in a moment"); return; }   // double-tap guard
     if (undoNeedsConfirm("finish", bow) && !(await confirmBox(`Clear finish for ${bow}?`, "The original tap stays in the log.", "Clear finish"))) return;
     voidField("finish", bow); toast(`Finish cleared for ${bow}`);
+  } else if (e.target.closest(".flagbtn")) {          // one tap, no questions (double-tap guard as Undo)
+    if (justTapped("finish", bow)) { toast("Just logged - Flag is available in a moment"); return; }
+    quickFlag(bow);
   } else if (e.target.closest(".more")) {
     const t = timing(S.instance, bow); const st = statusOf(S.instance, bow); const items = [];
     if (t.status) items.push({ label: `Clear ${t.status}`, value: "clear" });
     else if (st !== "Withdrawn") { items.push({ label: "Mark DNF (did not finish)", value: "DNF", danger: true }); items.push({ label: "Mark DSQ (disqualified)", value: "DSQ", danger: true }); }
     items.push({ label: "Swap finish time…", value: "swap" });
-    items.push({ label: "Flag for review…", value: "flag" });
+    items.push({ label: "Add note…", value: "note" });
     const v = await menuBox(`Bow ${bow}`, items);
     if ((v === "DNF" || v === "DSQ") && await confirmBox(`Mark ${bow} as ${v}?`, "", `Mark ${v}`)) setStatus(bow, v);
     if (v === "clear" && await confirmBox(`Clear ${t.status} for ${bow}?`, "", "Clear")) setStatus(bow, "");
     if (v === "swap") await swapFlow("finish", bow);
-    if (v === "flag") await flagFlow(bow);
+    if (v === "note") await noteFlow(bow);
     if (v === "rearm") { rearm.add(bow); changed(); toast(`Tap RE-FINISH when ${bow} crosses the line`); }
   }
 });

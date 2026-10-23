@@ -2,7 +2,7 @@
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, isTimed, comboOf, penaltyOf, flagsOf, fmtClock,
          saveEntries, parseCSV, downloadCSV, STATUSES, DIVS, toast, confirmBox, typedConfirm, resetSystem, reauth,
          resetField, officialInstance, saveRace, setStatus, statusOf, timing, flagFlow, menuBox, textPrompt, numberPrompt, logIssue,
-         watchIssueRecords, pendingIssueRecords, ISSUE_CATS } from "./sbh.js?v=20261023s";
+         watchIssueRecords, pendingIssueRecords, ISSUE_CATS, notesOf } from "./sbh.js?v=20261023t";
 
 const app = $("#app");
 await boot({ watch: ["entries", "A", "B"] });
@@ -71,7 +71,7 @@ function draw() {
         <td class="n">${(() => { const c = comboOf(e.event); return c && c.handicap ? c.handicap : "0"; })()}</td>
         <td><select data-f="status">${STATUSES.map(s => `<option ${s === (e.status || "") ? "selected" : ""}>${s}</option>`).join("")}</select></td>
         <td><input data-f="penalty" inputmode="decimal" value="${penaltyOf(e) || 0}" style="width:70px;min-width:0;text-align:right"></td>
-        <td class="wr"><input data-f="notes" value="${esc(e.notes || "")}">${flagsOf(e.bow).map(f => `<span class="flagnote">⚑ ${esc(f.inst)} · ${esc(f.by)} ${esc(fmtClock(f.at).slice(0, 8))}: ${esc(f.text || "flagged for review")}</span>`).join("")}</td>
+        <td class="wr"><input data-f="notes" value="${esc(e.notes || "")}">${flagsOf(e.bow).map(f => `<span class="flagnote">⚑ ${esc(f.inst)} · ${esc(f.by)} ${esc(fmtClock(f.at).slice(0, 8))}: ${esc(f.text || "flagged for review")}</span>`).join("")}${notesOf(e.bow).map(n => `<span class="flagnote tnote">✎ ${esc(n.inst)} · ${esc(n.by)} ${esc(fmtClock(n.at).slice(0, 8))}: ${esc(n.text)}</span>`).join("")}</td>
         <td><button type="button" class="mini more" aria-label="More for bow ${e.bow}">⋯</button></td></tr>`;
     }).join("") || `<tr><td colspan="11" class="empty">No crews yet. Use Import CSV to load the Raceclocker upload file.</td></tr>`
   }</tbody>`;
@@ -276,6 +276,6 @@ $("#csvfile").addEventListener("change", async e => {
 /* ---------- export (F-K6) ---------- */
 $("#expbtn").addEventListener("click", () => {
   const rows = [["Bow#", "Event", "Crew Name", "Club", "Division", "Event combo", "Handicap (s)", "Status", "Penalty (s)", "Notes"]];
-  for (const e of entryList("all")) { const c = comboOf(e.event); rows.push([e.bow, e.event, e.crew, e.club, "Division " + e.division, c ? c.name : "", c ? c.handicap : 0, e.status || "", penaltyOf(e), [e.notes || "", ...flagsOf(e.bow).map(f => `FLAG ${f.inst} ${f.by} ${fmtClock(f.at).slice(0, 8)}: ${f.text || "flagged for review"}`)].filter(Boolean).join(" | ")]); }
+  for (const e of entryList("all")) { const c = comboOf(e.event); rows.push([e.bow, e.event, e.crew, e.club, "Division " + e.division, c ? c.name : "", c ? c.handicap : 0, e.status || "", penaltyOf(e), [e.notes || "", ...flagsOf(e.bow).map(f => `FLAG ${f.inst} ${f.by} ${fmtClock(f.at).slice(0, 8)}: ${f.text || "flagged for review"}`), ...notesOf(e.bow).map(n => `NOTE ${n.inst} ${n.by} ${fmtClock(n.at).slice(0, 8)}: ${n.text}`)].filter(Boolean).join(" | ")]); }
   downloadCSV("SBH2026-configuration.csv", rows);
 });

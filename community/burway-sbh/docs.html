@@ -83,7 +83,7 @@ li.chk>.tg{margin-top:2px}li.chk>.lt{flex:1;min-width:0}.lt>p{margin:0}.lt ul{ma
 <header class="bar" id="top"><a class="back" href="index.html">Race Admin</a><h1>SBH 2026 Race Pack</h1><span class="prog" id="prog">0 / 95</span><button type="button" id="open-menu" aria-haspopup="dialog">Contents</button></header>
 <div class="pbar"><i id="pbar"></i></div>
 <main>
-  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack updated Fri 23 Oct, 18:00. Division start times: 10:00, 11:30, 13:30. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
+  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack updated Fri 23 Oct, 22:20. Division start times: 10:00, 11:30, 13:30. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
 
   <div class="card warn" id="firebase">
     <h2>Firebase capacity: the free plan is not enough for race day</h2>
@@ -351,9 +351,9 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 </tr>
 <tr class="chk" data-key="test:T-21">
 <td data-label="#"><label class="tg" title="Done"><input data-k="test:T-21" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-21</td>
-<td data-label="Test">Flag for review</td>
-<td data-label="How">Phone 1 or 2: ⋯ › Flag for review › type a short note › Flag</td>
-<td data-label="Pass when">Row shows "⚑ Flagged for review"; the note appears under Notes on Race Configuration and as a flag on Race Adjudication; "Mark resolved" clears it</td>
+<td data-label="Test">Flag and note</td>
+<td data-label="How">Phone 1 or 2: START/FINISH a crew, wait 2 s, tap the light-red ⚑ next to Undo. Then ⋯ › Add note › type a short note</td>
+<td data-label="Pass when">The ⚑ turns solid red at once, with no question asked; a quick double tap on START/FINISH does <strong>not</strong> flag. The flag and the note appear under Notes on Race Configuration and on Race Adjudication; "Mark resolved" clears the flag</td>
 
 </tr>
 <tr class="chk" data-key="test:T-22">
@@ -457,7 +457,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <tr class="chk" data-key="test:T-36">
 <td data-label="#"><label class="tg" title="Done"><input data-k="test:T-36" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-36</td>
 <td data-label="Test">Check on Results</td>
-<td data-label="How">B finisher: ⋯ › Flag for review on a finished crew. Admin: ⋯ › Mark DNF (A) on another, and log an issue for a third on Updates / Issues. Then Resolve the first two on Race Adjudication and close the issue</td>
+<td data-label="How">B finisher: ⚑ (next to Undo) on a finished crew. Admin: ⋯ › Mark DNF (A) on another, and log an issue for a third on Updates / Issues. Then Resolve the first two on Race Adjudication and close the issue</td>
 <td data-label="Pass when">While open: each shows its time/position (or DNF) with a red box and "Check" on public Results; a crew whose A and B times differ shows no Check. After resolving: the boxes go</td>
 
 </tr>
@@ -721,7 +721,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 </tr>
 <tr class="chk" data-key="adj:J-8">
 <td data-label="#"><label class="tg" title="Done"><input data-k="adj:J-8" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>J-8</td>
-<td data-label="Set-up">Starter uses ⋯ › Flag for review on crew W</td>
+<td data-label="Set-up">Starter taps ⚑ (next to Undo) on crew W, and adds a note with ⋯ › Add note</td>
 <td data-label="Do">Review W › <strong>Mark resolved</strong></td>
 <td data-label="Expect">Green "✓ That review note is marked resolved"; the ⚑ flag goes</td>
 </tr>
@@ -845,6 +845,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <strong>Change log:</strong> 23 Oct 2026 (17:10) — F-R15 "Boating now" added; F-R16 (when Results show Check) and F-K12 (crew ⋯ menu, swap bow numbers) added; F-R12 rules extended.
 <strong>Change log:</strong> 23 Oct 2026 (17:20) — F-R15: "Proceed to boating area" yellow, "Boating now" red on Results.
 <strong>Change log:</strong> 23 Oct 2026 (18:00) — F-R14: shark-fin easter egg on the TV river.
+<strong>Change log:</strong> 23 Oct 2026 (22:20) — F-S13 added (one-tap Flag next to Undo; ⋯ › Add note).
 <strong>Status:</strong> Agreed specification · <strong>Written:</strong> Wed 21 Oct 2026 · <strong>Needed by:</strong> Sat 24 Oct 2026, first start 10:00
 <strong>Owner:</strong> Steve Smith · <strong>Built and hosted by:</strong> Dewhurst.tech
 <strong>Location of record:</strong> the race folder (this file). This brief is the binding specification. If the system and this brief disagree, this brief wins until the owner changes it.</p>
@@ -1234,6 +1235,11 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <td data-label="ID">F-S12</td>
 <td data-label="Pri">M</td>
 <td data-label="Requirement"><strong>Double-tap guard.</strong> For <strong>2 seconds</strong> after this phone logs a START (or FINISH, see F-F3), the <strong>Undo</strong> button on that row is greyed out and ignores taps (message: "Just logged - Undo is available in a moment"). Undo sits where the START/FINISH button was, so a double tap would otherwise clear the time it just logged. After 2 s Undo works as F-S5. Added 22 Oct 2026.</td>
+</tr>
+<tr>
+<td data-label="ID">F-S13</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>One-tap Flag</strong> on Starter and Finisher: once a crew has been started (or finished), a light-red <strong>⚑</strong> button sits next to <strong>Undo</strong>. One tap flags the crew for review — no note, no question; the button turns solid red to show it's been pressed (and stays red while the flag is open). It has the same 2-second double-tap guard as Undo. Notes are added later with <strong>⋯ › Add note</strong> (which replaces "Flag for review…" in that menu); notes go with the crew's Notes on Race Configuration and its Review window on Race Adjudication, and don't by themselves show Check on Results. The "⚑ Flagged for review" line under the crew name is no longer shown on these pages, so rows don't change height. Added 23 Oct 2026.</td>
 </tr>
 </tbody>
 </table></div>

@@ -630,6 +630,32 @@ export async function flagFlow(bow) {
   if (txt == null) return;
   flagForReview(bow, txt); toast(`${bow} flagged for review`);
 }
+/* One-tap Flag on Starter / Finisher (Steve, 23 Oct): no note, no question - the timing team is mid-race; it is tidied up
+   on Race Adjudication later. hasOpenFlag drives the button's "pressed" colour. */
+export const hasOpenFlag = bow => flagsOf(bow).length > 0;
+export function quickFlag(bow) {
+  if (hasOpenFlag(bow)) { toast(`${bow} is already flagged - it's cleared on Race Adjudication`); return; }
+  flagForReview(bow, "", S.instance); vibrate(); toast(`⚑ ${bow} flagged for review`);
+}
+/* "Add note" (replaces Flag for review in the ⋯ menu): a note from the timing team, shown with the crew's Notes on
+   Race Configuration and in its Review window on Race Adjudication. Stored with the instance's times (timers can write
+   there); it is not a flag and doesn't show "Check" on Results. */
+export function addNote(bow, text, inst = S.instance) {
+  const id = S.backend.newId();
+  const tap = { ...baseTap("note", inst, bow, null), value: text };
+  const note = { text, by: S.role || (S.user ? S.user.email : ""), at: Date.now(), page: S.page };
+  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: { [String(bow)]: { tnotes: { [id]: note } } } }], tap);
+}
+export function notesOf(bow) {
+  const out = [];
+  for (const inst of ["A", "B"]) for (const [id, n] of Object.entries(timing(inst, bow).tnotes || {})) if (n && n.text) out.push({ inst, id, ...n });
+  return out.sort((x, y) => x.at - y.at);
+}
+export async function noteFlow(bow) {
+  const txt = await textPrompt(`Add a note for ${bow}`, "It goes with the crew's notes on Race Configuration and Race Adjudication.", "Add note", "e.g. clashed blades at the bridge");
+  if (!txt) return;
+  addNote(bow, txt); toast(`Note added for ${bow}`);
+}
 export const flagBadge = bow => flagsOf(bow).length ? `<div class="fl">⚑ Flagged for review</div>` : "";
 
 /** Race Adjudication: mark a crew as checked ("Resolved"). Stored with instance A (the official record) together with

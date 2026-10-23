@@ -1,7 +1,7 @@
 /* Race Adjudication page (admin only): compare A with B, flag differences, correct a time with a reason.
    Brief F-R8 (A/B check) + F-K7 (timing correction panel). Public results always show A. */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag, markReviewed, reopenReview, textPrompt } from "./sbh.js?v=20261023s";
+         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag, notesOf, markReviewed, reopenReview, textPrompt } from "./sbh.js?v=20261023t";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { instance: false, allowAll: true });
@@ -159,6 +159,9 @@ async function review(bow) {
     $("#flagbox", d).innerHTML = fl.length ? `<h3 style="font-size:16px;margin-top:14px">Flagged for review</h3>` + fl.map(f =>
       `<p class="flagnote" style="max-width:none">⚑ ${esc(f.inst)} · ${esc(f.by)} · ${esc(fmtClock(f.at).slice(0, 8))}: ${esc(f.text || "(no notes)")}
        <button type="button" class="btn small resolve" data-inst="${f.inst}" data-id="${esc(f.id)}">Mark resolved</button></p>`).join("") : "";
+    const nts = notesOf(bow);
+    if (nts.length) $("#flagbox", d).insertAdjacentHTML("beforeend", `<h3 style="font-size:16px;margin-top:14px">Notes from the timing team</h3>` + nts.map(n =>
+      `<p class="flagnote" style="max-width:none">✎ ${esc(n.inst)} · ${esc(n.by)} · ${esc(fmtClock(n.at).slice(0, 8))}: ${esc(n.text)}</p>`).join(""));
     $$(".resolve", d).forEach(b => b.addEventListener("click", async () => {
       if (await confirmBox("Mark this flag as resolved?", "It stays in the tap log.", "Resolved")) { resolveFlag(bow, b.dataset.id, b.dataset.inst); say("✓ That review note is marked resolved."); }
     }));
@@ -222,7 +225,7 @@ async function review(bow) {
       all.sort((x, y) => when(x) - when(y));
       const what = t => t.kind === "start" || t.kind === "finish" ? `${t.kind} ${fmtClock(t.tCorrected)}`
         : t.kind === "void" ? `undo ${t.field}` : t.kind === "status" ? `status ${t.value}`
-        : t.kind === "swap" ? `SWAP ${t.field} with ${t.value}` : t.kind === "flag" ? `FLAGGED for review${t.value ? `: "${esc(t.value)}"` : ""}` : t.kind === "flag-resolved" ? "flag resolved" : t.kind === "issue" ? `ISSUE #${esc(t.issue ? t.issue.id : t.value)} (${esc(t.issue ? t.issue.status : "")}): ${esc(t.issue ? t.issue.text : "")}` : t.kind === "reviewed" ? `RESOLVED${t.value ? `: "${esc(t.value)}"` : ""}` : t.kind === "review-reopened" ? "review reopened" : t.kind === "adjust" ? `ADJUDICATION ${t.field} → ${t.field === "status" ? (t.value || "none") : (fmtClock(t.value) || "cleared")} · "${esc(t.reason)}"` : t.kind;
+        : t.kind === "swap" ? `SWAP ${t.field} with ${t.value}` : t.kind === "flag" ? `FLAGGED for review${t.value ? `: "${esc(t.value)}"` : ""}` : t.kind === "flag-resolved" ? "flag resolved" : t.kind === "note" ? `NOTE: "${esc(t.value || "")}"` : t.kind === "issue" ? `ISSUE #${esc(t.issue ? t.issue.id : t.value)} (${esc(t.issue ? t.issue.status : "")}): ${esc(t.issue ? t.issue.text : "")}` : t.kind === "reviewed" ? `RESOLVED${t.value ? `: "${esc(t.value)}"` : ""}` : t.kind === "review-reopened" ? "review reopened" : t.kind === "adjust" ? `ADJUDICATION ${t.field} → ${t.field === "status" ? (t.value || "none") : (fmtClock(t.value) || "cleared")} · "${esc(t.reason)}"` : t.kind;
       $("#hist", d).innerHTML = all.length ? `<table class="sbh-t"><thead><tr><th>Logged</th><th>Inst</th><th>What</th><th>Who</th><th>Phone</th></tr></thead><tbody>${
         all.map(t => `<tr><td class="t">${fmtClock(when(t))}</td><td>${t.instance}</td><td class="wr">${what(t)}</td><td>${esc((t.user || "").replace("@dewhurst.tech", ""))}</td><td>${esc(t.deviceId || "")}</td></tr>`).join("")}</tbody></table>`
         : "No taps logged for this crew.";

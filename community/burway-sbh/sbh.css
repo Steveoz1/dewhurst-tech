@@ -232,7 +232,7 @@ details.rules .sbh-t{margin:0 0 6px}
 .mini.locked{opacity:.35}
 
 /* Club test 22 Oct (S-1/S-4): a row must be the same height before and after a tap, so nothing below it moves */
-.crew{grid-template-columns:62px minmax(0,1fr) 154px}
+.crew{grid-template-columns:62px minmax(0,1fr) 166px}
 .crew .acts{justify-content:flex-end}
 .fin .crew .tm{min-height:2.4em}
 
@@ -310,3 +310,8 @@ tr.chk td{border-top:2px solid #c0392b;border-bottom:2px solid #c0392b}tr.chk td
 .shark-wake{display:block;width:46px;height:4px;margin-top:-2px;border-radius:50%;background:rgba(255,255,255,.55);animation:shark-wake 10s ease-in-out forwards}
 @keyframes shark-wake{0%,100%{opacity:0}9%,88%{opacity:1}}
 @media (max-width:760px){.water .shark-weave{--h:80px}}
+
+/* One-tap Flag next to Undo (23 Oct): light red until pressed, solid red once flagged */
+.mini.flagbtn{min-width:46px;padding:0 6px;font-size:20px;background:#fdecea;border-color:#e3a19a;color:#b03a2e}
+.mini.flagbtn.on{background:#c0392b;border-color:#c0392b;color:#fff}
+.flagnote.tnote{color:#334}
