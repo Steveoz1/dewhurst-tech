@@ -1,6 +1,6 @@
 /* Finisher page (brief E4: F-F1 to F-F5) */
 import { boot, mountBar, requireRole, onChange, changed, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         logTime, voidField, setStatus, justTapped, swapFlow, quickFlag, hasOpenFlag, noteFlow, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, fmtRace, raceTenths } from "./sbh.js?v=20261023t";
+         logTime, voidField, setStatus, justTapped, swapFlow, quickFlag, hasOpenFlag, noteFlow, undoNeedsConfirm, bindTap, confirmBox, menuBox, toast, fmtClock, fmtRace, raceTenths } from "./sbh.js?v=20261023v";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { allowAll: true, confirmSwitch: true });

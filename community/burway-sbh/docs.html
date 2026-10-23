@@ -83,7 +83,7 @@ li.chk>.tg{margin-top:2px}li.chk>.lt{flex:1;min-width:0}.lt>p{margin:0}.lt ul{ma
 <header class="bar" id="top"><a class="back" href="index.html">Race Admin</a><h1>SBH 2026 Race Pack</h1><span class="prog" id="prog">0 / 95</span><button type="button" id="open-menu" aria-haspopup="dialog">Contents</button></header>
 <div class="pbar"><i id="pbar"></i></div>
 <main>
-  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack updated Fri 23 Oct, 22:20. Division start times: 10:00, 11:30, 13:30. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
+  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack updated Sat 24 Oct, 00:00. Division start times: 10:00, 11:30, 13:30. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
 
   <div class="card warn" id="firebase">
     <h2>Firebase capacity: the free plan is not enough for race day</h2>
@@ -540,13 +540,13 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <tbody>
 <tr>
 <td data-label="#">1</td>
-<td data-label="Flagged when…">A and B both have a start, more than 1.0 s apart</td>
+<td data-label="Flagged when…">A and B both have a start, more than 2.0 s apart</td>
 <td data-label="Shown as">"Start differs" (exact gap on hover)</td>
 <td data-label="Colour">Red</td>
 </tr>
 <tr>
 <td data-label="#">2</td>
-<td data-label="Flagged when…">A and B both have a finish, more than 1.0 s apart</td>
+<td data-label="Flagged when…">A and B both have a finish, more than 2.0 s apart</td>
 <td data-label="Shown as">"Finish differs" (exact gap on hover)</td>
 <td data-label="Colour">Red</td>
 </tr>
@@ -572,6 +572,30 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <td data-label="#">6</td>
 <td data-label="Flagged when…">A starter or finisher used <strong>Flag for review</strong>, not yet resolved</td>
 <td data-label="Shown as">"⚑ Flagged for review"</td>
+<td data-label="Colour">Red</td>
+</tr>
+<tr>
+<td data-label="#">7</td>
+<td data-label="Flagged when…">A has the crew as DNF or DSQ — confirm, then Resolve</td>
+<td data-label="Shown as">"DNF marked"</td>
+<td data-label="Colour">Red</td>
+</tr>
+<tr>
+<td data-label="#">8</td>
+<td data-label="Flagged when…">An issue for this bow on Updates / Issues is still Open or In progress — close it there</td>
+<td data-label="Shown as">"Open issue (1) on Updates / Issues"</td>
+<td data-label="Colour">Red</td>
+</tr>
+<tr>
+<td data-label="#">9</td>
+<td data-label="Flagged when…">A finish is earlier than its own start, in A or B</td>
+<td data-label="Shown as">"A finish before start"</td>
+<td data-label="Colour">Red</td>
+</tr>
+<tr>
+<td data-label="#">10</td>
+<td data-label="Flagged when…">A finish has been logged but neither A nor B has a start</td>
+<td data-label="Shown as">"Finish but no start in A or B"</td>
 <td data-label="Colour">Red</td>
 </tr>
 </tbody>
@@ -659,12 +683,12 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <p><strong>Public Results</strong> always follow A. A change to A shows on Results within a few seconds; a change to B never does.</p>
 <h2 id="adj-5-points-to-confirm-before-race-day-the-">5. Points to confirm before race day (the logic)</h2>
 <ol class="checklist">
-<li class="chk" data-key="adj:5-points-to-confirm-:a-is-the-only-official-record-correction"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:a-is-the-only-official-record-correction" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>A is the only official record.</strong> Corrections go into A; changing B is allowed but has no public effect. <em>OK?</em></div></li>
-<li class="chk" data-key="adj:5-points-to-confirm-:matching-a-to-b-clears-the-flag-by-itsel"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:matching-a-to-b-clears-the-flag-by-itsel" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Matching A to B clears the flag by itself.</strong> There is no need to Resolve as well. <em>OK?</em></div></li>
-<li class="chk" data-key="adj:5-points-to-confirm-:resolve-means-a-is-right-as-it-stands-it"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:resolve-means-a-is-right-as-it-stands-it" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Resolve means "A is right as it stands".</strong> It covers all the crew's current differences at once, and any later change to A or B undoes it. <em>OK?</em></div></li>
-<li class="chk" data-key="adj:5-points-to-confirm-:tolerance-is-1-0-s-for-starts-and-finish"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:tolerance-is-1-0-s-for-starts-and-finish" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Tolerance is 1.0 s</strong> for starts and finishes (more than 1.0 s apart is flagged). <em>Keep, or change?</em></div></li>
-<li class="chk" data-key="adj:5-points-to-confirm-:a-finish-with-no-start-yet-allowed-since"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:a-finish-with-no-start-yet-allowed-since" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>A finish with no start yet</strong> (allowed since the snag fixes) shows as "A start missing" only once B has a start. If neither A nor B ever gets a start, the crew has no race time and isn't flagged. Race Configuration / Results show it without a time. <em>Should "finish but no start in A or B" be a 7th rule?</em></div></li>
-<li class="chk" data-key="adj:5-points-to-confirm-:every-change-needs-a-typed-reason-even-c"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:every-change-needs-a-typed-reason-even-c" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Every change needs a typed reason</strong>, even copying B's time. <em>Keep, or allow "Use B's" without a reason?</em></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:a-is-the-only-official-record-correction"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:a-is-the-only-official-record-correction" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>A is the only official record.</strong> Corrections go into A; changing B is allowed but has no public effect. <strong>Confirmed 23 Oct.</strong></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:matching-a-to-b-clears-the-flag-by-itsel"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:matching-a-to-b-clears-the-flag-by-itsel" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Matching A to B clears the flag by itself.</strong> There is no need to Resolve as well. <strong>Confirmed 23 Oct.</strong></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:resolve-means-a-is-right-as-it-stands-it"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:resolve-means-a-is-right-as-it-stands-it" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Resolve means "A is right as it stands".</strong> It covers all the crew's current differences at once, and any later change to A or B undoes it. <strong>Confirmed 23 Oct.</strong></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:tolerance-is-2-0-s-for-starts-and-finish"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:tolerance-is-2-0-s-for-starts-and-finish" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Tolerance is 2.0 s</strong> for starts and finishes (more than 2.0 s apart is flagged). <strong>Changed from 1.0 s on 23 Oct.</strong></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:a-finish-with-no-start-yet-allowed-since"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:a-finish-with-no-start-yet-allowed-since" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>A finish with no start yet</strong> (allowed since the snag fixes) shows as "A start missing" only once B has a start. If neither A nor B ever gets a start, the crew has no race time and isn't flagged. Race Configuration / Results show it without a time. <strong>Decided 23 Oct: yes — rule 10, "Finish but no start in A or B".</strong></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:every-change-needs-a-typed-reason-even-c"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:every-change-needs-a-typed-reason-even-c" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Every change needs a typed reason</strong>, even copying B's time. <strong>Kept for now (23 Oct).</strong></div></li>
 </ol>
 <h2 id="adj-6-test-it-about-10-minutes-admin-on-a-pc">6. Test it (about 10 minutes, admin on a PC; starter/finisher phones on A and B)</h2>
 <div class="tw"><table class="cards">
@@ -846,6 +870,8 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <strong>Change log:</strong> 23 Oct 2026 (17:20) — F-R15: "Proceed to boating area" yellow, "Boating now" red on Results.
 <strong>Change log:</strong> 23 Oct 2026 (18:00) — F-R14: shark-fin easter egg on the TV river.
 <strong>Change log:</strong> 23 Oct 2026 (22:20) — F-S13 added (one-tap Flag next to Undo; ⋯ › Add note).
+<strong>Change log:</strong> 23 Oct 2026 (22:55) — Race Adjudication: tolerance 2.0 s (was 1.0 s); new rule "Finish but no start in A or B"; a typed reason stays required for every change.
+<strong>Change log:</strong> 23 Oct 2026 (23:59) — F-R14: Yet-to-start squares coloured like the pre-start labels (yellow / red).
 <strong>Status:</strong> Agreed specification · <strong>Written:</strong> Wed 21 Oct 2026 · <strong>Needed by:</strong> Sat 24 Oct 2026, first start 10:00
 <strong>Owner:</strong> Steve Smith · <strong>Built and hosted by:</strong> Dewhurst.tech
 <strong>Location of record:</strong> the race folder (this file). This brief is the binding specification. If the system and this brief disagree, this brief wins until the owner changes it.</p>
@@ -1343,7 +1369,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <tr>
 <td data-label="ID">F-R8</td>
 <td data-label="Pri">S</td>
-<td data-label="Requirement"><strong>A/B check column</strong> — difference between instance A and B race times; highlight any crew where they differ by more than 1.0 s, or where one instance has a time and the other doesn't. Visible only when signed in.</td>
+<td data-label="Requirement"><strong>A/B check column</strong> — difference between instance A and B race times; highlight any crew where they differ by more than 2.0 s, or where one instance has a time and the other doesn't. Visible only when signed in.</td>
 </tr>
 <tr>
 <td data-label="ID">F-R9</td>
@@ -1363,7 +1389,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <tr>
 <td data-label="ID">F-R12</td>
 <td data-label="Pri">M</td>
-<td data-label="Requirement"><strong>Race Adjudication — when a crew "needs a look", and Resolve.</strong> Signed-in officials only. A crew is listed under <strong>Needs a look</strong> when any of these is true (starts and finishes are compared separately; the A−B race-time column is information only; Withdrawn applies to both instances so never shows as a difference):<br/>1. A and B both have a <strong>start</strong>, more than <strong>1.0 s</strong> apart — "Start differs 1.4 s" — red<br/>2. A and B both have a <strong>finish</strong>, more than <strong>1.0 s</strong> apart — "Finish differs 2.5 s" — red<br/>3. <strong>B has a start or finish that A doesn't</strong> (A is what the public sees) — "A start / finish missing" — red<br/>4. <strong>A has a start or finish that B doesn't</strong> — "B start / finish missing" — amber<br/>5. The <strong>statuses differ</strong> (DNS / DNF / DSQ in one, not the other) — "Status A: DNF / B: –" — red<br/>6. A starter or finisher used <strong>Flag for review</strong> on the crew (A or B), not yet resolved — "⚑ Flagged for review" — red<br/>These rules are shown on the page in an expandable list. A flag clears when its cause is fixed. <strong>Resolve</strong> (on the row, and in the Review window) marks the crew as checked — "A is correct" — with an optional note: it is logged (who, when, note), it closes any open review notes, and the crew leaves Needs a look showing "✓ Resolved". If the crew's differences change afterwards (a new time or status in A or B), it comes back into Needs a look marked "changed since resolved". <strong>Reopen</strong> undoes a Resolve. Added 22 Oct 2026.</td>
+<td data-label="Requirement"><strong>Race Adjudication — when a crew "needs a look", and Resolve.</strong> Signed-in officials only. A crew is listed under <strong>Needs a look</strong> when any of these is true (starts and finishes are compared separately; the A−B race-time column is information only; Withdrawn applies to both instances so never shows as a difference):<br/>1. A and B both have a <strong>start</strong>, more than <strong>2.0 s</strong> apart — "Start differs 1.4 s" — red<br/>2. A and B both have a <strong>finish</strong>, more than <strong>2.0 s</strong> apart — "Finish differs 2.5 s" — red<br/>3. <strong>B has a start or finish that A doesn't</strong> (A is what the public sees) — "A start / finish missing" — red<br/>4. <strong>A has a start or finish that B doesn't</strong> — "B start / finish missing" — amber<br/>5. The <strong>statuses differ</strong> (DNS / DNF / DSQ in one, not the other) — "Status A: DNF / B: –" — red<br/>6. A starter or finisher used <strong>Flag for review</strong> on the crew (A or B), not yet resolved — "⚑ Flagged for review" — red<br/>These rules are shown on the page in an expandable list. A flag clears when its cause is fixed. <strong>Resolve</strong> (on the row, and in the Review window) marks the crew as checked — "A is correct" — with an optional note: it is logged (who, when, note), it closes any open review notes, and the crew leaves Needs a look showing "✓ Resolved". If the crew's differences change afterwards (a new time or status in A or B), it comes back into Needs a look marked "changed since resolved". <strong>Reopen</strong> undoes a Resolve. Added 22 Oct 2026. Rule added 23 Oct (22:55): a finish logged with <strong>no start in A or B</strong> — "Finish but no start in A or B" (red). Tolerance for start/finish differences raised to <strong>2.0 s</strong> (23 Oct, 22:55).</td>
 </tr>
 <tr>
 <td data-label="ID">F-R13</td>
@@ -1373,7 +1399,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <tr>
 <td data-label="ID">F-R14</td>
 <td data-label="Pri">S</td>
-<td data-label="Requirement"><strong>TV mode: "Cycle through pages?" Off / On</strong> on Results, for the TV by the clubhouse bar (anyone can switch it; the choice is kept on that screen; adding <code>?cycle=1</code> to the address also turns it on). <strong>On:</strong> the results show one screenful at a time, changing every <strong>10 seconds</strong> and looping back to the start ("Page 2 of 5" shown); the results are framed by <strong>Yet to start</strong> (left) and <strong>Finished</strong> (right, latest first) as bow-number squares (white, black border, black number), and a <strong>river</strong> along the bottom with a start flag on the left and a finish flag on the right. A crew's square goes onto the river when its start is logged and moves left to right over <strong>13 minutes</strong>; it stays at the finish end until its finish is logged, then moves to Finished. DNS / DNF / DSQ / Withdrawn crews are not shown in the frame. On a phone the side lists are left out. <strong>Off:</strong> Results look exactly as before. While results are hidden (F-R13) the frame is empty for the public. <strong>Easter egg:</strong> while no crew is on the water, each time the TV reaches page 2 a shark fin surfaces at the finish end, weaves gently up the river to the start over the 10 seconds of that page, and submerges. Added 23 Oct 2026.</td>
+<td data-label="Requirement"><strong>TV mode: "Cycle through pages?" Off / On</strong> on Results, for the TV by the clubhouse bar (anyone can switch it; the choice is kept on that screen; adding <code>?cycle=1</code> to the address also turns it on). <strong>On:</strong> the results show one screenful at a time, changing every <strong>10 seconds</strong> and looping back to the start ("Page 2 of 5" shown); the results are framed by <strong>Yet to start</strong> (left) and <strong>Finished</strong> (right, latest first) as bow-number squares (white, black border, black number), and a <strong>river</strong> along the bottom with a start flag on the left and a finish flag on the right. A crew's square goes onto the river when its start is logged and moves left to right over <strong>13 minutes</strong>; it stays at the finish end until its finish is logged, then moves to Finished. DNS / DNF / DSQ / Withdrawn crews are not shown in the frame. On a phone the side lists are left out. <strong>Off:</strong> Results look exactly as before. While results are hidden (F-R13) the frame is empty for the public. <strong>Yet-to-start squares</strong> follow the F-R15 label colours: yellow while "Proceed to boating area", red for "Boating now" and "Waiting to start", white before that. <strong>Easter egg:</strong> while no crew is on the water, each time the TV reaches page 2 a shark fin surfaces at the finish end, weaves gently up the river to the start over the 10 seconds of that page, and submerges. Added 23 Oct 2026.</td>
 </tr>
 <tr>
 <td data-label="ID">F-R15</td>

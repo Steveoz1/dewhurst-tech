@@ -1,13 +1,13 @@
 /* Race Adjudication page (admin only): compare A with B, flag differences, correct a time with a reason.
    Brief F-R8 (A/B check) + F-K7 (timing correction panel). Public results always show A. */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag, notesOf, markReviewed, reopenReview, textPrompt } from "./sbh.js?v=20261023t";
+         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag, notesOf, markReviewed, reopenReview, textPrompt } from "./sbh.js?v=20261023v";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { instance: false, allowAll: true });
 await requireRole($("#gate"), ["admin"], "admin");
 
-const TOL_MS = 1000;                                   // F-R8: flag differences over 1.0 s
+const TOL_MS = 2000;                                   // F-R8: flag differences over 2.0 s (race committee, 23 Oct; was 1.0 s)
 let onlyFlagged = true;
 const app = $("#app");
 app.innerHTML = `
@@ -18,8 +18,8 @@ app.innerHTML = `
   <p class="note">A is the official record shown to the public. Tap <b>Review</b> to correct A (or B) - every change needs a reason and the original taps stay in the log. Tap <b>Resolve</b> once a crew has been checked and A is right.</p>
   <details class="rules"><summary>When does a crew "need a look"? (the rules)</summary>
     <table class="sbh-t"><thead><tr><th>#</th><th>A crew is flagged when…</th><th>Shown as</th><th>Colour</th></tr></thead><tbody>
-      <tr><td>1</td><td class="wr">A and B both have a <b>start</b>, more than <b>1.0 s</b> apart</td><td>"Start differs" (exact gap on hover)</td><td><span class="flag red">Red</span></td></tr>
-      <tr><td>2</td><td class="wr">A and B both have a <b>finish</b>, more than <b>1.0 s</b> apart</td><td>"Finish differs" (exact gap on hover)</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>1</td><td class="wr">A and B both have a <b>start</b>, more than <b>2.0 s</b> apart</td><td>"Start differs" (exact gap on hover)</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>2</td><td class="wr">A and B both have a <b>finish</b>, more than <b>2.0 s</b> apart</td><td>"Finish differs" (exact gap on hover)</td><td><span class="flag red">Red</span></td></tr>
       <tr><td>3</td><td class="wr"><b>B has a start or finish that A doesn't</b> (A is what the public sees)</td><td>"A start / finish missing"</td><td><span class="flag red">Red</span></td></tr>
       <tr><td>4</td><td class="wr"><b>A has a start or finish that B doesn't</b></td><td>"B start / finish missing"</td><td><span class="flag amber">Amber</span></td></tr>
       <tr><td>5</td><td class="wr">The <b>statuses differ</b> between A and B (DNS / DNF / DSQ in one but not the other)</td><td>"Status A: DNF / B: –"</td><td><span class="flag red">Red</span></td></tr>
@@ -27,6 +27,7 @@ app.innerHTML = `
       <tr><td>7</td><td class="wr">A has the crew as <b>DNF or DSQ</b> - confirm it, then Resolve</td><td>"DNF marked"</td><td><span class="flag red">Red</span></td></tr>
       <tr><td>8</td><td class="wr">An issue on <b>Updates / Issues</b> for this bow is still Open or In progress - close it there</td><td>"Open issue (1) on Updates / Issues"</td><td><span class="flag red">Red</span></td></tr>
       <tr><td>9</td><td class="wr">A <b>finish is earlier than its start</b> in A or B (wrong crew or wrong day)</td><td>"A finish before start"</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>10</td><td class="wr">A finish has been logged but <b>neither A nor B has a start</b> for the crew</td><td>"Finish but no start in A or B"</td><td><span class="flag red">Red</span></td></tr>
     </tbody></table>
     <p class="note">Starts and finishes are compared separately; the A−B column (race-time difference) is information only. Withdrawn applies to both A and B, so it never shows as a difference. A flag clears when its cause is fixed. <b>Resolve</b> marks a crew as checked: it leaves "Needs a look" and any review notes are closed — but if its times or statuses change afterwards, it comes back. Public Results show <b>Check</b> (red box) only for rules 6, 7 and 8 - A-versus-B timing differences are never shown to the public. Source: design brief F-R12 and F-R16.</p>
   </details>
@@ -43,6 +44,8 @@ function flagsFor(bow) {
       f.push({ t: `${w[0].toUpperCase() + w.slice(1)} differs`, sig: exact, title: exact, lvl: "red" });   // short label (Steve, 23 Oct); exact gap on hover and in the Resolve fingerprint
     }
   }
+  if ((a.finish != null || b.finish != null) && a.start == null && b.start == null)   // rule 10 (23 Oct): a finish but no start anywhere
+    f.push({ t: "Finish but no start in A or B", lvl: "red" });
   for (const [inst, t] of [["A", a], ["B", b]])                       // a finish recorded before its own start
     if (t.start != null && t.finish != null && t.finish <= t.start) f.push({ t: `${inst} finish before start`, lvl: "red" });
   const sa = statusOf("A", bow), sb = statusOf("B", bow);

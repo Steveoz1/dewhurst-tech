@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox, serverNow } from "./sbh.js?v=20261023t";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox, serverNow, preStartNote } from "./sbh.js?v=20261023v";
 
 S.instance = "A";                                    // the public only ever sees A; officials can switch once signed in
 await boot({ watch: ["entries"] });
@@ -229,7 +229,9 @@ function showPage() {
 }
 
 /* The frame: yet to start (left), on the water (river), finished (right) */
-const sq = bow => `<span class="bowsq" data-b="${bow}">${bow}</span>`;
+const sq = (bow, cls = "") => `<span class="bowsq${cls ? " " + cls : ""}" data-b="${bow}">${bow}</span>`;
+/* Yet-to-start squares follow the label colours (Steve, 23 Oct): yellow = proceed to boating area; red = boating now or waiting to start */
+const PRE_CLS = { "Proceed to boating area": "amber", "Boating now": "red", "Waiting to start": "red" };
 let lastFrameKey = "";
 function paintFrame() {
   if (!cycle) return;
@@ -241,13 +243,13 @@ function paintFrame() {
     if (t.finish != null) finished.push([e.bow, t.finish]);
     else if (["DNS", "DNF", "DSQ", "Withdrawn"].includes(st)) continue;
     else if (t.start != null) onWater.push([e.bow, t.start]);
-    else notStarted.push(e.bow);
+    else notStarted.push([e.bow, PRE_CLS[preStartNote(e)] || ""]);
   }
   finished.sort((a, b) => b[1] - a[1]);                // latest finisher first
-  const key = JSON.stringify([notStarted, finished.map(f => f[0])]);
+  const key = JSON.stringify([notStarted, finished.map(f => f[0])]);       // includes the colours, so squares recolour as the clock moves
   if (key !== lastFrameKey) {
     lastFrameKey = key;
-    $("#notstarted").innerHTML = notStarted.map(sq).join("") || `<small class="note">${shut ? "" : "All crews have started."}</small>`;
+    $("#notstarted").innerHTML = notStarted.map(([b, c]) => sq(b, c)).join("") || `<small class="note">${shut ? "" : "All crews have started."}</small>`;
     $("#finished").innerHTML = finished.map(f => sq(f[0])).join("") || `<small class="note">${shut ? "" : "None yet."}</small>`;
   }
   /* the river: reuse each crew's square so it glides rather than jumps */

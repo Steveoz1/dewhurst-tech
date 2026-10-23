@@ -315,3 +315,6 @@ tr.chk td{border-top:2px solid #c0392b;border-bottom:2px solid #c0392b}tr.chk td
 .mini.flagbtn{min-width:46px;padding:0 6px;font-size:20px;background:#fdecea;border-color:#e3a19a;color:#b03a2e}
 .mini.flagbtn.on{background:#c0392b;border-color:#c0392b;color:#fff}
 .flagnote.tnote{color:#334}
+/* Yet-to-start squares (23 Oct): same colour convention as the pre-start labels */
+.rf-side .bowsq.amber{background:#ffe08a}
+.rf-side .bowsq.red{background:#f4b1aa}

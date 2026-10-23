@@ -2,7 +2,7 @@
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, isTimed, comboOf, penaltyOf, flagsOf, fmtClock,
          saveEntries, parseCSV, downloadCSV, STATUSES, DIVS, toast, confirmBox, typedConfirm, resetSystem, reauth,
          resetField, officialInstance, saveRace, setStatus, statusOf, timing, flagFlow, menuBox, textPrompt, numberPrompt, logIssue,
-         watchIssueRecords, pendingIssueRecords, ISSUE_CATS, notesOf } from "./sbh.js?v=20261023t";
+         watchIssueRecords, pendingIssueRecords, ISSUE_CATS, notesOf } from "./sbh.js?v=20261023v";
 
 const app = $("#app");
 await boot({ watch: ["entries", "A", "B"] });
