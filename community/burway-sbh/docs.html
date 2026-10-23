@@ -80,10 +80,10 @@ li.chk>.tg{margin-top:2px}li.chk>.lt{flex:1;min-width:0}.lt>p{margin:0}.lt ul{ma
 </style>
 </head>
 <body>
-<header class="bar" id="top"><a class="back" href="index.html">Race Admin</a><h1>SBH 2026 Race Pack</h1><span class="prog" id="prog">0 / 92</span><button type="button" id="open-menu" aria-haspopup="dialog">Contents</button></header>
+<header class="bar" id="top"><a class="back" href="index.html">Race Admin</a><h1>SBH 2026 Race Pack</h1><span class="prog" id="prog">0 / 95</span><button type="button" id="open-menu" aria-haspopup="dialog">Contents</button></header>
 <div class="pbar"><i id="pbar"></i></div>
 <main>
-  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack updated Fri 23 Oct, 16:10. Division start times: 10:00, 11:30, 13:30. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
+  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack updated Fri 23 Oct, 17:15. Division start times: 10:00, 11:30, 13:30. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
 
   <div class="card warn" id="firebase">
     <h2>Firebase capacity: the free plan is not enough for race day</h2>
@@ -102,7 +102,7 @@ li.chk>.tg{margin-top:2px}li.chk>.lt{flex:1;min-width:0}.lt>p{margin:0}.lt ul{ma
 
   <div class="card">
     <h2>Documents</h2>
-    <nav class="nav"><a href="#test"><span>Friday test script</span><small>62 to check</small></a><a href="#adj"><span>Race Adjudication: how it works</span><small>14 to check</small></a><a href="#snag"><span>Snagging brief (club test)</span><small>reference</small></a><a href="#brief"><span>Design brief (the binding spec)</span><small>6 to check</small></a></nav>
+    <nav class="nav"><a href="#test"><span>Friday test script</span><small>65 to check</small></a><a href="#adj"><span>Race Adjudication: how it works</span><small>14 to check</small></a><a href="#snag"><span>Snagging brief (club test)</span><small>reference</small></a><a href="#brief"><span>Design brief (the binding spec)</span><small>6 to check</small></a></nav>
     <div class="tools">
       <button type="button" id="hide-done">Hide ticked items</button>
       <button type="button" id="expand">Open all</button>
@@ -113,7 +113,7 @@ li.chk>.tg{margin-top:2px}li.chk>.lt{flex:1;min-width:0}.lt>p{margin:0}.lt ul{ma
   
 <section id="test" class="doc">
   <details open>
-    <summary><span class="st">Friday test script</span><span class="cnt" data-sec="test">0 / 62</span></summary>
+    <summary><span class="st">Friday test script</span><span class="cnt" data-sec="test">0 / 65</span></summary>
     <p class="blurb">The run-through for Friday, plus the Saturday-morning routine. Every test and step has a toggle.</p>
     <div class="body"><p>For: the race admin and helpers · Written: Wed 21 Oct 2026 · Based on brief Part G (A-1 to A-12), plus checks for everything added since (T-13 onwards)
 Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
@@ -447,6 +447,27 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <td data-label="Pass when">Pages change every 10 s and loop; Yet to start (left), Finished (right) and the river (bottom) show; a crew started on phone 1 appears on the river and drifts right; when phone 2 finishes it, it moves to Finished. Turn Off: normal Results</td>
 
 </tr>
+<tr class="chk" data-key="test:T-35">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-35" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-35</td>
+<td data-label="Test">Pre-start statuses</td>
+<td data-label="How">Results, a crew not yet started, at different times of day</td>
+<td data-label="Pass when">More than 10 min before its boating time: "Div X starts at hh:mm"; then "Proceed to boating area" until its boating time, then "Boating now" until its division's start time; then "Waiting to start" until its start is logged; then "On water"</td>
+
+</tr>
+<tr class="chk" data-key="test:T-36">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-36" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-36</td>
+<td data-label="Test">Check on Results</td>
+<td data-label="How">B finisher: ⋯ › Flag for review on a finished crew. Admin: ⋯ › Mark DNF (A) on another, and log an issue for a third on Updates / Issues. Then Resolve the first two on Race Adjudication and close the issue</td>
+<td data-label="Pass when">While open: each shows its time/position (or DNF) with a red box and "Check" on public Results; a crew whose A and B times differ shows no Check. After resolving: the boxes go</td>
+
+</tr>
+<tr class="chk" data-key="test:T-37">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-37" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-37</td>
+<td data-label="Test">Crew ⋯ menu and bow swap</td>
+<td data-label="How">Race Configuration: ⋯ on a crew with no times › Swap bow number with another untimed crew</td>
+<td data-label="Pass when">The two crews swap numbers everywhere (Starter, Finisher, Results). A crew with times doesn't offer the swap</td>
+
+</tr>
 <tr class="chk" data-key="test:T-19">
 <td data-label="#"><label class="tg" title="Done"><input data-k="test:T-19" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-19</td>
 <td data-label="Test">Battery</td>
@@ -520,13 +541,13 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <tr>
 <td data-label="#">1</td>
 <td data-label="Flagged when…">A and B both have a start, more than 1.0 s apart</td>
-<td data-label="Shown as">"Start differs 1.4 s"</td>
+<td data-label="Shown as">"Start differs" (exact gap on hover)</td>
 <td data-label="Colour">Red</td>
 </tr>
 <tr>
 <td data-label="#">2</td>
 <td data-label="Flagged when…">A and B both have a finish, more than 1.0 s apart</td>
-<td data-label="Shown as">"Finish differs 2.5 s"</td>
+<td data-label="Shown as">"Finish differs" (exact gap on hover)</td>
 <td data-label="Colour">Red</td>
 </tr>
 <tr>
@@ -555,7 +576,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 </tr>
 </tbody>
 </table></div>
-<p>A flag disappears by itself as soon as its cause is gone (for example, A's finish is set to match B's).</p>
+<p>A flag disappears by itself as soon as its cause is gone (for example, A's finish is set to match B's). <strong>Public Results show "Check" (red box) only for rules 6, 7 and 8</strong> — A-versus-B timing differences are never shown to the public (brief F-R16). The A−B column is A's race time minus B's race time.</p>
 <h2 id="adj-4-the-review-window-top-to-bottom">4. The Review window, top to bottom</h2>
 <div class="tw"><table class="cards">
 <thead>
@@ -820,6 +841,8 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <strong>Change log:</strong> 23 Oct 2026 (14:40) — race committee moved Division 2 to 11:30 and Division 3 to 13:30 (forecast rain); Part A and F-K8 updated.
 <strong>Change log:</strong> 23 Oct 2026 (15:00) — F-K11 added (Updates / Issues tracker).
 <strong>Change log:</strong> 23 Oct 2026 (16:10) — F-R14 added (Results TV mode: cycle through pages, start/finish lists and river).
+<strong>Change log:</strong> 23 Oct 2026 (16:40) — F-R15 added (pre-start statuses on Results, from boating times).
+<strong>Change log:</strong> 23 Oct 2026 (17:10) — F-R15 "Boating now" added; F-R16 (when Results show Check) and F-K12 (crew ⋯ menu, swap bow numbers) added; F-R12 rules extended.
 <strong>Status:</strong> Agreed specification · <strong>Written:</strong> Wed 21 Oct 2026 · <strong>Needed by:</strong> Sat 24 Oct 2026, first start 10:00
 <strong>Owner:</strong> Steve Smith · <strong>Built and hosted by:</strong> Dewhurst.tech
 <strong>Location of record:</strong> the race folder (this file). This brief is the binding specification. If the system and this brief disagree, this brief wins until the owner changes it.</p>
@@ -1133,6 +1156,11 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <td data-label="Pri">M</td>
 <td data-label="Requirement"><strong>Updates / Issues tracker</strong> — a page for the admin, starters and finishers (not the public) to log race-day updates and issues as they come in, instead of on paper. Fields: <strong>ID</strong> (numbered automatically), <strong>Category</strong> (Crew / System / Other), <strong>Bow number</strong> (optional; shows the crew name), <strong>Issue</strong> (free text), <strong>Status</strong> (Open / In progress / Resolved). Shared live between phones; works without signal like the timing pages. Every new issue and every change is kept in the audit log with who and when — nothing is overwritten — and a crew's issues also appear in its history on Race Adjudication. Open / All and category filters; Export CSV. "Start a new race" does not clear it. Added 23 Oct 2026.</td>
 </tr>
+<tr>
+<td data-label="ID">F-K12</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>⋯ menu on each crew in Race Configuration</strong> (next to Notes): Mark DNS / DNF / DSQ or clear the status (for the instance shown in the bar), Flag for review, <strong>Log an issue</strong> on Updates / Issues, and <strong>Swap bow number with another crew</strong> (only while neither crew has a time). A crew with no times can also be given a new, unused number by typing it in its Bow# box. Crews with times keep their number (their times are stored against it); fix those with Swap times on Starter / Finisher or on Race Adjudication. Added 23 Oct 2026.</td>
+</tr>
 </tbody>
 </table></div>
 <h3 id="brief-e3-starter-page">E3. Starter page</h3>
@@ -1338,6 +1366,16 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <td data-label="ID">F-R14</td>
 <td data-label="Pri">S</td>
 <td data-label="Requirement"><strong>TV mode: "Cycle through pages?" Off / On</strong> on Results, for the TV by the clubhouse bar (anyone can switch it; the choice is kept on that screen; adding <code>?cycle=1</code> to the address also turns it on). <strong>On:</strong> the results show one screenful at a time, changing every <strong>10 seconds</strong> and looping back to the start ("Page 2 of 5" shown); the results are framed by <strong>Yet to start</strong> (left) and <strong>Finished</strong> (right, latest first) as bow-number squares (white, black border, black number), and a <strong>river</strong> along the bottom with a start flag on the left and a finish flag on the right. A crew's square goes onto the river when its start is logged and moves left to right over <strong>13 minutes</strong>; it stays at the finish end until its finish is logged, then moves to Finished. DNS / DNF / DSQ / Withdrawn crews are not shown in the frame. On a phone the side lists are left out. <strong>Off:</strong> Results look exactly as before. While results are hidden (F-R13) the frame is empty for the public. Added 23 Oct 2026.</td>
+</tr>
+<tr>
+<td data-label="ID">F-R15</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Status shown before a crew starts</strong> (Results, in the time column): more than 10 minutes before the crew's <strong>boating time</strong> — "Div 2 starts at 11:30"; from 10 minutes before boating time — "Proceed to boating area"; from the boating time until the division's start time — "Boating now"; from the division's start time until the crew's start is logged — "Waiting to start". Then "On water", then the time (or "Check"), as before. DNS / DNF / DSQ / Withdrawn still show the status. Boating times come from the Burway event page's race order (updated 23 Oct, after Divisions 2 and 3 moved); a crew with no boating time of its own (TBC, or added later) uses its division's first boating time (09:33, 11:06, 13:09). Added 23 Oct 2026.</td>
+</tr>
+<tr>
+<td data-label="ID">F-R16</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>"Check" on Results — only when something has been raised against a crew.</strong> Results always show a crew's time and position. A thin <strong>red box</strong> and the word <strong>Check</strong> under the time appear only while: a <strong>Flag for review</strong> (A or B) is open; the crew is marked <strong>DNF or DSQ</strong> in A and that hasn't been <strong>Resolved</strong> on Race Adjudication; or an issue for that bow on <strong>Updates / Issues</strong> is Open or In progress. The box goes once all of these are resolved on both pages. Differences between A and B timing are <strong>never</strong> shown on Results. A finish earlier than its own start shows "Time pending" (no time, no position) and is flagged on Race Adjudication. Race Adjudication flags are now short ("Start differs" / "Finish differs", exact gap on hover); new rules: DNF/DSQ marked, open issue on Updates / Issues, finish before start. The A−B column is A's race time minus B's race time. Added 23 Oct 2026.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1621,7 +1659,7 @@ timings/{instance}       { "151": { start: tCorrected, startTap: id, finish: …
 <button class="fab" type="button" aria-label="Back to the top" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
 <div id="menu" role="dialog" aria-modal="true" aria-label="Contents"><div class="sheet">
   <h2>Jump to</h2>
-  <nav class="nav"><a href="#firebase"><span>Firebase capacity (read first)</span><small>decision</small></a><a href="#test"><span>Friday test script</span><small>62 to check</small></a><a href="#adj"><span>Race Adjudication: how it works</span><small>14 to check</small></a><a href="#snag"><span>Snagging brief (club test)</span><small>reference</small></a><a href="#brief"><span>Design brief (the binding spec)</span><small>6 to check</small></a></nav>
+  <nav class="nav"><a href="#firebase"><span>Firebase capacity (read first)</span><small>decision</small></a><a href="#test"><span>Friday test script</span><small>65 to check</small></a><a href="#adj"><span>Race Adjudication: how it works</span><small>14 to check</small></a><a href="#snag"><span>Snagging brief (club test)</span><small>reference</small></a><a href="#brief"><span>Design brief (the binding spec)</span><small>6 to check</small></a></nav>
 </div></div>
 <script>
 (function(){

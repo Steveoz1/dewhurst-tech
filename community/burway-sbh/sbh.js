@@ -368,11 +368,17 @@ export const reauth = pw => S.backend.reauth(pw);
    (kind "issue"), so nothing is overwritten and every change keeps who and when. Officials only can read it.
    fields: { id: "7", cat: "Crew"|"System"|"Other", bow: 157|null, text, status: "Open"|"In progress"|"Resolved" } */
 export const ISSUE_CATS = ["Crew", "System", "Other"], ISSUE_STATUSES = ["Open", "In progress", "Resolved"];
-export function logIssue(fields) {
+export function logIssue(fields, prevBow = null) {
   const id = S.backend.newId();
   const bow = fields.bow == null || fields.bow === "" ? null : Number(fields.bow);
   const tap = { ...baseTap("issue", "A", bow, null), value: String(fields.id), issue: { ...fields, bow }, at: Date.now() };
-  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }], tap);
+  /* public "Check" marker on the crew while the issue is open (23 Oct); cleared from the old bow if the issue moved */
+  const mark = {};
+  if (prevBow != null && Number(prevBow) !== bow) mark[String(prevBow)] = { issues: { [fields.key]: false } };
+  if (bow != null) mark[String(bow)] = { issues: { [fields.key]: fields.status !== "Resolved" } };
+  const ops = [{ path: "taps/" + id, create: true, data: tap }];
+  if (Object.keys(mark).length) ops.push({ path: "timings/A", data: mark });
+  writeOps(id, ops, tap);
   return { id, ...tap };                      // the record itself, so the page can show it straight away
 }
 /** Issue records from this phone that haven't reached the server yet (shown straight away) */
@@ -416,21 +422,53 @@ export function comboOf(event) {
 }
 export const penaltyOf = e => Number(e && e.penalty) || 0;
 
+/* Boating times (23 Oct): from the Burway event page's race order, last updated 23 Oct (after Divisions 2 and 3 moved
+   30 minutes earlier). A crew with no time of its own (TBC, or added later) uses its division's first boating time.
+   An entry's own "boat" field, if ever set, wins. */
+const BOATING = {"151":"09:33","152":"09:33","153":"09:33","154":"09:33","155":"09:33","156":"09:34","157":"09:34","158":"09:34","159":"09:34","160":"09:34","161":"09:34","162":"09:35","163":"09:35","164":"09:35","165":"09:35","166":"09:35","167":"09:35","168":"09:36","169":"09:36","170":"09:36","171":"09:36","172":"09:36","173":"09:36","174":"09:37","175":"09:37","176":"09:37","177":"09:37","178":"09:37","179":"09:37","180":"09:38","181":"09:38","185":"09:38","186":"09:39","187":"09:39","188":"09:39","189":"09:39","190":"09:39","191":"09:39","192":"09:40","251":"11:06","252":"11:06","253":"11:06","254":"11:06","255":"11:06","256":"11:07","257":"11:07","258":"11:07","259":"11:07","260":"11:07","261":"11:07","262":"11:08","263":"11:08","264":"11:08","265":"11:08","266":"11:08","267":"11:08","268":"11:09","269":"11:09","270":"11:09","271":"11:09","272":"11:09","273":"11:09","274":"11:10","371":"13:09","372":"13:09","373":"13:09","374":"13:10","375":"13:10","376":"13:10","377":"13:10","378":"13:10","379":"13:10","380":"13:11","381":"13:11","382":"13:11","383":"13:11","384":"13:11","385":"13:11","386":"13:12","387":"13:12","388":"13:12","389":"13:12","390":"13:12","391":"13:12","392":"13:13"};
+const DIV_FIRST_BOAT = { 1: "09:33", 2: "11:06", 3: "13:09" };
+const hm = s => { const m = /^(\d{1,2}):(\d{2})$/.exec(String(s || "")); return m ? +m[1] * 60 + +m[2] : null; };
+export function boatingTime(e) { return [e.boat, BOATING[String(e.bow)], DIV_FIRST_BOAT[e.division]].find(v => hm(v) != null) || null; }
+/** What Results show for a crew that hasn't started yet (Steve, 23 Oct):
+    more than 10 min before boating: "Div 2 starts at 11:30"; from 10 min before boating: "Proceed to boating area";
+    from the boating time until the division start: "Boating now"; from the division start until the crew's start is logged: "Waiting to start". */
+export function preStartNote(e, nowMin = ukMinutesNow()) {
+  const div = Number(e.division), start = hm(DIV_STARTS[div]), boat = hm(boatingTime(e));
+  if (start == null) return "";
+  if (boat != null && nowMin < boat - 10) return `Div ${div} starts at ${DIV_STARTS[div]}`;
+  if (boat == null && nowMin < start - 10) return `Div ${div} starts at ${DIV_STARTS[div]}`;
+  if (boat != null && nowMin < boat) return "Proceed to boating area";
+  if (nowMin < start) return boat != null ? "Boating now" : "Proceed to boating area";
+  return "Waiting to start";
+}
+
 /* Results for one instance.
    rt  = race time (finish - start), tenths of a second. pt = race time + penalty. pos = place across the whole event (all divisions) on adjusted time.
    adj = adjusted time = race time + penalty - handicap (tenths). posEv = place on adjusted time
          among crews in the same event - or the same event combination - across all divisions. */
+/** Should Results show "Check" against this crew? (Steve, 23 Oct) Only when something has been raised against it:
+    an open "Flag for review" (A, or B via its marker), DNF / DSQ marked in A and not yet Resolved on Race Adjudication,
+    or an open / in-progress issue on Updates / Issues. A-versus-B timing differences never show here. */
+export function needsCheck(bow) {
+  const a = timing("A", bow), st = statusOf("A", bow);
+  if (Object.values(a.flags || {}).some(f => f && !f.done)) return true;
+  if (Object.values(a.bflags || {}).some(Boolean)) return true;
+  if (Object.values(a.issues || {}).some(Boolean)) return true;
+  if ((st === "DNF" || st === "DSQ") && !(a.reviewed && String(a.reviewed.sig || "").includes(`${st} marked`))) return true;
+  return false;
+}
 export function computeResults(inst) {
+  const nowMin = ukMinutesNow();
   const rows = entryList("all").map(e => {
     const t = timing(inst, e.bow); const st = statusOf(inst, e.bow);
     let rt = OUT_ST.includes(st) ? null : raceTenths(t.start, t.finish);
     let note = st;
-    if (rt != null && rt <= 0) { note = "Check"; rt = null; }
-    if (!note && rt == null) note = t.start != null ? (t.finish != null ? "" : "On water") : "";
+    if (rt != null && rt <= 0) { note = "Time pending"; rt = null; }   // finish before start: officials see it on Race Adjudication
+    if (!note && rt == null) note = t.start != null ? (t.finish != null ? "" : "On water") : (t.finish != null ? "" : preStartNote(e, nowMin));
     const combo = comboOf(e.event); const hc = combo ? combo.handicap : 0; const pen = penaltyOf(e);
     const pt = rt == null ? null : rt + Math.round(pen * 10);            // time + penalty: used for overall Pos
     const adj = rt == null ? null : pt - Math.round(hc * 10);            // adjusted: penalty and handicap, used for Pos in event
-    return { e, t, st, rt, pt, adj, hc, pen, combo, group: combo ? "combo:" + combo.id : "event:" + e.event, note, pos: null, posEv: null };
+    return { e, t, st, rt, pt, adj, hc, pen, combo, group: combo ? "combo:" + combo.id : "event:" + e.event, note, pos: null, posEv: null, check: needsCheck(e.bow) };
   });
   const rank = (group, key) => {
     const g = group.filter(r => r[key] != null).sort((a, b) => a[key] - b[key]);
@@ -555,12 +593,16 @@ export function flagForReview(bow, text, inst = S.instance) {
   const id = S.backend.newId();
   const tap = { ...baseTap("flag", inst, bow, null), value: text || "" };
   const flag = { text: text || "", by: S.role || (S.user ? S.user.email : ""), at: Date.now(), page: S.page, done: false };
-  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: { [String(bow)]: { flags: { [id]: flag } } } }], tap);
+  const ops = [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: { [String(bow)]: { flags: { [id]: flag } } } }];
+  if (inst === "B") ops.push({ path: "timings/A", data: { [String(bow)]: { bflags: { [id]: true } } } });   // public "Check" marker (23 Oct)
+  writeOps(id, ops, tap);
 }
 export function resolveFlag(bow, flagId, inst) {
   const id = S.backend.newId();
   const tap = { ...baseTap("flag-resolved", inst, bow, null), value: flagId };
-  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: { [String(bow)]: { flags: { [flagId]: { done: true, doneBy: S.user ? S.user.email : "" } } } } }], tap);
+  const ops = [{ path: "taps/" + id, create: true, data: tap }, { path: "timings/" + inst, data: { [String(bow)]: { flags: { [flagId]: { done: true, doneBy: S.user ? S.user.email : "" } } } } }];
+  if (inst === "B") ops.push({ path: "timings/A", data: { [String(bow)]: { bflags: { [flagId]: false } } } });
+  writeOps(id, ops, tap);
 }
 /** Open review flags for a crew, across A and B: [{inst, id, text, by, at}] */
 export function flagsOf(bow, onlyOpen = true) {

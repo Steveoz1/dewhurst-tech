@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox, serverNow } from "./sbh.js?v=20261023o";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox, serverNow } from "./sbh.js?v=20261023q";
 
 S.instance = "A";                                    // the public only ever sees A; officials can switch once signed in
 await boot({ watch: ["entries"] });
@@ -150,11 +150,11 @@ function drawList() {
     const html = rows.map(r => {
       const g = groupHead(r);
       return (g ? `<div class="rg">${esc(g.name)}${g.sub ? ` <small>${esc(g.sub)}</small>` : ""}</div>` : "") +
-        `<div class="rc${r.rt == null ? " out" : ""}">
+        `<div class="rc${r.rt == null ? " out" : ""}${r.check ? " chk" : ""}">
           <div class="p">${r.pos ?? ""}</div>
           <div class="m"><div class="nm">${hl(r.e.crew, t)}</div><div class="ev">${esc(r.e.event)}</div><div class="cl">${esc(r.e.club)}</div>
             <div class="sm"><span class="bw"><i>Bow </i>${r.e.bow}</span><span class="dv"><i>Division </i>${r.e.division}</span></div></div>
-          <div class="tm">${timeOr(r.adj, r)}</div></div>`;
+          <div class="tm">${timeOr(r.adj, r)}${r.check ? `<small class="chk-l">Check</small>` : ""}</div></div>`;
     }).join("");
     $("#cards").innerHTML = `<div class="rh"><div class="p">Pos</div><div class="bw">Bow#</div><div class="ev">Event</div><div class="nm">Crew name</div><div class="cl">Club</div><div class="dv">Div</div><div class="tm">Adjusted time</div></div>` +
       (html || `<div class="empty">${shut ? "Results will be published here on race day." : all.length ? "No crews match these filters." : "No crews loaded yet."}</div>`);
@@ -162,16 +162,17 @@ function drawList() {
   }
   const body = rows.map(r => {
     const g = groupHead(r);
-    return (g ? `<tr class="grp"><td colspan="12">${esc(g.name)}${g.sub ? ` <small>(${esc(g.sub)})</small>` : ""}</td></tr>` : "") + `<tr class="${r.rt == null ? "out" : ""}">
+    return (g ? `<tr class="grp"><td colspan="12">${esc(g.name)}${g.sub ? ` <small>(${esc(g.sub)})</small>` : ""}</td></tr>` : "") + `<tr class="${r.rt == null ? "out" : ""}${r.check ? " chk" : ""}">
       <td class="n"><b>${r.pos ?? ""}</b></td><td class="n">${r.e.bow}</td><td>${esc(r.e.event)}</td><td class="wr">${hl(r.e.crew, t)}</td><td class="wr">${esc(r.e.club)}</td>
       <td class="n">${r.e.division}</td><td class="t">${fmtClock(r.t.start)}</td><td class="t">${fmtClock(r.t.finish)}</td>
       <td class="t"><b>${timeOr(r.rt, r)}</b></td>
       <td class="t">${r.pt != null ? `<b>${fmtRace(r.pt)}</b>${r.pen ? `<br><small>penalty +${r.pen} s</small>` : ""}` : ""}</td>
-      <td class="t">${r.adj != null ? `<b>${fmtRace(r.adj)}</b>${r.hc ? `<br><small>handicap -${r.hc} s</small>` : ""}` : ""}</td><td class="n">${r.posEv ?? ""}</td></tr>`;
+      <td class="t">${r.adj != null ? `<b>${fmtRace(r.adj)}</b>${r.hc ? `<br><small>handicap -${r.hc} s</small>` : ""}` : ""}${r.check ? `<br><small class="chk-l">Check</small>` : ""}</td><td class="n">${r.posEv ?? ""}</td></tr>`;
   }).join("");
   $("#tbl").innerHTML = `<thead><tr><th class="n" title="Overall, all divisions, on Adjusted time">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th>Start</th><th>Finish</th><th>Race time</th><th title="Race time plus any penalty">Time + penalty</th><th title="Time + penalty, minus any handicap - decides Pos and Pos in event">Adjusted time</th><th class="n" title="On adjusted time, within the event or its event combination">Pos in event</th></tr></thead><tbody>${body || `<tr><td colspan="12" class="empty">${shut ? "Results will be published here on race day." : all.length ? "No crews match these filters." : "No crews loaded yet."}</td></tr>`}</tbody>`;
 }
 onChange(draw); draw();
+setInterval(() => { if (!document.hidden) draw(); }, 30000);   // the "Proceed to boating area" / "Waiting to start" notes follow the clock
 
 /* ---- TV mode: "Cycle through pages" (Steve, 23 Oct, for the TV by the clubhouse bar) -----------------------
    On: the results show one screenful at a time, changing every 10 s and looping; the page is framed by the crews

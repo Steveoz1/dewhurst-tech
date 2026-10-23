@@ -1,7 +1,8 @@
 /* Race Configuration page (brief E2: F-K1 to F-K6) */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, isTimed, comboOf, penaltyOf, flagsOf, fmtClock,
          saveEntries, parseCSV, downloadCSV, STATUSES, DIVS, toast, confirmBox, typedConfirm, resetSystem, reauth,
-         resetField, officialInstance, saveRace } from "./sbh.js?v=20261023o";
+         resetField, officialInstance, saveRace, setStatus, statusOf, timing, flagFlow, menuBox, textPrompt, numberPrompt, logIssue,
+         watchIssueRecords, pendingIssueRecords, ISSUE_CATS } from "./sbh.js?v=20261023q";
 
 const app = $("#app");
 await boot({ watch: ["entries", "A", "B"] });
@@ -47,7 +48,7 @@ app.innerHTML = `
       <small>As above, and the crew list is emptied too, ready for a fresh CSV import.</small></p>
     <p class="note" id="lastreset"></p>
   </div>
-  <p class="note">Edits save when you leave a box. Withdraw a crew with the Status column - crews are never deleted. A crew's Bow# is locked once it has a time in A or B.</p>
+  <p class="note">Edits save when you leave a box. Withdraw a crew with the Status column - crews are never deleted. A crew's Bow# is locked once it has a time in A or B. To change a number, type a new unused one in Bow#, or use ⋯ › Swap bow number.</p>
   <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>`;
 
 /* ---------- table ---------- */
@@ -57,7 +58,7 @@ function draw() {
   const list = entryList(div);
   const all = Object.values(S.entries);
   $("#count").textContent = `${all.length} crews · ` + DIVS.map(d => `Div ${d}: ${all.filter(e => Number(e.division) === d).length}`).join(" · ");
-  tbl.innerHTML = `<thead><tr><th>Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th>Division</th><th>Event combo</th><th class="n">Handicap (s)</th><th>Status</th><th class="n">Penalty (s)</th><th>Notes</th></tr></thead><tbody>${
+  tbl.innerHTML = `<thead><tr><th>Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th>Division</th><th>Event combo</th><th class="n">Handicap (s)</th><th>Status</th><th class="n">Penalty (s)</th><th>Notes</th><th></th></tr></thead><tbody>${
     list.map(e => {
       const locked = isTimed(e.bow);
       return `<tr data-bow="${e.bow}" class="${e.status === "Withdrawn" ? "withdrawn" : ""}">
@@ -70,10 +71,50 @@ function draw() {
         <td class="n">${(() => { const c = comboOf(e.event); return c && c.handicap ? c.handicap : "0"; })()}</td>
         <td><select data-f="status">${STATUSES.map(s => `<option ${s === (e.status || "") ? "selected" : ""}>${s}</option>`).join("")}</select></td>
         <td><input data-f="penalty" inputmode="decimal" value="${penaltyOf(e) || 0}" style="width:70px;min-width:0;text-align:right"></td>
-        <td class="wr"><input data-f="notes" value="${esc(e.notes || "")}">${flagsOf(e.bow).map(f => `<span class="flagnote">⚑ ${esc(f.inst)} · ${esc(f.by)} ${esc(fmtClock(f.at).slice(0, 8))}: ${esc(f.text || "flagged for review")}</span>`).join("")}</td></tr>`;
-    }).join("") || `<tr><td colspan="10" class="empty">No crews yet. Use Import CSV to load the Raceclocker upload file.</td></tr>`
+        <td class="wr"><input data-f="notes" value="${esc(e.notes || "")}">${flagsOf(e.bow).map(f => `<span class="flagnote">⚑ ${esc(f.inst)} · ${esc(f.by)} ${esc(fmtClock(f.at).slice(0, 8))}: ${esc(f.text || "flagged for review")}</span>`).join("")}</td>
+        <td><button type="button" class="mini more" aria-label="More for bow ${e.bow}">⋯</button></td></tr>`;
+    }).join("") || `<tr><td colspan="11" class="empty">No crews yet. Use Import CSV to load the Raceclocker upload file.</td></tr>`
   }</tbody>`;
 }
+/* ⋯ menu per crew (Steve, 23 Oct): the same actions as Starter / Finisher (no swap of times), plus logging an
+   issue and swapping bow numbers for crews that haven't started - so everything about a crew can be raised from here. */
+let issueRecs = [];
+watchIssueRecords(list => { issueRecs = list; });
+const nextIssueId = () => String(Math.max(0, ...[...issueRecs, ...pendingIssueRecords()].map(r => parseInt(r.issue && r.issue.id, 10) || 0)) + 1);
+const OUTS = ["DNS", "DNF", "DSQ"];
+tbl.addEventListener("click", async ev => {
+  const btn = ev.target.closest(".more"); if (!btn) return;
+  const bow = Number(btn.closest("tr").dataset.bow), e = S.entries[String(bow)]; if (!e) return;
+  const inst = S.instance, t = timing(inst, bow), items = [];
+  if (t.status) items.push({ label: `Clear ${t.status} (instance ${inst})`, value: "clear" });
+  for (const st of OUTS) if (t.status !== st) items.push({ label: `Mark ${st} (instance ${inst})`, value: st, danger: true });
+  items.push({ label: "Flag for review…", value: "flag" });
+  items.push({ label: "Log an issue on Updates / Issues…", value: "issue" });
+  if (!isTimed(bow)) items.push({ label: "Swap bow number with another crew…", value: "swapbow" });
+  const v = await menuBox(`Bow ${bow} · ${e.crew}`, items);
+  if (OUTS.includes(v) && await confirmBox(`Mark ${bow} as ${v} in instance ${inst}?`, inst === "A" ? "A is what the public sees: Results will show " + v + " with Check until it is Resolved on Race Adjudication." : "", `Mark ${v}`)) { setStatus(bow, v, inst); toast(`${bow}: ${v} (${inst})`); }
+  if (v === "clear" && await confirmBox(`Clear ${t.status} for ${bow} in instance ${inst}?`, "", "Clear")) { setStatus(bow, "", inst); toast(`${bow}: status cleared (${inst})`); }
+  if (v === "flag") await flagFlow(bow);
+  if (v === "issue") {
+    const text = await textPrompt(`Log an issue for bow ${bow}`, `${e.crew}. It goes on Updates / Issues as a Crew issue, Open.`, "Log issue", "e.g. sub in bow seat");
+    if (text) { const id = nextIssueId(); logIssue({ key: S.backend.newId(), id, cat: "Crew", bow, text, status: "Open" }); toast(`Issue #${id} logged for ${bow}`); }
+  }
+  if (v === "swapbow") await swapBowNumbers(bow);
+});
+async function swapBowNumbers(bow) {
+  const other = await numberPrompt(`Swap bow number ${bow}`, "Which bow number should this crew swap with? Both crews must not have started yet.", "Next");
+  if (other == null) return;
+  const a = S.entries[String(bow)], b = S.entries[String(other)];
+  if (!b || Number(other) === bow) { toast(b ? "That's the same crew." : `No crew has bow ${other}. To give this crew a new, unused number, type it in its Bow# box instead.`); return; }
+  if (isTimed(bow) || isTimed(other)) { toast("One of these crews already has a time - bow numbers can only be swapped before either has started."); return; }
+  if (!(await confirmBox(`Swap bow numbers ${bow} and ${other}?`, `${a.crew} becomes bow ${other}; ${b.crew} becomes bow ${bow}.`, "Swap"))) return;
+  const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  const as = (src, nb) => Object.fromEntries([...keys].map(k => [k, k === "bow" ? Number(nb) : (src[k] ?? null)]));
+  const stamp = { updatedAt: Date.now(), updatedBy: S.user.email };
+  saveEntries({ [String(bow)]: { ...as(b, bow), ...stamp }, [String(other)]: { ...as(a, other), ...stamp } });
+  toast(`Swapped: ${a.crew} is now ${other}, ${b.crew} is now ${bow}`);
+}
+
 let dirty = false;
 onChange(() => { if (tbl.contains(document.activeElement)) dirty = true; else draw(); });
 tbl.addEventListener("focusout", () => setTimeout(() => { if (dirty && !tbl.contains(document.activeElement)) { dirty = false; draw(); } }, 50));

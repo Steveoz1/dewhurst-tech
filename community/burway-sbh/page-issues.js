@@ -1,7 +1,7 @@
 /* Updates / Issues tracker (added 23 Oct). For the admin and the timing team: crew changes, system issues, anything else.
    Shared between phones; every new issue and every change is kept in the audit log (nothing is overwritten). */
 import { boot, mountBar, requireRole, onChange, changed, S, $, $$, esc, fmtClock, toast, confirmBox, downloadCSV,
-         ISSUE_CATS, ISSUE_STATUSES, logIssue, pendingIssueRecords, watchIssueRecords } from "./sbh.js?v=20261023o";
+         ISSUE_CATS, ISSUE_STATUSES, logIssue, pendingIssueRecords, watchIssueRecords } from "./sbh.js?v=20261023q";
 
 await boot({ watch: ["entries"] });
 mountBar($("#bar"), { instance: false, division: false });
@@ -120,7 +120,7 @@ $("#tbl").addEventListener("click", async e => {
     const text = $(".e-text", tr).value.trim(), b = bowCheck($(".e-bow", tr).value);
     if (!text) { toast("The issue can't be blank"); return; }
     if (!b.ok) { toast(b.msg); return; }
-    remember(logIssue({ key: i.key, id: i.id, cat: $(".e-cat", tr).value, bow: b.bow, text, status: $(".e-st", tr).value }));
+    remember(logIssue({ key: i.key, id: i.id, cat: $(".e-cat", tr).value, bow: b.bow, text, status: $(".e-st", tr).value }, i.bow));
     editing = null; document.activeElement?.blur(); draw(); toast(`#${i.label} updated`);
   }
 });

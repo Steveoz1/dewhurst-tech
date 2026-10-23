@@ -1,7 +1,7 @@
 /* Race Adjudication page (admin only): compare A with B, flag differences, correct a time with a reason.
    Brief F-R8 (A/B check) + F-K7 (timing correction panel). Public results always show A. */
 import { boot, mountBar, requireRole, onChange, S, $, $$, esc, entryList, currentDivision, timing, statusOf,
-         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag, markReviewed, reopenReview, textPrompt } from "./sbh.js?v=20261023o";
+         computeResults, fmtClock, fmtRace, adjust, toast, confirmBox, STATUSES, DIVS, flagsOf, resolveFlag, markReviewed, reopenReview, textPrompt } from "./sbh.js?v=20261023q";
 
 await boot({ watch: ["entries", "A", "B"] });
 mountBar($("#bar"), { instance: false, allowAll: true });
@@ -18,14 +18,17 @@ app.innerHTML = `
   <p class="note">A is the official record shown to the public. Tap <b>Review</b> to correct A (or B) - every change needs a reason and the original taps stay in the log. Tap <b>Resolve</b> once a crew has been checked and A is right.</p>
   <details class="rules"><summary>When does a crew "need a look"? (the rules)</summary>
     <table class="sbh-t"><thead><tr><th>#</th><th>A crew is flagged when…</th><th>Shown as</th><th>Colour</th></tr></thead><tbody>
-      <tr><td>1</td><td class="wr">A and B both have a <b>start</b>, more than <b>1.0 s</b> apart</td><td>"Start differs 1.4 s"</td><td><span class="flag red">Red</span></td></tr>
-      <tr><td>2</td><td class="wr">A and B both have a <b>finish</b>, more than <b>1.0 s</b> apart</td><td>"Finish differs 2.5 s"</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>1</td><td class="wr">A and B both have a <b>start</b>, more than <b>1.0 s</b> apart</td><td>"Start differs" (exact gap on hover)</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>2</td><td class="wr">A and B both have a <b>finish</b>, more than <b>1.0 s</b> apart</td><td>"Finish differs" (exact gap on hover)</td><td><span class="flag red">Red</span></td></tr>
       <tr><td>3</td><td class="wr"><b>B has a start or finish that A doesn't</b> (A is what the public sees)</td><td>"A start / finish missing"</td><td><span class="flag red">Red</span></td></tr>
       <tr><td>4</td><td class="wr"><b>A has a start or finish that B doesn't</b></td><td>"B start / finish missing"</td><td><span class="flag amber">Amber</span></td></tr>
       <tr><td>5</td><td class="wr">The <b>statuses differ</b> between A and B (DNS / DNF / DSQ in one but not the other)</td><td>"Status A: DNF / B: –"</td><td><span class="flag red">Red</span></td></tr>
       <tr><td>6</td><td class="wr">A starter or finisher used <b>Flag for review</b> on the crew (A or B), not yet resolved</td><td>"⚑ Flagged for review"</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>7</td><td class="wr">A has the crew as <b>DNF or DSQ</b> - confirm it, then Resolve</td><td>"DNF marked"</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>8</td><td class="wr">An issue on <b>Updates / Issues</b> for this bow is still Open or In progress - close it there</td><td>"Open issue (1) on Updates / Issues"</td><td><span class="flag red">Red</span></td></tr>
+      <tr><td>9</td><td class="wr">A <b>finish is earlier than its start</b> in A or B (wrong crew or wrong day)</td><td>"A finish before start"</td><td><span class="flag red">Red</span></td></tr>
     </tbody></table>
-    <p class="note">Starts and finishes are compared separately; the A−B column (race-time difference) is information only. Withdrawn applies to both A and B, so it never shows as a difference. A flag clears when its cause is fixed. <b>Resolve</b> marks a crew as checked: it leaves "Needs a look" and any review notes are closed — but if its times or statuses change afterwards, it comes back. Source: design brief F-R12.</p>
+    <p class="note">Starts and finishes are compared separately; the A−B column (race-time difference) is information only. Withdrawn applies to both A and B, so it never shows as a difference. A flag clears when its cause is fixed. <b>Resolve</b> marks a crew as checked: it leaves "Needs a look" and any review notes are closed — but if its times or statuses change afterwards, it comes back. Public Results show <b>Check</b> (red box) only for rules 6, 7 and 8 - A-versus-B timing differences are never shown to the public. Source: design brief F-R12 and F-R16.</p>
   </details>
   <div class="tblwrap"><table class="sbh-t" id="tbl"></table></div>`;
 $$("#fseg button").forEach(b => b.addEventListener("click", () => { onlyFlagged = b.dataset.f === "1"; draw(); }));
@@ -35,19 +38,27 @@ function flagsFor(bow) {
   for (const [k, w] of [["start", "start"], ["finish", "finish"]]) {
     if (a[k] != null && b[k] == null) f.push({ t: `B ${w} missing`, lvl: "amber" });
     else if (a[k] == null && b[k] != null) f.push({ t: `A ${w} missing`, lvl: "red" });
-    else if (a[k] != null && b[k] != null && Math.abs(a[k] - b[k]) > TOL_MS) f.push({ t: `${w[0].toUpperCase() + w.slice(1)} differs ${(Math.abs(a[k] - b[k]) / 1000).toFixed(1)} s`, lvl: "red" });
+    else if (a[k] != null && b[k] != null && Math.abs(a[k] - b[k]) > TOL_MS) {
+      const exact = `${w[0].toUpperCase() + w.slice(1)} differs ${(Math.abs(a[k] - b[k]) / 1000).toFixed(1)} s`;
+      f.push({ t: `${w[0].toUpperCase() + w.slice(1)} differs`, sig: exact, title: exact, lvl: "red" });   // short label (Steve, 23 Oct); exact gap on hover and in the Resolve fingerprint
+    }
   }
+  for (const [inst, t] of [["A", a], ["B", b]])                       // a finish recorded before its own start
+    if (t.start != null && t.finish != null && t.finish <= t.start) f.push({ t: `${inst} finish before start`, lvl: "red" });
   const sa = statusOf("A", bow), sb = statusOf("B", bow);
   if (sa !== sb) f.push({ t: `Status A: ${sa || "-"} / B: ${sb || "-"}`, lvl: "red" });
+  if (sa === "DNF" || sa === "DSQ") f.push({ t: `${sa} marked`, lvl: "red" });                 // shown as "Check" on Results until Resolved
+  const iss = Object.values(a.issues || {}).filter(Boolean).length;                           // open on Updates / Issues - closed there, not here
+  if (iss) f.push({ t: `Open issue${iss > 1 ? "s" : ""} (${iss}) on Updates / Issues`, lvl: "red", issue: true });
   const fl = flagsOf(bow); if (fl.length) f.push({ t: `⚑ Flagged for review${fl.length > 1 ? ` (${fl.length})` : ""}`, lvl: "red", review: true });
   return f;
 }
 /* Fingerprint of the differences (not the review notes) - a Resolve only holds while this stays the same */
-const sigOf = flags => flags.filter(f => !f.review).map(f => f.t).join(" | ");
+const sigOf = flags => flags.filter(f => !f.review && !f.issue).map(f => f.sig || f.t).join(" | ");
 function resolvedState(bow, flags) {
   const rv = timing("A", bow).reviewed;
   if (!rv) return null;
-  const ok = rv.sig === sigOf(flags) && !flags.some(f => f.review);
+  const ok = rv.sig === sigOf(flags) && !flags.some(f => f.review || f.issue);
   return { ...rv, ok };
 }
 
@@ -64,7 +75,7 @@ function draw() {
   $("#tbl").innerHTML = `<thead><tr><th class="n">Bow#</th><th>Crew</th>
       <th>A start</th><th>A finish</th><th>A time</th><th class="n">A pos</th>
       <th>B start</th><th>B finish</th><th>B time</th><th class="n">B pos</th>
-      <th class="n">A-B</th><th>Flags</th><th></th></tr></thead><tbody>${
+      <th class="n" title="A race time minus B race time, in seconds">A−B time</th><th>Flags</th><th></th></tr></thead><tbody>${
     show.map(r => {
       const d = diff(r);
       return `<tr data-bow="${r.e.bow}">
@@ -74,7 +85,7 @@ function draw() {
         <td class="n ${d != null && Math.abs(d) > 1 ? "bad" : ""}">${d != null ? (d > 0 ? "+" : "") + d.toFixed(1) : ""}</td>
         <td class="wr">${r.rs && r.rs.ok
             ? `<span class="flag ok">✓ Resolved</span> <small>${esc((r.rs.by || "").replace("@dewhurst.tech", ""))} ${esc(fmtClock(r.rs.at).slice(0, 5))}${r.rs.note ? " · " + esc(r.rs.note) : ""}</small>`
-            : (r.flags.map(f => `<span class="flag ${f.lvl}">${esc(f.t)}</span>`).join(" ") || `<span class="ok">OK</span>`) + (r.rs && !r.rs.ok && r.flags.length ? ` <small class="bad">changed since resolved</small>` : "")}</td>
+            : (r.flags.map(f => `<span class="flag ${f.lvl}"${f.title ? ` title="${esc(f.title)}"` : ""}>${esc(f.t)}</span>`).join(" ") || `<span class="ok">OK</span>`) + (r.rs && !r.rs.ok && r.flags.length ? ` <small class="bad">changed since resolved</small>` : "")}</td>
         <td style="white-space:nowrap"><button type="button" class="btn small rev">Review</button>${r.flags.length && !(r.rs && r.rs.ok) ? ` <button type="button" class="btn small primary res">Resolve</button>` : ""}</td></tr>`;
     }).join("") || `<tr><td colspan="13" class="empty">${onlyFlagged ? "Nothing to look at - A and B agree for every crew in this view." : "No crews in this division."}</td></tr>`
   }</tbody>`;
