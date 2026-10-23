@@ -83,7 +83,7 @@ li.chk>.tg{margin-top:2px}li.chk>.lt{flex:1;min-width:0}.lt>p{margin:0}.lt ul{ma
 <header class="bar" id="top"><a class="back" href="index.html">Race Admin</a><h1>SBH 2026 Race Pack</h1><span class="prog" id="prog">0 / 95</span><button type="button" id="open-menu" aria-haspopup="dialog">Contents</button></header>
 <div class="pbar"><i id="pbar"></i></div>
 <main>
-  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack updated Fri 23 Oct, 17:20. Division start times: 10:00, 11:30, 13:30. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
+  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack updated Fri 23 Oct, 18:00. Division start times: 10:00, 11:30, 13:30. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
 
   <div class="card warn" id="firebase">
     <h2>Firebase capacity: the free plan is not enough for race day</h2>
@@ -844,6 +844,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <strong>Change log:</strong> 23 Oct 2026 (16:40) — F-R15 added (pre-start statuses on Results, from boating times).
 <strong>Change log:</strong> 23 Oct 2026 (17:10) — F-R15 "Boating now" added; F-R16 (when Results show Check) and F-K12 (crew ⋯ menu, swap bow numbers) added; F-R12 rules extended.
 <strong>Change log:</strong> 23 Oct 2026 (17:20) — F-R15: "Proceed to boating area" yellow, "Boating now" red on Results.
+<strong>Change log:</strong> 23 Oct 2026 (18:00) — F-R14: shark-fin easter egg on the TV river.
 <strong>Status:</strong> Agreed specification · <strong>Written:</strong> Wed 21 Oct 2026 · <strong>Needed by:</strong> Sat 24 Oct 2026, first start 10:00
 <strong>Owner:</strong> Steve Smith · <strong>Built and hosted by:</strong> Dewhurst.tech
 <strong>Location of record:</strong> the race folder (this file). This brief is the binding specification. If the system and this brief disagree, this brief wins until the owner changes it.</p>
@@ -1366,7 +1367,7 @@ Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
 <tr>
 <td data-label="ID">F-R14</td>
 <td data-label="Pri">S</td>
-<td data-label="Requirement"><strong>TV mode: "Cycle through pages?" Off / On</strong> on Results, for the TV by the clubhouse bar (anyone can switch it; the choice is kept on that screen; adding <code>?cycle=1</code> to the address also turns it on). <strong>On:</strong> the results show one screenful at a time, changing every <strong>10 seconds</strong> and looping back to the start ("Page 2 of 5" shown); the results are framed by <strong>Yet to start</strong> (left) and <strong>Finished</strong> (right, latest first) as bow-number squares (white, black border, black number), and a <strong>river</strong> along the bottom with a start flag on the left and a finish flag on the right. A crew's square goes onto the river when its start is logged and moves left to right over <strong>13 minutes</strong>; it stays at the finish end until its finish is logged, then moves to Finished. DNS / DNF / DSQ / Withdrawn crews are not shown in the frame. On a phone the side lists are left out. <strong>Off:</strong> Results look exactly as before. While results are hidden (F-R13) the frame is empty for the public. Added 23 Oct 2026.</td>
+<td data-label="Requirement"><strong>TV mode: "Cycle through pages?" Off / On</strong> on Results, for the TV by the clubhouse bar (anyone can switch it; the choice is kept on that screen; adding <code>?cycle=1</code> to the address also turns it on). <strong>On:</strong> the results show one screenful at a time, changing every <strong>10 seconds</strong> and looping back to the start ("Page 2 of 5" shown); the results are framed by <strong>Yet to start</strong> (left) and <strong>Finished</strong> (right, latest first) as bow-number squares (white, black border, black number), and a <strong>river</strong> along the bottom with a start flag on the left and a finish flag on the right. A crew's square goes onto the river when its start is logged and moves left to right over <strong>13 minutes</strong>; it stays at the finish end until its finish is logged, then moves to Finished. DNS / DNF / DSQ / Withdrawn crews are not shown in the frame. On a phone the side lists are left out. <strong>Off:</strong> Results look exactly as before. While results are hidden (F-R13) the frame is empty for the public. <strong>Easter egg:</strong> while no crew is on the water, each time the TV reaches page 2 a shark fin surfaces at the finish end, weaves gently up the river to the start over the 10 seconds of that page, and submerges. Added 23 Oct 2026.</td>
 </tr>
 <tr>
 <td data-label="ID">F-R15</td>

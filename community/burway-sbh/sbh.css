@@ -297,3 +297,16 @@ body.tv .rf-main{position:relative}.rf-pg{display:none}body.tv .rf-pg:not(:empty
 tr.chk td{border-top:2px solid #c0392b;border-bottom:2px solid #c0392b}tr.chk td:first-child{border-left:2px solid #c0392b}tr.chk td:last-child{border-right:2px solid #c0392b}
 .chk-l{display:block;color:#c0392b;font:800 12px/1.3 var(--sans);text-transform:uppercase;letter-spacing:.05em}
 .flag.rnote{white-space:normal;font-size:13px}
+
+/* Shark fin easter egg on the TV river (23 Oct): 10 s right-to-left, gentle weave, surfaces and submerges */
+.shark{position:absolute;left:0;top:0;width:46px;height:100%;pointer-events:none;animation:shark-x 10s linear forwards}
+@keyframes shark-x{from{transform:translateX(var(--run))}to{transform:translateX(0)}}
+.shark-weave{position:absolute;left:0;top:14%;width:46px;animation:shark-weave 3.3s ease-in-out infinite alternate}
+@keyframes shark-weave{from{transform:translateY(0)}to{transform:translateY(calc(var(--h,110px) * .38))}}
+.water .shark-weave{--h:110px}
+.shark-clip{position:relative;height:30px;overflow:hidden}
+.shark-fin{display:block;width:40px;height:30px;transform:translateY(100%);animation:shark-surface 10s ease-in-out forwards}
+@keyframes shark-surface{0%{transform:translateY(100%)}9%{transform:translateY(0)}88%{transform:translateY(0)}100%{transform:translateY(100%)}}
+.shark-wake{display:block;width:46px;height:4px;margin-top:-2px;border-radius:50%;background:rgba(255,255,255,.55);animation:shark-wake 10s ease-in-out forwards}
+@keyframes shark-wake{0%,100%{opacity:0}9%,88%{opacity:1}}
+@media (max-width:760px){.water .shark-weave{--h:80px}}

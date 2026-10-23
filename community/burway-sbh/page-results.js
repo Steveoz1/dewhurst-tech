@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox, serverNow } from "./sbh.js?v=20261023r";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox, serverNow } from "./sbh.js?v=20261023s";
 
 S.instance = "A";                                    // the public only ever sees A; officials can switch once signed in
 await boot({ watch: ["entries"] });
@@ -187,7 +187,7 @@ function setCycle(on) {
   document.body.classList.toggle("tv", on);
   $$(".cycseg button").forEach(b => b.classList.toggle("on", (b.dataset.c === "on") === on));
   ["#rf-left", "#rf-right", "#river"].forEach(id => ($(id).hidden = !on));
-  clearInterval(cycTimer); cycTimer = on ? setInterval(() => { page = (page + 1) % Math.max(1, pages.length); showPage(); }, CYCLE_MS) : null;
+  clearInterval(cycTimer); cycTimer = on ? setInterval(() => { page = (page + 1) % Math.max(1, pages.length); showPage(); if (page === 1) sharkFin(); }, CYCLE_MS) : null;
   sizeFrame(); draw(); paintFrame();
   if (on) setTimeout(() => scrollTo({ top: $("#rframe").getBoundingClientRect().top + scrollY - ($("#bar").offsetHeight || 0) - 8 }), 50);
 }
@@ -269,6 +269,19 @@ function paintFrame() {
   [...water.querySelectorAll(".bowsq")].forEach(el => { if (!live.has(el.dataset.b)) el.remove(); });
 }
 setInterval(paintFrame, 1000);
+
+/* A little fun (Steve, 23 Oct): while no crew is on the water, each time the TV reaches page 2 a shark fin surfaces at the
+   finish end, weaves gently between the banks up the river (right to left) for the 10 seconds of that page, then submerges. */
+function sharkFin() {
+  const water = $("#water");
+  if (!cycle || water.querySelector(".bowsq, .shark") || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const el = document.createElement("div");
+  el.className = "shark"; el.setAttribute("aria-hidden", "true");
+  el.style.setProperty("--run", Math.max(0, water.clientWidth - 46) + "px");
+  el.innerHTML = `<div class="shark-weave"><div class="shark-clip"><svg class="shark-fin" viewBox="0 0 40 30"><path d="M2 30 C9 22 17 10 27 1 C25 12 27 22 36 30 Z" fill="#3d4852"/><path d="M27 1 C25 12 27 22 36 30 L33 30 C25 22 24 12 27 1 Z" fill="#2a333b"/></svg></div><span class="shark-wake"></span></div>`;
+  water.appendChild(el);
+  setTimeout(() => el.remove(), CYCLE_MS);
+}
 onChange(() => { if (cycle) paintFrame(); });
 setCycle(cycle);
 
