@@ -1,0 +1,1614 @@
+<!doctype html>
+<html lang="en-GB"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SBH 2026 Race Pack</title><meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Burway Small Boats Head 2026 timing system: all documents and checklists in one phone-friendly page.">
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#14202e;--mute:#5b6676;--line:#dde2e8;--brand:#0b3d6e;--accent:#1e6fd9;--ok:#1d8a47;--okbg:#e6f5ec;--warn:#9a5b00;--warnbg:#fff4e0;--code:#eef1f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f141a;--card:#18202a;--ink:#e6ebf1;--mute:#9aa6b4;--line:#2a3542;--brand:#8cc0ff;--accent:#6aa9ff;--ok:#4cc77e;--okbg:#14301f;--warn:#ffc266;--warnbg:#33260f;--code:#212b37}}
+:root[data-theme="dark"]{--bg:#0f141a;--card:#18202a;--ink:#e6ebf1;--mute:#9aa6b4;--line:#2a3542;--brand:#8cc0ff;--accent:#6aa9ff;--ok:#4cc77e;--okbg:#14301f;--warn:#ffc266;--warnbg:#33260f;--code:#212b37}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overflow-wrap:anywhere}
+a{color:var(--accent)}
+header.bar{position:sticky;top:0;z-index:10;background:var(--brand);color:#fff;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));display:flex;align-items:center;gap:12px}
+:root[data-theme="dark"] header.bar,:root:not([data-theme="light"]) header.bar{}
+header.bar h1{font-size:17px;margin:0;flex:1;line-height:1.2}
+header.bar .prog{font-size:13px;opacity:.9;white-space:nowrap}
+header.bar .back{color:#fff;text-decoration:none;font-weight:700;font-size:14px;background:rgba(255,255,255,.15);border-radius:10px;padding:8px 10px;white-space:nowrap}
+header.bar button{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:10px;padding:8px 12px;font:600 15px/1 inherit;font-family:inherit}
+.pbar{height:4px;background:rgba(255,255,255,.25)}.pbar i{display:block;height:4px;background:#7fe0a5;width:0;transition:width .3s}
+main{max-width:820px;margin:0 auto;padding:12px 16px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0}
+.card h2{font-size:18px;margin:0 0 8px}
+.warn{background:var(--warnbg);border-color:transparent}
+.warn h2{color:var(--warn)}
+.nav a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink);font-weight:600}
+.nav a:last-child{border-bottom:0}.nav small{color:var(--mute);font-weight:500;white-space:nowrap}
+.doc details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:12px 0;overflow:hidden}
+.doc summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700;font-size:17px;min-height:52px}
+.doc summary::-webkit-details-marker{display:none}
+.doc summary::after{content:"▸";color:var(--mute);transition:transform .2s}.doc details[open] summary::after{transform:rotate(90deg)}
+.doc summary .st{flex:1}.cnt{font-size:13px;font-weight:600;color:var(--mute);white-space:nowrap}.cnt.done{color:var(--ok)}
+.doc .blurb{margin:0 16px 8px;color:var(--mute);font-size:14px}
+.doc .body{padding:0 16px 8px}
+.doc .body h2{font-size:17px;margin:22px 0 8px;padding-top:10px;border-top:1px solid var(--line)}
+.doc .body h3{font-size:16px;margin:18px 0 6px}
+.top{margin:4px 16px 16px;font-size:14px}
+code{background:var(--code);padding:1px 5px;border-radius:5px;font-size:.9em}
+pre.code{background:var(--code);padding:12px;border-radius:10px;overflow-x:auto;font-size:12.5px;line-height:1.45;white-space:pre}
+pre.code code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+/* tables become cards on phones */
+.tw{margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:8px;border-bottom:1px solid var(--line)}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}
+@media (max-width:760px){
+  table.cards thead{display:none}
+  table.cards,table.cards tbody,table.cards tr,table.cards td{display:block;width:100%}
+  table.cards tr{border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:6px 12px;background:var(--card)}
+  table.cards td{border:0;padding:5px 0}
+  table.cards td[data-label]:not(:first-child)::before{content:attr(data-label);display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);font-weight:700}
+  table.cards td:first-child{font-weight:800;font-size:16px;display:flex;align-items:center;gap:10px}
+  table.plain{font-size:14px}
+}
+@media (min-width:761px){table.cards tr.chk td:first-child{white-space:nowrap}}
+tr.chk.on,li.chk.on{background:var(--okbg)!important}
+tr.chk.on td:not(:first-child),li.chk.on>.lt{opacity:.75}
+/* checklists */
+ul.checklist,ol.checklist,ul.today{list-style:none;padding:0;margin:8px 0}
+li.chk{display:flex;gap:12px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:12px;margin:8px 0;background:var(--card)}
+li.chk>.tg{margin-top:2px}li.chk>.lt{flex:1;min-width:0}.lt>p{margin:0}.lt ul{margin:6px 0 0;padding-left:18px}
+/* toggle switch */
+.tg{position:relative;display:inline-flex;flex:none;width:50px;height:30px;cursor:pointer}
+.tg input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.tg .sl{position:absolute;inset:0;background:#b8c1cc;border-radius:30px;transition:background .2s}
+.tg .sl::after{content:"";position:absolute;width:24px;height:24px;left:3px;top:3px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.tg input:checked+.sl{background:var(--ok)}.tg input:checked+.sl::after{transform:translateX(20px)}
+.tg input:focus-visible+.sl{outline:3px solid var(--accent);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tools button{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:600 14px/1 inherit;font-family:inherit}
+.filter-on .chk.on{display:none!important}
+.fab{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));background:var(--brand);color:#fff;border:0;border-radius:50%;width:48px;height:48px;font-size:22px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+#menu{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;display:none}
+#menu.open{display:block}
+#menu .sheet{position:absolute;left:0;right:0;bottom:0;max-height:80vh;overflow:auto;background:var(--card);border-radius:16px 16px 0 0;padding:8px 16px max(16px,env(safe-area-inset-bottom))}
+#menu .sheet h2{font-size:16px;margin:10px 0 4px}
+.small{font-size:14px;color:var(--mute)}
+</style>
+</head>
+<body>
+<header class="bar" id="top"><a class="back" href="index.html">Race Admin</a><h1>SBH 2026 Race Pack</h1><span class="prog" id="prog">0 / 84</span><button type="button" id="open-menu" aria-haspopup="dialog">Contents</button></header>
+<div class="pbar"><i id="pbar"></i></div>
+<main>
+  <p class="small">Burway Small Boats Head, Sat 24 Oct 2026 · Timing system 2026.10.22.11 · Pack made Fri 23 Oct, 08:00. Ticks are kept on this device, in this browser. The security review, code risk review and Firebase set-up checklist are kept in the race folder, not on the website.</p>
+
+  <div class="card warn" id="firebase">
+    <h2>Firebase capacity: the free plan is not enough for race day</h2>
+    <p><b>The limit is per day.</b> Firebase's free (Spark) plan allows 50,000 document reads a day. The count resets around midnight Pacific time, which is <b>08:00 UK time</b>, so the whole of race day falls within one day's allowance.</p>
+    <p><b>How the pages use reads.</b> Opening the Results page costs about 3 reads (crew list, settings, instance A times). While the page stays open, every change to any A time costs one more read per open page, because all of A's times are held in a single record. With up to 200 crews, that is roughly 400–500 changes over the day.</p>
+    <p><b>Expected use.</b> Up to 200 crews with perhaps 5–10 supporters each gives around 2,000 people. At 25 views each that is 50,000 page opens, or about 150,000 reads before live updates, which could add as much again. The estimate is therefore <b>150,000–300,000 reads</b>, three to six times the free allowance. Timing writes number only a few thousand, well within the separate allowance of 20,000 writes a day.</p>
+    <p><b>If the allowance runs out.</b> On the free plan, reads are refused once the allowance is used, at least until the next reset. Results would stop updating for the public, and the officials' pages would stop receiving each other's times. Taps would still be saved, because writes have their own allowance, but the A/B check and Results would go dark mid-race.</p>
+    <p><b>Decision: move to the pay-as-you-go (Blaze) plan before race day.</b> Blaze keeps the same free allowance, then charges about <b>$0.03 per 100,000 reads</b>, so even 1 million reads costs well under £1. A <b>budget alert</b> (for example £10) sends an email but doesn't stop anything. The upgrade needs a payment card and is made in the Firebase console: <i>project burway-sbh-2026 › “Spark” (bottom left) › Upgrade › Blaze</i>, then add the budget alert. No change to the site is needed.</p>
+    <p class="small">Sources: <a href="https://firebase.google.com/docs/firestore/pricing">Understand Cloud Firestore billing</a> · <a href="https://cloud.google.com/firestore/pricing">Firestore pricing</a> · <a href="https://firebase.google.com/docs/projects/billing/firebase-pricing-plans">Firebase pricing plans</a></p>
+  </div>
+
+  <div class="card">
+    <h2>Today, in order</h2>
+    <ul class="today"><li class="chk" data-key="now:blaze"><label class="tg" title="Done"><input type="checkbox" data-k="now:blaze"><span class="sl" aria-hidden="true"></span><span class="sr">Done</span></label><div class="lt"><b>Upgrade Firebase to Blaze (pay as you go) today</b> and set a budget alert (e.g. £10). The free plan stops reads at 50,000 a day; the race could need 150,000–300,000. Cost on Blaze: pennies. See the Firebase capacity box above.</div></li><li class="chk" data-key="now:crews"><label class="tg" title="Done"><input type="checkbox" data-k="now:crews"><span class="sl" aria-hidden="true"></span><span class="sr">Done</span></label><div class="lt"><b>Load the final crew list</b> (up to 200 crews). The system was built and tested with the 88-crew CSV; the Friday script's “88 crews · 42/24/22” check needs the real numbers.</div></li><li class="chk" data-key="now:push"><label class="tg" title="Done"><input type="checkbox" data-k="now:push"><span class="sl" aria-hidden="true"></span><span class="sr">Done</span></label><div class="lt"><b>Push the Race Pack update</b> in GitHub Desktop and check the site footer shows the Version stamp 2026.10.23.01 (the code-review fixes, 2026.10.22.11, are already live). Then <b>no more publishing</b> after Friday evening.</div></li><li class="chk" data-key="now:sec"><label class="tg" title="Done"><input type="checkbox" data-k="now:sec"><span class="sl" aria-hidden="true"></span><span class="sr">Done</span></label><div class="lt"><b>Security console steps R1–R5</b> (in the Security review, kept in the race folder and not on the website). R3 matters more now: it stops other websites using up the project’s read allowance.</div></li><li class="chk" data-key="now:adj"><label class="tg" title="Done"><input type="checkbox" data-k="now:adj"><span class="sl" aria-hidden="true"></span><span class="sr">Done</span></label><div class="lt"><b>Confirm the 6 adjudication points</b> (Race Adjudication › section 5).</div></li><li class="chk" data-key="now:test"><label class="tg" title="Done"><input type="checkbox" data-k="now:test"><span class="sl" aria-hidden="true"></span><span class="sr">Done</span></label><div class="lt"><b>Run the Friday test</b>, then <b>Start a new race</b> (Friday script › section 3).</div></li><li class="chk" data-key="now:wifi"><label class="tg" title="Done"><input type="checkbox" data-k="now:wifi"><span class="sl" aria-hidden="true"></span><span class="sr">Done</span></label><div class="lt"><b>Friday evening:</b> open every timing page on every phone on Wi-Fi once.</div></li></ul>
+  </div>
+
+  <div class="card">
+    <h2>Documents</h2>
+    <nav class="nav"><a href="#test"><span>Friday test script</span><small>57 to check</small></a><a href="#adj"><span>Race Adjudication: how it works</span><small>14 to check</small></a><a href="#snag"><span>Snagging brief (club test)</span><small>reference</small></a><a href="#brief"><span>Design brief (the binding spec)</span><small>6 to check</small></a></nav>
+    <div class="tools">
+      <button type="button" id="hide-done">Hide ticked items</button>
+      <button type="button" id="expand">Open all</button>
+      <button type="button" id="collapse">Close all</button>
+      <button type="button" id="reset">Clear all ticks</button>
+    </div>
+  </div>
+  
+<section id="test" class="doc">
+  <details open>
+    <summary><span class="st">Friday test script</span><span class="cnt" data-sec="test">0 / 57</span></summary>
+    <p class="blurb">The run-through for Friday, plus the Saturday-morning routine. Every test and step has a toggle.</p>
+    <div class="body"><p>For: the race admin and helpers · Written: Wed 21 Oct 2026 · Based on brief Part G (A-1 to A-12), plus checks for everything added since (T-13 onwards)
+Home page: <strong>https://www.dewhurst.tech/community/burway-sbh/</strong></p>
+<p>Tick each line <strong>Pass</strong> or <strong>Fail</strong>. For any Fail, note the bow number, the phone and roughly what time it happened, and pass it to the race admin.</p>
+<hr/>
+<h2 id="test-0-before-you-start-15-min-with-signal">0. Before you start (15 min, with signal)</h2>
+<p><strong>People and phones.</strong> Five devices if you can; four is enough.</p>
+<div class="tw"><table class="plain">
+<thead>
+<tr>
+<th>Device</th>
+<th>Role</th>
+<th>Signs in as</th>
+<th>Instance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Device">Phone 1</td>
+<td data-label="Role">A Starter</td>
+<td data-label="Signs in as">Starter</td>
+<td data-label="Instance">A</td>
+</tr>
+<tr>
+<td data-label="Device">Phone 2</td>
+<td data-label="Role">A Finisher</td>
+<td data-label="Signs in as">Finisher</td>
+<td data-label="Instance">A</td>
+</tr>
+<tr>
+<td data-label="Device">Phone 3</td>
+<td data-label="Role">B Starter</td>
+<td data-label="Signs in as">Starter</td>
+<td data-label="Instance">B</td>
+</tr>
+<tr>
+<td data-label="Device">Phone 4</td>
+<td data-label="Role">B Finisher</td>
+<td data-label="Signs in as">Finisher</td>
+<td data-label="Instance">B</td>
+</tr>
+<tr>
+<td data-label="Device">Laptop / phone 5</td>
+<td data-label="Role">Race admin</td>
+<td data-label="Signs in as">Admin</td>
+<td data-label="Instance">–</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>On every phone:</strong></p>
+<ol class="checklist">
+<li class="chk" data-key="test:0-before-you-start-1:open-the-home-page-in-chrome-android-or-"><label class="tg" title="Done"><input data-k="test:0-before-you-start-1:open-the-home-page-in-chrome-android-or-" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Open the home page in <strong>Chrome (Android) or Safari (iPhone)</strong>. Don't open it from a link inside WhatsApp or email.</div></li>
+<li class="chk" data-key="test:0-before-you-start-1:bookmark-it-or-use-add-to-home-screen-"><label class="tg" title="Done"><input data-k="test:0-before-you-start-1:bookmark-it-or-use-add-to-home-screen-" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Bookmark it, or use <strong>Add to Home Screen</strong>.</div></li>
+<li class="chk" data-key="test:0-before-you-start-1:tap-your-page-starter-or-finisher-sign-i"><label class="tg" title="Done"><input data-k="test:0-before-you-start-1:tap-your-page-starter-or-finisher-sign-i" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Tap your page (Starter or Finisher), sign in, and tap <strong>A</strong> or <strong>B</strong> at the top. Check the coloured bar under the clock: <strong>blue = A</strong>, <strong>orange = B</strong>.</div></li>
+<li class="chk" data-key="test:0-before-you-start-1:open-results-once-too-so-the-phone-keeps"><label class="tg" title="Done"><input data-k="test:0-before-you-start-1:open-results-once-too-so-the-phone-keeps" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Open <strong>Results</strong> once too, so the phone keeps a copy of that page as well.</div></li>
+<li class="chk" data-key="test:0-before-you-start-1:check-the-dot-top-right-shows-all-saved-"><label class="tg" title="Done"><input data-k="test:0-before-you-start-1:check-the-dot-top-right-shows-all-saved-" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Check the dot top right shows <strong>All saved</strong> (green).<ul>
+<li><strong>If it shows Offline with no crews</strong> (seen on two iPads on 22 Oct, left over from that morning's test versions): Settings › Apps › Safari › Advanced › <strong>Website Data</strong> › search <em>dewhurst</em> › swipe left › <strong>Delete</strong>. Reopen the page and sign in again. Same on an iPhone if it ever happens.</li>
+</ul>
+</div></li>
+<li class="chk" data-key="test:0-before-you-start-1:phone-settings-date-time-automatic-shoul"><label class="tg" title="Done"><input data-k="test:0-before-you-start-1:phone-settings-date-time-automatic-shoul" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Phone settings › Date &amp; time › <strong>Automatic</strong> should be on.</div></li>
+</ol>
+<p><strong>On the laptop (admin):</strong></p>
+<ol class="checklist" start="7">
+<li class="chk" data-key="test:0-before-you-start-1:race-configuration-reset-times-reset-sta"><label class="tg" title="Done"><input data-k="test:0-before-you-start-1:race-configuration-reset-times-reset-sta" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Race Configuration › <strong>Reset times</strong>: reset START and FINISH for <strong>A</strong>, then for <strong>B</strong>. Type RESET A / RESET B when asked.</div></li>
+<li class="chk" data-key="test:0-before-you-start-1:check-the-count-line-says-88-crews-div-1"><label class="tg" title="Done"><input data-k="test:0-before-you-start-1:check-the-count-line-says-88-crews-div-1" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Check the count line says <strong>88 crews · Div 1: 42 · Div 2: 24 · Div 3: 22</strong>.</div></li>
+<li class="chk" data-key="test:0-before-you-start-1:pick-division-1-on-every-phone-"><label class="tg" title="Done"><input data-k="test:0-before-you-start-1:pick-division-1-on-every-phone-" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Pick <strong>Division 1</strong> on every phone.</div></li>
+</ol>
+<hr/>
+<h2 id="test-1-core-timing-brief-part-g">1. Core timing (brief Part G)</h2>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>#</th>
+<th>Test</th>
+<th>How</th>
+<th>Pass when</th>
+
+</tr>
+</thead>
+<tbody>
+<tr class="chk" data-key="test:A-1">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-1" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-1</td>
+<td data-label="Test">Crew list</td>
+<td data-label="How">Admin: Race Configuration › Export CSV</td>
+<td data-label="Pass when">88 rows; bow 251 "MTRC-Natalie and Dot" has no trailing space; "Sir William Perkins's" keeps its apostrophe</td>
+
+</tr>
+<tr class="chk" data-key="test:A-2">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-2" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-2</td>
+<td data-label="Test">Start and finish 10 crews</td>
+<td data-label="How">Phones 1+3: START bows 151–160 about 15 s apart, both instances at the same moment. Phones 2+4: FINISH them in a different order. Someone runs a stopwatch on two crews</td>
+<td data-label="Pass when">Results shows all 10 with times and positions; the two stopwatch crews within 2 s</td>
+
+</tr>
+<tr class="chk" data-key="test:A-3">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-3" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-3</td>
+<td data-label="Test">No signal at the start</td>
+<td data-label="How">Phone 1: airplane mode ON. START 161–165. Wait 2 min. Airplane mode OFF</td>
+<td data-label="Pass when">Dot goes red "Offline · 5 waiting", then green. All 5 starts appear with their original times (compare with phone 3)</td>
+
+</tr>
+<tr class="chk" data-key="test:A-4">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-4" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-4</td>
+<td data-label="Test">Close straight after a tap</td>
+<td data-label="How">Phone 1: START 166, then immediately close the browser. Reopen from the bookmark</td>
+<td data-label="Pass when">166 shows as started</td>
+
+</tr>
+<tr class="chk" data-key="test:A-4b">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-4b" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-4b</td>
+<td data-label="Test">Reopen with no signal</td>
+<td data-label="How">Phone 2: airplane mode ON. Close the browser. Reopen the Finisher page from the bookmark. FINISH a crew. Airplane mode OFF</td>
+<td data-label="Pass when">Page opens with no signal; the finish arrives when signal returns</td>
+
+</tr>
+<tr class="chk" data-key="test:A-5">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-5" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-5</td>
+<td data-label="Test">Undo and re-tap</td>
+<td data-label="How">Phone 1: START 167, then Undo within 30 s (no question asked). START 168, wait over 30 s, Undo (asks first). Undo a started crew and START it again</td>
+<td data-label="Pass when">Behaves as described; Race Adjudication › Review shows every tap, including undos</td>
+
+</tr>
+<tr class="chk" data-key="test:A-6">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-6" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-6</td>
+<td data-label="Test">Close finish</td>
+<td data-label="How">Phones 2+4: two crews cross about 1 s apart, tap both</td>
+<td data-label="Pass when">Both get separate, correct times</td>
+
+</tr>
+<tr class="chk" data-key="test:A-7">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-7" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-7</td>
+<td data-label="Test">A and B kept apart</td>
+<td data-label="How">Compare phone 1 (A) with phone 3 (B)</td>
+<td data-label="Pass when">A's taps never show on B and vice versa</td>
+
+</tr>
+<tr class="chk" data-key="test:A-8">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-8" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-8</td>
+<td data-label="Test">Live edits</td>
+<td data-label="How">Admin: change a crew name in Race Configuration</td>
+<td data-label="Pass when">New name on Starter, Finisher and Results within 5 s. A timed crew's Bow# box is locked</td>
+
+</tr>
+<tr class="chk" data-key="test:A-9">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-9" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-9</td>
+<td data-label="Test">Public view</td>
+<td data-label="How">A phone that is NOT signed in opens Results</td>
+<td data-label="Pass when">Read-only; no A/B switch; shows instance A times only; <strong>no Home button and no "not signed in" note</strong></td>
+
+</tr>
+<tr class="chk" data-key="test:A-10">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-10" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-10</td>
+<td data-label="Test">Signed-out writes refused</td>
+<td data-label="How">Already passed on the live site, 21 Oct</td>
+<td data-label="Pass when">–</td>
+
+</tr>
+<tr class="chk" data-key="test:A-11">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-11" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-11</td>
+<td data-label="Test">Export</td>
+<td data-label="How">Results › Export CSV, open in Excel</td>
+<td data-label="Pass when">Opens cleanly; A and B side by side; Time + penalty, Adjusted time, Handicap and Penalty columns present; sorted by overall position</td>
+
+</tr>
+<tr class="chk" data-key="test:A-12">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:A-12" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>A-12</td>
+<td data-label="Test">Wrong phone clock</td>
+<td data-label="How">One phone: turn off automatic time, set it 10 s wrong, reopen Starter</td>
+<td data-label="Pass when">Amber warning "This phone's clock is … s out"; its taps still line up with the other phones. Turn automatic time back on afterwards</td>
+
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2 id="test-2-added-since-the-brief">2. Added since the brief</h2>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>#</th>
+<th>Test</th>
+<th>How</th>
+<th>Pass when</th>
+
+</tr>
+</thead>
+<tbody>
+<tr class="chk" data-key="test:T-13">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-13" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-13</td>
+<td data-label="Test">Race Adjudication</td>
+<td data-label="How">Phone 2 (A Finisher) deliberately misses one crew that phone 4 (B) finishes. Admin: Race Adjudication</td>
+<td data-label="Pass when">The crew shows "A finish missing". Review › type a reason › Use B's finish › the crew appears in public Results with B's time</td>
+
+</tr>
+<tr class="chk" data-key="test:T-14">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-14" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-14</td>
+<td data-label="Test">Differences flagged</td>
+<td data-label="How">Phones 2 and 4 finish one crew about 3 s apart</td>
+<td data-label="Pass when">Race Adjudication flags "Finish differs 3.x s"</td>
+
+</tr>
+<tr class="chk" data-key="test:T-15">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-15" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-15</td>
+<td data-label="Test">Handicap</td>
+<td data-label="How">Admin: Handicap Configuration › Add event combination group, e.g. "Open Masters C&amp;D 2x". Add Op MasC 2x (5 s) and W MasD 2x (12 s). Time bows 158 and 160</td>
+<td data-label="Pass when">Results: Adjusted time = race time − handicap; both crews placed together in "Pos in event"; overall Pos also uses Adjusted time</td>
+
+</tr>
+<tr class="chk" data-key="test:T-16">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-16" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-16</td>
+<td data-label="Test">Penalty</td>
+<td data-label="How">Race Configuration: Penalty 10 on one timed crew</td>
+<td data-label="Pass when">Its "Time + penalty" and Adjusted time both go up by 10.0 s; overall Pos and Pos in event both update</td>
+
+</tr>
+<tr class="chk" data-key="test:T-17">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-17" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-17</td>
+<td data-label="Test">Home page by login</td>
+<td data-label="How">Open the home page signed out, as Starter, as Finisher, as Admin</td>
+<td data-label="Pass when">Signed out: Results only. Starter: Starter + Results. Finisher: Finisher + Results. Admin: all six</td>
+
+</tr>
+<tr class="chk" data-key="test:T-18">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-18" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-18</td>
+<td data-label="Test">DNS / DNF / DSQ</td>
+<td data-label="How">Phone 1: ⋯ › Mark DNS on one crew. Phone 2: ⋯ › Mark DNF on another</td>
+<td data-label="Pass when">Results shows them at the bottom with the status, no time</td>
+
+</tr>
+<tr class="chk" data-key="test:T-20">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-20" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-20</td>
+<td data-label="Test">Swap times</td>
+<td data-label="How">Phone 1: START two crews, then ⋯ on the first › Swap start time › type the second bow number (number pad should appear) › Confirm. Repeat on phone 2 with Swap finish time</td>
+<td data-label="Pass when">The two crews' times change places; Race Adjudication › Review shows "SWAP" in both crews' histories</td>
+
+</tr>
+<tr class="chk" data-key="test:T-21">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-21" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-21</td>
+<td data-label="Test">Flag for review</td>
+<td data-label="How">Phone 1 or 2: ⋯ › Flag for review › type a short note › Flag</td>
+<td data-label="Pass when">Row shows "⚑ Flagged for review"; the note appears under Notes on Race Configuration and as a flag on Race Adjudication; "Mark resolved" clears it</td>
+
+</tr>
+<tr class="chk" data-key="test:T-22">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-22" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-22</td>
+<td data-label="Test">Resolve</td>
+<td data-label="How">Admin: Race Adjudication on the crew from T-14 › open "When does a crew need a look?" › then <strong>Resolve</strong> › type a note › Resolve</td>
+<td data-label="Pass when">The rules list opens (6 rules). The crew leaves "Needs a look" and shows "✓ Resolved" under All crews. Then phone 4 re-finishes that crew (⋯ is not needed - Undo then FINISH): it comes back marked "changed since resolved"</td>
+
+</tr>
+<tr class="chk" data-key="test:T-23">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-23" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-23</td>
+<td data-label="Test">Double-tap guard</td>
+<td data-label="How">Phone 2: double-tap FINISH quickly on one crew</td>
+<td data-label="Pass when">The finish is kept (Undo is greyed for 2 s, message "Just logged…"). After 2 s, Undo clears it normally</td>
+
+</tr>
+<tr class="chk" data-key="test:T-24">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-24" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-24</td>
+<td data-label="Test">No auto-scroll (S-1)</td>
+<td data-label="How">Phones 1 and 2: scroll to the middle of the list, tap START / FINISH, keep your thumb off and watch for 10 s</td>
+<td data-label="Pass when">Nothing on the screen moves; the next crew is highlighted but not scrolled to</td>
+
+</tr>
+<tr class="chk" data-key="test:T-25">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-25" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-25</td>
+<td data-label="Test">Undo appears at once (S-2)</td>
+<td data-label="How">Phone 1: turn on airplane mode, START two crews</td>
+<td data-label="Pass when">Each row turns green with Undo <strong>immediately</strong>; the light shows "Offline · 2 waiting". Airplane mode off → light goes to "All saved" and nothing changes on the rows</td>
+
+</tr>
+<tr class="chk" data-key="test:T-26">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-26" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-26</td>
+<td data-label="Test">Finish with no start (S-3)</td>
+<td data-label="How">Phone 1 in airplane mode: START a crew. Phone 2: FINISH that crew (its row says "No start yet"). Then phone 1 airplane mode off</td>
+<td data-label="Pass when">Phone 2 could finish it; when the start arrives the race time appears on the row and in Results</td>
+
+</tr>
+<tr class="chk" data-key="test:T-27">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-27" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-27</td>
+<td data-label="Test">Finished rows stay put (S-4)</td>
+<td data-label="How">Phone 2: FINISH three crews in a row</td>
+<td data-label="Pass when">Each row stays in the same place, turns green and shows Undo; no rows move up or down</td>
+
+</tr>
+<tr class="chk" data-key="test:T-28">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-28" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-28</td>
+<td data-label="Test">Adjudication feedback</td>
+<td data-label="How">Follow <em>Race Adjudication — how it works</em>, section 6 (J-1 to J-8)</td>
+<td data-label="Pass when">Every button gives a green ✓ box (or a red box saying why nothing changed) inside the Review window</td>
+
+</tr>
+<tr class="chk" data-key="test:T-29">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-29" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-29</td>
+<td data-label="Test">A/B stays put (review R1)</td>
+<td data-label="How">Phone 4 (B finisher): Finisher shows B › go to Results › back to Finisher, then reload</td>
+<td data-label="Pass when">Still <strong>B</strong></td>
+
+</tr>
+<tr class="chk" data-key="test:T-30">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-30" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-30</td>
+<td data-label="Test">Waiting taps re-sent (review R3)</td>
+<td data-label="How">An iPad in safe mode: airplane mode on › START 3 crews › reload the page › airplane mode off</td>
+<td data-label="Pass when">All 3 reach the server (light goes "All saved"; Adjudication shows them)</td>
+
+</tr>
+<tr class="chk" data-key="test:T-31">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-31" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-31</td>
+<td data-label="Test">Clock check (review R8)</td>
+<td data-label="How">Each phone: Settings panel (tap the light)</td>
+<td data-label="Pass when">Offset checked today; round trip under 1,000 ms; offset steady when re-checked</td>
+
+</tr>
+<tr class="chk" data-key="test:T-19">
+<td data-label="#"><label class="tg" title="Done"><input data-k="test:T-19" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>T-19</td>
+<td data-label="Test">Battery</td>
+<td data-label="How">Note battery % on every phone at the start and the end of the test</td>
+<td data-label="Pass when">Enough left for a 6-hour race day (bring power banks either way)</td>
+
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2 id="test-3-after-the-test-admin">3. After the test (admin)</h2>
+<ol class="checklist">
+<li class="chk" data-key="test:3-after-the-test-adm:export-results-csv-and-keep-it-as-the-te"><label class="tg" title="Done"><input data-k="test:3-after-the-test-adm:export-results-csv-and-keep-it-as-the-te" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Export Results CSV and keep it as the test record.</div></li>
+<li class="chk" data-key="test:3-after-the-test-adm:every-timing-phone-check-the-dot-is-gree"><label class="tg" title="Done"><input data-k="test:3-after-the-test-adm:every-timing-phone-check-the-dot-is-gree" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Every timing phone: check the dot is green (<strong>All saved</strong>), then close the timing page.</div></li>
+<li class="chk" data-key="test:3-after-the-test-adm:race-configuration-start-a-new-race-eith"><label class="tg" title="Done"><input data-k="test:3-after-the-test-adm:race-configuration-start-a-new-race-eith" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Race Configuration › <strong>Start a new race</strong> › either <strong>Clear everything except the crew list</strong> (type CLEAR RACE, then the admin password) — or, to start from the CSV exactly as it was, <strong>Wipe everything, crew list too</strong> (WIPE ALL) and import the CSV again.</div></li>
+<li class="chk" data-key="test:3-after-the-test-adm:set-up-the-real-handicap-groups-again-on"><label class="tg" title="Done"><input data-k="test:3-after-the-test-adm:set-up-the-real-handicap-groups-again-on" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Set up the real handicap groups again on Handicap Configuration (both options clear them).</div></li>
+<li class="chk" data-key="test:3-after-the-test-adm:check-results-shows-no-times-and-the-dot"><label class="tg" title="Done"><input data-k="test:3-after-the-test-adm:check-results-shows-no-times-and-the-dot" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Check Results shows no times, and the dot is green on every phone.</div></li>
+</ol>
+<h2 id="test-4-saturday-morning">4. Saturday morning</h2>
+<ul class="checklist">
+<li class="chk" data-key="test:4-saturday-morning:phones-charged-power-banks-at-both-ends-"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:phones-charged-power-banks-at-both-ends-" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Phones charged, power banks at both ends, paper back-up sheets (bow number + time of day) for every starter and finisher.</div></li>
+<li class="chk" data-key="test:4-saturday-morning:friday-evening-last-publish-then-open-ev"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:friday-evening-last-publish-then-open-ev" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Friday evening:</strong> last publish. Then open <strong>every timing page on every phone on Wi-Fi</strong> once (so each phone keeps a copy), and nothing is published on Saturday (review R18, R19).</div></li>
+<li class="chk" data-key="test:4-saturday-morning:b-phones-check-b-is-lit-and-the-bar-is-b"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:b-phones-check-b-is-lit-and-the-bar-is-b" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>B phones:</strong> check <strong>B</strong> is lit (and the bar is B-coloured) before the first crew — a new or cleared phone starts on A (review R2).</div></li>
+<li class="chk" data-key="test:4-saturday-morning:tap-your-division-or-all-at-the-start-ot"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:tap-your-division-or-all-at-the-start-ot" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Tap your division</strong> (or All) at the start — otherwise the list switches by itself at 12:00 and 14:00 (review R17).</div></li>
+<li class="chk" data-key="test:4-saturday-morning:one-finger-one-tap-at-a-time-after-each-"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:one-finger-one-tap-at-a-time-after-each-" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>One finger, one tap at a time</strong>; after each tap, check the row turned green with Undo (review R14, R15).</div></li>
+<li class="chk" data-key="test:4-saturday-morning:if-the-light-shows-n-waiting-for-more-th"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:if-the-light-shows-n-waiting-for-more-th" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">If the light shows <strong>"N waiting"</strong> for more than a minute while there is signal: airplane mode on, then off. <strong>Don't reload a page showing "waiting"</strong> (review R4).</div></li>
+<li class="chk" data-key="test:4-saturday-morning:nobody-signs-out-on-race-day-if-a-red-ba"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:nobody-signs-out-on-race-day-if-a-red-ba" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Nobody signs out</strong> on race day. If a red banner appears, tell the race admin and keep the paper sheet going (review R10).</div></li>
+<li class="chk" data-key="test:4-saturday-morning:after-start-a-new-race-and-again-on-race"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:after-start-a-new-race-and-again-on-race" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>After "Start a new race"</strong> and again on race morning once every phone is open: Race Adjudication › All crews and Results show <strong>no times</strong> (review R6). If stray times appear, use Reset all START/FINISH times for that instance.</div></li>
+<li class="chk" data-key="test:4-saturday-morning:only-use-swap-while-the-light-is-green-r"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:only-use-swap-while-the-light-is-green-r" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Only use <strong>Swap</strong> while the light is green (review R22).</div></li>
+<li class="chk" data-key="test:4-saturday-morning:open-each-page-once-with-signal-check-a-"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:open-each-page-once-with-signal-check-a-" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">Open each page once with signal, check A/B and the division, check the dot is green.</div></li>
+<li class="chk" data-key="test:4-saturday-morning:if-raceclocker-is-running-it-stays-prima"><label class="tg" title="Done"><input data-k="test:4-saturday-morning:if-raceclocker-is-running-it-stays-prima" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt">If Raceclocker is running: it stays primary and this is the back-up (decision D4).</div></li>
+</ul></div>
+    <p class="top"><a href="#top">↑ Back to the top</a></p>
+  </details>
+</section>
+<section id="adj" class="doc">
+  <details >
+    <summary><span class="st">Race Adjudication: how it works</span><span class="cnt" data-sec="adj">0 / 14</span></summary>
+    <p class="blurb">How the A/B check works. Toggles on the 6 points to confirm and the J-tests.</p>
+    <div class="body"><p><strong>Written:</strong> Thu 22 Oct 2026. A plain-English guide to the Race Adjudication page: what each part does, what the adjudicator should see, and how to test it.
+<strong>Governing requirements:</strong> design brief F-K7 (adjudication changes), F-R8 (A/B check), F-R12 (the "Needs a look" rules and Resolve). This document explains them; it doesn't add to them. Section 5 lists the points to be confirmed before race day.</p>
+<hr/>
+<h2 id="adj-1-the-idea-in-five-lines">1. The idea in five lines</h2>
+<ol>
+<li><strong>Two independent sets of times.</strong> A and B are timed by different people on different phones. <strong>A is the official record, and the only one the public sees.</strong> B is the check copy.</li>
+<li><strong>The page compares A and B</strong> for every crew and lists any crew where they disagree under <strong>Needs a look</strong> (the rules are in section 3 and in the expandable list on the page).</li>
+<li><strong>The adjudicator decides which is right.</strong> Either A is already right, so the adjudicator taps <strong>Resolve</strong>. Or A is wrong, so the adjudicator <strong>changes A</strong> (usually by copying B's time, or by typing the right time) and the difference disappears.</li>
+<li><strong>Every change needs a reason</strong>, and is added to the crew's tap list. Nothing is ever deleted; the original taps stay underneath.</li>
+<li><strong>A crew is finished with</strong> when it no longer appears under Needs a look: either because A and B now agree, or because it has been resolved.</li>
+</ol>
+<h2 id="adj-2-the-screen">2. The screen</h2>
+<p><strong>Main table</strong> — one row per crew: A start / finish / time / position, then the same for B, then <strong>A−B</strong> (the difference in race time, for information), <strong>Flags</strong>, and two buttons:</p>
+<ul>
+<li><strong>Review</strong> opens the crew's Review window (section 4).</li>
+<li><strong>Resolve</strong> (only on crews with flags) means "this crew has been checked and A is correct as it stands".</li>
+</ul>
+<p><strong>Needs a look / All crews</strong> switches between only the crews with unresolved flags and every crew.</p>
+<h2 id="adj-3-when-a-crew-needs-a-look-f-r12">3. When a crew "needs a look" (F-R12)</h2>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>#</th>
+<th>Flagged when…</th>
+<th>Shown as</th>
+<th>Colour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="#">1</td>
+<td data-label="Flagged when…">A and B both have a start, more than 1.0 s apart</td>
+<td data-label="Shown as">"Start differs 1.4 s"</td>
+<td data-label="Colour">Red</td>
+</tr>
+<tr>
+<td data-label="#">2</td>
+<td data-label="Flagged when…">A and B both have a finish, more than 1.0 s apart</td>
+<td data-label="Shown as">"Finish differs 2.5 s"</td>
+<td data-label="Colour">Red</td>
+</tr>
+<tr>
+<td data-label="#">3</td>
+<td data-label="Flagged when…">B has a start or finish that A doesn't</td>
+<td data-label="Shown as">"A start / finish missing"</td>
+<td data-label="Colour">Red</td>
+</tr>
+<tr>
+<td data-label="#">4</td>
+<td data-label="Flagged when…">A has a start or finish that B doesn't</td>
+<td data-label="Shown as">"B start / finish missing"</td>
+<td data-label="Colour">Amber</td>
+</tr>
+<tr>
+<td data-label="#">5</td>
+<td data-label="Flagged when…">Statuses differ (DNS / DNF / DSQ in one, not the other)</td>
+<td data-label="Shown as">"Status A: DNF / B: –"</td>
+<td data-label="Colour">Red</td>
+</tr>
+<tr>
+<td data-label="#">6</td>
+<td data-label="Flagged when…">A starter or finisher used <strong>Flag for review</strong>, not yet resolved</td>
+<td data-label="Shown as">"⚑ Flagged for review"</td>
+<td data-label="Colour">Red</td>
+</tr>
+</tbody>
+</table></div>
+<p>A flag disappears by itself as soon as its cause is gone (for example, A's finish is set to match B's).</p>
+<h2 id="adj-4-the-review-window-top-to-bottom">4. The Review window, top to bottom</h2>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it is</th>
+<th>What happens when you use it</th>
+<th>What you should see</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Part"><strong>Correct instance A / B</strong></td>
+<td data-label="What it is">Which copy you're changing. <strong>Leave it on A</strong> unless you deliberately want to tidy B.</td>
+<td data-label="What happens when you use it">Switches the table so the left column is the copy being changed.</td>
+<td data-label="What you should see">Column heading "A (changing)" or "B (changing)".</td>
+</tr>
+<tr>
+<td data-label="Part"><strong>Differences now</strong></td>
+<td data-label="What it is">The live flags for this crew.</td>
+<td data-label="What happens when you use it">Updates by itself after every change.</td>
+<td data-label="What you should see">e.g. "A finish missing" → after the fix, "none – A and B agree".</td>
+</tr>
+<tr>
+<td data-label="Part"><strong>Start / Finish rows</strong></td>
+<td data-label="What it is">A's time, B's time, and the ways to change A.</td>
+<td data-label="What happens when you use it">—</td>
+<td data-label="What you should see">—</td>
+</tr>
+<tr>
+<td data-label="Part">↳ <strong>Use B's start / finish</strong></td>
+<td data-label="What it is">Copies B's time into A. Only shown when B has that time.</td>
+<td data-label="What happens when you use it">Asks "Set A finish for 153 to 10:14:07.3? Copied from B. Reason: …" → <strong>Set</strong>.</td>
+<td data-label="What you should see">Green box "✓ Saved: A finish for 153 is now 10:14:07.3 (copied from B)…"; A's cell shows the new time, highlighted yellow for a few seconds; Differences now updates; the tap list gains an "ADJUDICATION" line.</td>
+</tr>
+<tr>
+<td data-label="Part">↳ <strong>HH:MM:SS.s + Set</strong></td>
+<td data-label="What it is">Type the correct time yourself (e.g. from video or a stopwatch).</td>
+<td data-label="What happens when you use it">Same confirmation, then saved.</td>
+<td data-label="What you should see">Same green box, saying "(typed)".</td>
+</tr>
+<tr>
+<td data-label="Part">↳ <strong>Clear</strong></td>
+<td data-label="What it is">Removes A's time (e.g. a tap logged against the wrong crew).</td>
+<td data-label="What happens when you use it">Same confirmation, then saved.</td>
+<td data-label="What you should see">Green box "…cleared"; the cell shows "–".</td>
+</tr>
+<tr>
+<td data-label="Part"><strong>Status + Set status</strong></td>
+<td data-label="What it is">Change A's DNS / DNF / DSQ.</td>
+<td data-label="What happens when you use it">Same confirmation, then saved.</td>
+<td data-label="What you should see">Green box; Status cell highlighted.</td>
+</tr>
+<tr>
+<td data-label="Part"><strong>Reason</strong></td>
+<td data-label="What it is">Required for every change above. It goes into the tap list with the change.</td>
+<td data-label="What happens when you use it">If it's empty, <strong>nothing is changed</strong>.</td>
+<td data-label="What you should see">Red box "Nothing changed – type a Reason first"; the Reason box turns red.</td>
+</tr>
+<tr>
+<td data-label="Part"><strong>Flagged for review</strong></td>
+<td data-label="What it is">Notes left by starters/finishers, each with <strong>Mark resolved</strong>.</td>
+<td data-label="What happens when you use it">Closes that one note.</td>
+<td data-label="What you should see">Green box "✓ That review note is marked resolved"; the note disappears.</td>
+</tr>
+<tr>
+<td data-label="Part"><strong>Resolve – checked, A is correct</strong></td>
+<td data-label="What it is">For when A was right all along (e.g. B's finisher was late). Optional note.</td>
+<td data-label="What happens when you use it">Records "RESOLVED" against the crew, closes any open notes, and takes it out of Needs a look.</td>
+<td data-label="What you should see">"✓ Resolved by admin at 21:40 – <note>" with a <strong>Reopen</strong> button. If A or B changes later, the crew comes back marked "changed since resolved".</note></td>
+</tr>
+<tr>
+<td data-label="Part"><strong>Every tap for bow N</strong></td>
+<td data-label="What it is">The full history: every START/FINISH tap, Undo, status, swap, flag, adjudication and Resolve, with who and which phone.</td>
+<td data-label="What happens when you use it">Refreshes about 1.5 s after a change.</td>
+<td data-label="What you should see">The change appears at the bottom, with its reason.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Public Results</strong> always follow A. A change to A shows on Results within a few seconds; a change to B never does.</p>
+<h2 id="adj-5-points-to-confirm-before-race-day-the-">5. Points to confirm before race day (the logic)</h2>
+<ol class="checklist">
+<li class="chk" data-key="adj:5-points-to-confirm-:a-is-the-only-official-record-correction"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:a-is-the-only-official-record-correction" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>A is the only official record.</strong> Corrections go into A; changing B is allowed but has no public effect. <em>OK?</em></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:matching-a-to-b-clears-the-flag-by-itsel"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:matching-a-to-b-clears-the-flag-by-itsel" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Matching A to B clears the flag by itself.</strong> There is no need to Resolve as well. <em>OK?</em></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:resolve-means-a-is-right-as-it-stands-it"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:resolve-means-a-is-right-as-it-stands-it" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Resolve means "A is right as it stands".</strong> It covers all the crew's current differences at once, and any later change to A or B undoes it. <em>OK?</em></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:tolerance-is-1-0-s-for-starts-and-finish"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:tolerance-is-1-0-s-for-starts-and-finish" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Tolerance is 1.0 s</strong> for starts and finishes (more than 1.0 s apart is flagged). <em>Keep, or change?</em></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:a-finish-with-no-start-yet-allowed-since"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:a-finish-with-no-start-yet-allowed-since" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>A finish with no start yet</strong> (allowed since the snag fixes) shows as "A start missing" only once B has a start. If neither A nor B ever gets a start, the crew has no race time and isn't flagged. Race Configuration / Results show it without a time. <em>Should "finish but no start in A or B" be a 7th rule?</em></div></li>
+<li class="chk" data-key="adj:5-points-to-confirm-:every-change-needs-a-typed-reason-even-c"><label class="tg" title="Done"><input data-k="adj:5-points-to-confirm-:every-change-needs-a-typed-reason-even-c" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label><div class="lt"><strong>Every change needs a typed reason</strong>, even copying B's time. <em>Keep, or allow "Use B's" without a reason?</em></div></li>
+</ol>
+<h2 id="adj-6-test-it-about-10-minutes-admin-on-a-pc">6. Test it (about 10 minutes, admin on a PC; starter/finisher phones on A and B)</h2>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>#</th>
+<th>Set-up</th>
+<th>Do</th>
+<th>Expect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="chk" data-key="adj:J-1">
+<td data-label="#"><label class="tg" title="Done"><input data-k="adj:J-1" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>J-1</td>
+<td data-label="Set-up">Phone A-finisher misses crew X; phone B-finisher finishes it</td>
+<td data-label="Do">Race Adjudication › Needs a look</td>
+<td data-label="Expect">X listed: red "A finish missing"</td>
+</tr>
+<tr class="chk" data-key="adj:J-2">
+<td data-label="#"><label class="tg" title="Done"><input data-k="adj:J-2" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>J-2</td>
+<td data-label="Set-up">—</td>
+<td data-label="Do">Review X › leave Reason empty › <strong>Use B's finish</strong></td>
+<td data-label="Expect">Red box "Nothing changed – type a Reason first"; Reason box red; nothing saved</td>
+</tr>
+<tr class="chk" data-key="adj:J-3">
+<td data-label="#"><label class="tg" title="Done"><input data-k="adj:J-3" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>J-3</td>
+<td data-label="Set-up">—</td>
+<td data-label="Do">Type a reason › <strong>Use B's finish</strong> › <strong>Set</strong></td>
+<td data-label="Expect">Green "✓ Saved…" box; A finish = B's time, highlighted; Differences now: "none – A and B agree"; tap list shows ADJUDICATION with the reason</td>
+</tr>
+<tr class="chk" data-key="adj:J-4">
+<td data-label="#"><label class="tg" title="Done"><input data-k="adj:J-4" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>J-4</td>
+<td data-label="Set-up">—</td>
+<td data-label="Do">Close; open public Results (signed out, phone)</td>
+<td data-label="Expect">X shows a race time from the new A finish; X gone from Needs a look</td>
+</tr>
+<tr class="chk" data-key="adj:J-5">
+<td data-label="#"><label class="tg" title="Done"><input data-k="adj:J-5" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>J-5</td>
+<td data-label="Set-up">Two finishers finish crew Y about 3 s apart; A is the right one</td>
+<td data-label="Do">Needs a look shows "Finish differs 3.x s" › <strong>Resolve</strong> › note "A correct"</td>
+<td data-label="Expect">Y leaves Needs a look; All crews shows "✓ Resolved"</td>
+</tr>
+<tr class="chk" data-key="adj:J-6">
+<td data-label="#"><label class="tg" title="Done"><input data-k="adj:J-6" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>J-6</td>
+<td data-label="Set-up">—</td>
+<td data-label="Do">B-finisher: Undo then FINISH again on Y</td>
+<td data-label="Expect">Y returns to Needs a look, "changed since resolved"</td>
+</tr>
+<tr class="chk" data-key="adj:J-7">
+<td data-label="#"><label class="tg" title="Done"><input data-k="adj:J-7" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>J-7</td>
+<td data-label="Set-up">Crew Z: A has a wrong finish; correct time known (stopwatch)</td>
+<td data-label="Do">Review Z › type HH:MM:SS.s › reason › <strong>Set</strong></td>
+<td data-label="Expect">Green "✓ Saved… (typed)"; Results update</td>
+</tr>
+<tr class="chk" data-key="adj:J-8">
+<td data-label="#"><label class="tg" title="Done"><input data-k="adj:J-8" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>J-8</td>
+<td data-label="Set-up">Starter uses ⋯ › Flag for review on crew W</td>
+<td data-label="Do">Review W › <strong>Mark resolved</strong></td>
+<td data-label="Expect">Green "✓ That review note is marked resolved"; the ⚑ flag goes</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>End — V00.01</em></p></div>
+    <p class="top"><a href="#top">↑ Back to the top</a></p>
+  </details>
+</section>
+<section id="snag" class="doc">
+  <details >
+    <summary><span class="st">Snagging brief (club test)</span><span class="cnt" data-sec="snag">reference</span></summary>
+    <p class="blurb">The four snags from Thursday&#x27;s club test and how they were fixed.</p>
+    <div class="body"><p><strong>Test:</strong> Thu 22 Oct 2026, evening, at the club, several officials on their own phones and iPads
+<strong>Reported by:</strong> the race admin, from the officials at the test · <strong>Written:</strong> 22 Oct 2026, 21:50
+<strong>Status:</strong> agreed, built and tested on 22 Oct. The changes this makes to the design brief are listed in section 3.</p>
+<hr/>
+<h2 id="snag-1-the-snags">1. The snags</h2>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>#</th>
+<th>Page</th>
+<th>What happened at the test</th>
+<th>Why it matters</th>
+<th>Fix (what "done" looks like)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="#">S-1</td>
+<td data-label="Page">Starter and Finisher</td>
+<td data-label="What happened at the test">A few seconds after a START or FINISH, the page <strong>scrolled by itself</strong>: to the next crew on Starter, and Finisher moved finished rows away. Several people hit the wrong crew because the list moved just as their finger came down.</td>
+<td data-label="Why it matters">A wrong-crew tap gives a wrong time, and nobody may notice.</td>
+<td data-label='Fix (what "done" looks like)'><strong>The page never scrolls or reorders by itself.</strong> Only the person holding the phone scrolls. The "next crew" highlight stays, but nothing moves. The jump box stays, because it only scrolls when you ask it to.</td>
+</tr>
+<tr>
+<td data-label="#">S-2</td>
+<td data-label="Page">Starter and Finisher</td>
+<td data-label="What happened at the test">After a tap, the toast ("157 started 10:02:13.4") and the amber "Sending 3…" light both appeared. But on a weak connection <strong>the button didn't change to Undo until the server had confirmed it</strong> ("All saved"). People said "the button isn't registering" and some tapped again.</td>
+<td data-label="Why it matters">The tap <em>was</em> stored on the phone, but the screen didn't say so. That leads to second taps, Replace prompts and doubt.</td>
+<td data-label='Fix (what "done" looks like)'><strong>The button changes to Undo the moment the tap is accepted on the phone</strong>, whatever the connection. The time shows on the row at once. The light still shows Sending / All saved for the upload. The 2 s double-tap guard (F-S12) still applies. If the page is reopened while taps are still waiting to send, those rows still show as done.</td>
+</tr>
+<tr>
+<td data-label="#">S-3</td>
+<td data-label="Page">Finisher</td>
+<td data-label="What happened at the test">A crew's FINISH button only appeared once the Finisher phone had <strong>received that crew's start</strong>. If the start phone was out of signal, the start could arrive after the boat crossed the line, and the finisher would have no button to tap.</td>
+<td data-label="Why it matters">You can't time a finish you can't tap. Starts and finishes have to be independent.</td>
+<td data-label='Fix (what "done" looks like)'><strong>Every crew has a FINISH button from the beginning of the race</strong>, whether or not a start has been received. The row shows "Started 10:02:13" when a start is known and "No start received yet" when not. A finish with no start yet is saved normally, and the race time works itself out when the start arrives. (Race Adjudication flags it if the start never arrives.)</td>
+</tr>
+<tr>
+<td data-label="#">S-4</td>
+<td data-label="Page">Finisher</td>
+<td data-label="What happened at the test">After FINISH, the row <strong>moved down to a "Finished" section</strong> below the crews still racing.</td>
+<td data-label="Why it matters">Under race pressure the finisher loses their place, and the next button shifts under their thumb (same harm as S-1).</td>
+<td data-label='Fix (what "done" looks like)'><strong>One list in bow-number order that never reorders.</strong> A finished row stays exactly where it was, turns green, shows the finish time and race time, and shows Undo where FINISH was. DNS / DNF / DSQ / Withdrawn rows also stay in place, showing their status.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="snag-2-checks-before-it-goes-back-out">2. Checks before it goes back out</h2>
+<ul>
+<li>Automated (local test copy): no scroll movement after a tap, on either page. The button becomes Undo straight after the tap with the server deliberately not answering. On reload with taps still waiting, those rows still show Undo. The Finisher has a FINISH button for a crew with no start. Bow order is unchanged after a finish. Earlier regression tests still pass.</li>
+<li>Friday test script: steps added for each snag (T-24 to T-27). The club test is the real proof, especially S-2 on a weak signal.</li>
+</ul>
+<h2 id="snag-3-changes-to-the-design-brief">3. Changes to the design brief</h2>
+<p>These snags change five requirements in the design brief. The brief has been updated to match, with a change-log line:</p>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>Brief item</th>
+<th>Was</th>
+<th>Now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Brief item">F-S4</td>
+<td data-label="Was">Next crew highlighted <strong>and the list scrolls to keep it near the top</strong></td>
+<td data-label="Now">Next crew highlighted; <strong>the list never scrolls by itself</strong> (S-1)</td>
+</tr>
+<tr>
+<td data-label="Brief item">F-S3 / F-F2</td>
+<td data-label="Was">Row changes once started / finished</td>
+<td data-label="Now">Row changes <strong>at once, on the phone</strong>, before the server confirms (S-2)</td>
+</tr>
+<tr>
+<td data-label="Brief item">F-F1</td>
+<td data-label="Was">Lists crews that <strong>have started but not finished</strong>; not-started crews in a collapsed section</td>
+<td data-label="Now"><strong>All crews in bow order, each with FINISH from the start of the race</strong> (S-3)</td>
+</tr>
+<tr>
+<td data-label="Brief item">F-F2</td>
+<td data-label="Was">The row <strong>leaves the list</strong> and goes to a "Finished" section</td>
+<td data-label="Now"><strong>The row stays in place</strong> and shows the finish (S-4)</td>
+</tr>
+<tr>
+<td data-label="Brief item">F-F5</td>
+<td data-label="Was">Jump box <strong>brings the row to the top</strong></td>
+<td data-label="Now">Jump box <strong>scrolls to the row</strong> (rows never move)</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>End of snagging brief — V00.01</em></p></div>
+    <p class="top"><a href="#top">↑ Back to the top</a></p>
+  </details>
+</section>
+<section id="brief" class="doc">
+  <details >
+    <summary><span class="st">Design brief (the binding spec)</span><span class="cnt" data-sec="brief">0 / 6</span></summary>
+    <p class="blurb">The full specification. Toggles only on the open decisions (Part I).</p>
+    <div class="body"><h2 id="brief-design-brief-functional-and-technical-re">Design brief: functional and technical requirements (V00.01)</h2>
+<p><strong>Change log:</strong> 22 Oct 2026 — F-R11 added (public Results has no Home link or "not signed in" note); test A-9 updated.
+<strong>Change log:</strong> 22 Oct 2026 (later) — F-R12 added (Race Adjudication "Needs a look" rules, shown on the page, and a <strong>Resolve</strong> button); F-S12 added (double-tap guard on Undo, Starter and Finisher).
+<strong>Change log:</strong> 22 Oct 2026 (after the club test) — snags S-1 to S-4 (see <em>Snagging brief 22 Oct club test</em>): F-S3, F-S4, F-F1, F-F2, F-F5 changed — no automatic scrolling or reordering; the row changes the moment the tap is stored on the phone; every crew has FINISH from the beginning of the race.
+<strong>Change log:</strong> 22 Oct 2026 (22:00) — F-K10 added (Start a new race: two clear-all levels behind a typed phrase and the admin password); Race Adjudication review window now confirms every action in the window itself (F-K7).
+<strong>Status:</strong> Agreed specification · <strong>Written:</strong> Wed 21 Oct 2026 · <strong>Needed by:</strong> Sat 24 Oct 2026, first start 10:00
+<strong>Owner:</strong> Steve Smith · <strong>Built and hosted by:</strong> Dewhurst.tech
+<strong>Location of record:</strong> the race folder (this file). This brief is the binding specification. If the system and this brief disagree, this brief wins until the owner changes it.</p>
+<hr/>
+<h2 id="brief-0-why-this-exists">0. Why this exists</h2>
+<p>Raceclocker — the timing service booked for Saturday — has a major problem and may not be running on the day. Nobody knows how long it will take to come back. This brief describes a basic replacement that lives on dewhurst.tech and copies the parts of Raceclocker we actually use: a phone at the start, a phone at the finish, a shared clock, and a results table.</p>
+<p>It is deliberately small. The aim is something that can be built Thursday, tested Friday and trusted Saturday. Nothing fancy.</p>
+<hr/>
+<h2 id="brief-part-a-what-we-know-about-saturday-s-rac">Part A — What we know about Saturday's race</h2>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>Item</th>
+<th>Detail</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Item">Event</td>
+<td data-label="Detail">Burway Small Boats Head 2026</td>
+<td data-label="Source">BROE <code>Competition.csv</code></td>
+</tr>
+<tr>
+<td data-label="Item">Date</td>
+<td data-label="Detail">Saturday 24 October 2026</td>
+<td data-label="Source">BROE <code>Competition.csv</code>, event page</td>
+</tr>
+<tr>
+<td data-label="Item">BROE competition ID</td>
+<td data-label="Detail">138 (entries closed — subs and payments only)</td>
+<td data-label="Source">BROE <code>Competition.csv</code></td>
+</tr>
+<tr>
+<td data-label="Item">Course</td>
+<td data-label="Detail">Upstream, approx. 3,000 m</td>
+<td data-label="Source">Event page</td>
+</tr>
+<tr>
+<td data-label="Item">Format</td>
+<td data-label="Detail">Time trial (head race) — crews start one at a time and race the clock</td>
+<td data-label="Source">Event page</td>
+</tr>
+<tr>
+<td data-label="Item">Divisions</td>
+<td data-label="Detail">3 — starting 10:00, 12:00 and 14:00</td>
+<td data-label="Source">Event page</td>
+</tr>
+<tr>
+<td data-label="Item">Crews</td>
+<td data-label="Detail">88 in total: Division 1 = 42, Division 2 = 24, Division 3 = 22</td>
+<td data-label="Source">Raceclocker upload CSV</td>
+</tr>
+<tr>
+<td data-label="Item">Events</td>
+<td data-label="Detail">36 distinct events (1x, 2x, 2-, J13/J14 4x+; Open, Women, Mixed; Junior J13–J18; Masters A–J)</td>
+<td data-label="Source">Raceclocker upload CSV</td>
+</tr>
+<tr>
+<td data-label="Item">Clubs</td>
+<td data-label="Detail">12</td>
+<td data-label="Source">Raceclocker upload CSV</td>
+</tr>
+<tr>
+<td data-label="Item">Bow numbers</td>
+<td data-label="Detail">Div 1: 151–192 · Div 2: 251–274 · Div 3: 371–392 (hundreds digit = division)</td>
+<td data-label="Source">Raceclocker upload CSV</td>
+</tr>
+<tr>
+<td data-label="Item">Doubling up</td>
+<td data-label="Detail">None within a division; competitors may race in all three</td>
+<td data-label="Source">Event page</td>
+</tr>
+<tr>
+<td data-label="Item">Prizes</td>
+<td data-label="Detail">Each event winner (where 3+ crews race); Fastest Female and Fastest Male sculler; Tom Barras Trophies for Fastest Girl and Boy Junior. <strong>Fastest-sculler and Tom Barras awards are decided in Division 3 only.</strong></td>
+<td data-label="Source">Event page, BROE <code>Divisions.csv</code></td>
+</tr>
+<tr>
+<td data-label="Item">Banding</td>
+<td data-label="Detail">Events banded by PRI where appropriate (none recorded in <code>Event Bands.csv</code>)</td>
+<td data-label="Source">Event page, BROE data</td>
+</tr>
+<tr>
+<td data-label="Item">Adjustments</td>
+<td data-label="Detail">Results page says "adjustments to be made for penalties, handicaps etc." — 15 Masters crews carry a handicap category (A–J)</td>
+<td data-label="Source">Event page, BROE <code>Masters Handicaps.csv</code></td>
+</tr>
+<tr>
+<td data-label="Item">Raceclocker set-up</td>
+<td data-label="Detail">Two separate, identical races (fully redundant), each with its own starter and finisher</td>
+<td data-label="Source">Race organiser, 21 Oct</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Not yet confirmed:</strong> the start interval between crews, where exactly the start and finish lines are, and whether there is phone signal at both. These matter for testing — see Part G.</p>
+<hr/>
+<h2 id="brief-part-b-where-the-data-is">Part B — Where the data is</h2>
+<p>All files below are in the race folder.</p>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>File</th>
+<th>What it holds</th>
+<th>Role in this build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="File"><strong><code>Burway SBH 2026 Raceclocker Upload.csv</code></strong></td>
+<td data-label="What it holds">88 rows. Columns: <code>Bow#, Event, Crew Name, Club, Division</code>. UTF-8, no BOM, comma-separated.</td>
+<td data-label="Role in this build"><strong>The seed data.</strong> Loaded into the Race Configuration table on first set-up.</td>
+</tr>
+<tr>
+<td data-label="File"><code>Head Race event SBH 20261024.xlsx</code></td>
+<td data-label="What it holds">The working spreadsheet. Tabs: Steps, Event VLookup, StartingList, DataCalcs, Sorted Crews, RacePivot, EventPivot, ClubPivot, Check#, RaceClockerUpload, plus a "B" set. The <code>RaceClockerUpload</code> tab is the source of the CSV above.</td>
+<td data-label="Role in this build">Upstream source. Not read by the system.</td>
+</tr>
+<tr>
+<td data-label="File"><code>BROE Data\Starting List.csv</code></td>
+<td data-label="What it holds">The full British Rowing starting list — CrewID, EventID, CRIs, composite flags, and blank <code>Position In Event</code>, <code>Raw Time</code>, <code>Time</code>, <code>Status</code> columns.</td>
+<td data-label="Role in this build">Not used in the build. Worth knowing: these are the columns BROE expects results back in, so the CSV export (F-R7) should make that copy-across easy.</td>
+</tr>
+<tr>
+<td data-label="File"><code>BROE Data\Masters Handicaps.csv</code></td>
+<td data-label="What it holds">15 Masters crews with handicap category.</td>
+<td data-label="Role in this build">Out of scope for the build (see Part H).</td>
+</tr>
+<tr>
+<td data-label="File"><code>BROE Data\Divisions.csv</code>, <code>Competition.csv</code>, <code>Events.csv</code>, <code>Clubs.csv</code>, etc.</td>
+<td data-label="What it holds">BROE reference exports.</td>
+<td data-label="Role in this build">Not used.</td>
+</tr>
+<tr>
+<td data-label="File"><code>2026 Burway Small Boats Head Race Order DRAFTV1.1.pdf / .docx</code></td>
+<td data-label="What it holds">The published race order.</td>
+<td data-label="Role in this build">Reference only.</td>
+</tr>
+<tr>
+<td data-label="File"><code>SBH 2026 full event page.html</code></td>
+<td data-label="What it holds">The Burway event page (dates, divisions, prizes, documents). Its "Results ↗" link currently points at Raceclocker.</td>
+<td data-label="Role in this build">That link may need to point at the new Results page on the day.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Data quirks to handle on import</strong></p>
+<ul>
+<li><code>MTRC-Natalie and Dot</code> (bow 251) has a trailing space — trim all fields.</li>
+<li><code>Sir William Perkins's School Boat Club</code> contains an apostrophe — make sure it survives import, display and CSV export.</li>
+<li>Crew names are not unique-looking in style (<code>Hume</code>, <code>MTRC Sam KELFORD</code>) — display as given, don't reformat.</li>
+<li><strong>Bow number is the unique key.</strong> Every rule in this brief keys on it.</li>
+</ul>
+<hr/>
+<h2 id="brief-part-c-how-a-time-trial-head-race-is-tim">Part C — How a time-trial head race is timed</h2>
+<p>A head race is a race against the clock. Crews are marshalled in bow-number order above or below the start, then sent off one at a time, usually a few seconds to a few tens of seconds apart. They race the course and cross the finish line — often not in the order they started, because faster crews overtake.</p>
+<p>Each crew therefore has two moments that matter:</p>
+<ol>
+<li><strong>Start time</strong> — the instant the crew crosses the start line at racing pace.</li>
+<li><strong>Finish time</strong> — the instant the crew's bow crosses the finish line.</li>
+</ol>
+<p><strong>Race time = finish time − start time.</strong> Results rank crews by race time: overall within a division, and within each event.</p>
+<p>What makes it work in practice:</p>
+<ul>
+<li><strong>One clock.</strong> Both times must come from the same time reference, or every race time carries the gap between the two clocks. <em>Useful fact:</em> if the start phone and finish phone disagree by a fixed amount, every crew's time is wrong by that same amount — so <strong>the order of finish is still right</strong> and only the absolute times shift. It becomes a real problem only if the phone changes mid-division, or a crew's start and finish are logged on a mixture of phones.</li>
+<li><strong>One tap per event, no thinking.</strong> The starter and finisher are outside, often cold, sometimes in the rain, with gloves on. Buttons have to be big and the right crew has to be easy to find.</li>
+<li><strong>Bunching at the finish.</strong> Two or three crews can cross within a second or two. The finisher needs a way to capture the time <em>first</em> and work out which crew it was <em>second</em>.</li>
+<li><strong>Mistakes get made.</strong> A wrong tap has to be fixable without losing the original record.</li>
+<li><strong>Signal drops.</strong> River banks are poor for mobile data. A tap must be safe on the phone the instant it's made, and sync when it can.</li>
+<li><strong>Redundancy.</strong> Raceclocker was set up as two independent races (A and B), each with its own starter and finisher. If one phone dies or someone mis-taps, the other set of times stands. This brief keeps that pattern.</li>
+<li><strong>Statuses.</strong> Not every crew finishes: DNS (did not start), DNF (did not finish), DSQ (disqualified). These go in the results with no time.</li>
+</ul>
+<hr/>
+<h2 id="brief-part-d-site-structure-and-navigation">Part D — Site structure and navigation</h2>
+<div class="tw"><table class="plain">
+<thead>
+<tr>
+<th>Item</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Item">Menu</td>
+<td data-label="Requirement">Add a new top-level menu item <strong>"Community Support"</strong> to the dewhurst.tech main menu. Under it, one entry: <strong>"Burway Rowing Club Small Boats Head"</strong>.</td>
+</tr>
+<tr>
+<td data-label="Item">Landing page</td>
+<td data-label="Requirement"><code>/community/burway-sbh/</code> — short intro (event name, date, divisions) and four large links: Race Configuration · Starter · Finisher · Results.</td>
+</tr>
+<tr>
+<td data-label="Item">Pages</td>
+<td data-label="Requirement"><code>/community/burway-sbh/config.html</code> · <code>start.html</code> · <code>finish.html</code> · <code>results.html</code></td>
+</tr>
+<tr>
+<td data-label="Item">Look</td>
+<td data-label="Requirement">Use the existing dewhurst.tech header, footer and fonts so it sits in the site. Inside the timing pages, function wins over brand: high contrast, big type, big buttons.</td>
+</tr>
+<tr>
+<td data-label="Item">Search engines</td>
+<td data-label="Requirement"><code>noindex</code> on the four working pages. The menu link stays.</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2 id="brief-part-e-functional-requirements">Part E — Functional requirements</h2>
+<p>Priority: <strong>M</strong> = must have for Saturday · <strong>S</strong> = should have if time allows · <strong>C</strong> = could have, only if trivial.</p>
+<h3 id="brief-e1-common-to-all-pages">E1. Common to all pages</h3>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>ID</th>
+<th>Pri</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="ID">F-C1</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">Every working page shows, at the top: the <strong>instance</strong> in use (A or B), the <strong>division filter</strong>, a <strong>live clock</strong> (server-corrected time, <code>HH:MM:SS.s</code>), and a <strong>sync status light</strong> — green (all taps saved to server), amber (taps waiting to send), red (offline).</td>
+</tr>
+<tr>
+<td data-label="ID">F-C2</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Instance switch (A / B).</strong> The whole system runs as two independent copies of the timing data, mirroring the Raceclocker set-up. Instance A's starter and finisher never see or touch instance B's times, and vice versa. Both share the same Race Configuration table.</td>
+</tr>
+<tr>
+<td data-label="ID">F-C3</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Division filter</strong>: Division 1 / 2 / 3 / All. Defaults to the division whose start time is next or current.</td>
+</tr>
+<tr>
+<td data-label="ID">F-C4</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">Works one-handed on a phone in portrait, screen widths from 360 px. No horizontal scrolling on Starter or Finisher.</td>
+</tr>
+<tr>
+<td data-label="ID">F-C5</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">Starter, Finisher and Configuration need a sign-in (see T-S1). Results is open to anyone with the link.</td>
+</tr>
+<tr>
+<td data-label="ID">F-C6</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement">Screen kept awake while Starter or Finisher is open (Wake Lock API, where the phone supports it).</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="brief-e2-race-configuration-page">E2. Race Configuration page</h3>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>ID</th>
+<th>Pri</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="ID">F-K1</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">Shows the entries table: <strong>Bow#, Event, Crew Name, Club, Division</strong>, plus <strong>Status</strong> (blank / DNS / DNF / DSQ / Withdrawn) and <strong>Notes</strong>.</td>
+</tr>
+<tr>
+<td data-label="ID">F-K2</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Initial load</strong> from <code>Burway SBH 2026 Raceclocker Upload.csv</code> (the 88 rows). Either a one-off "Import CSV" button that accepts the file, or the 88 rows pre-loaded into the system. Import must trim spaces and reject a second row with an existing Bow#.</td>
+</tr>
+<tr>
+<td data-label="ID">F-K3</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Edit in place</strong> — every field editable in the table. Changes save to the server and show on Starter, Finisher and Results within a few seconds.</td>
+</tr>
+<tr>
+<td data-label="ID">F-K4</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Add a crew</strong> (late substitution) and <strong>withdraw a crew</strong> (sets Status = Withdrawn; never hard-deletes).</td>
+</tr>
+<tr>
+<td data-label="ID">F-K5</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">If a crew already has a start or finish time in either instance, editing its Bow# is blocked and the page says why. Other fields stay editable.</td>
+</tr>
+<tr>
+<td data-label="ID">F-K6</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Export CSV</strong> of the configuration table.</td>
+</tr>
+<tr>
+<td data-label="ID">F-K7</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement"><strong>Timing correction panel</strong> (admin only): for one bow number and one instance, view every tap logged against it and set, clear or replace the start or finish time by hand, with a reason. The original taps stay in the log.</td>
+</tr>
+<tr>
+<td data-label="ID">F-K8</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement"><strong>Division start times</strong> stored (10:00, 12:00, 14:00) and used to default the division filter.</td>
+</tr>
+<tr>
+<td data-label="ID">F-K9</td>
+<td data-label="Pri">C</td>
+<td data-label="Requirement">"Reset instance" — clears all times for one instance, behind a typed confirmation ("RESET A"). For rehearsals only.</td>
+</tr>
+<tr>
+<td data-label="ID">F-K10</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Start a new race (clear the system)</strong> — admin only, on Race Configuration, each behind a typed phrase <strong>and the admin password re-entered</strong>: (1) <strong>"Clear everything except the crew list"</strong> (phrase CLEAR RACE) keeps each crew's Bow#, Event, Crew name, Club and Division <em>as currently listed</em> and clears everything else in A and B — times, statuses, review flags and Resolves, penalties, notes, handicap groups; (2) <strong>"Wipe everything, crew list too"</strong> (phrase WIPE ALL) also empties the crew list, ready for a fresh CSV import. The tap log is <strong>not</strong> deleted (the security rules forbid deleting taps — that's what makes it an audit trail); taps from before the reset are hidden from the history. Any phone still holding unsent taps from before the reset throws them away instead of sending them. Before using it, every timing phone should show All saved and have its timing page closed. Added 22 Oct 2026, after the club test.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="brief-e3-starter-page">E3. Starter page</h3>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>ID</th>
+<th>Pri</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="ID">F-S1</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">Lists the crews in the selected division, <strong>in bow-number order</strong>, one row per crew: big bow number, event, crew name, and a large <strong>START</strong> button.</td>
+</tr>
+<tr>
+<td data-label="ID">F-S2</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>One tap on START logs the start time</strong> for that crew in the current instance. The time is captured on the phone at the moment of the tap (see T-T1), not when the server receives it.</td>
+</tr>
+<tr>
+<td data-label="ID">F-S3</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">Once started, the row turns green, shows the start time, and the button changes to a small <strong>Undo</strong> — <strong>straight away, as soon as the tap is stored on the phone</strong>, not when the server confirms it (the sync light shows the upload separately). Snag S-2, 22 Oct.</td>
+</tr>
+<tr>
+<td data-label="ID">F-S4</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">The <strong>next crew to start</strong> (lowest bow number not yet started, not withdrawn/DNS) is highlighted. <strong>The list never scrolls, moves or reorders by itself</strong> — only the person holding the phone scrolls (rows keep the same height when tapped). Changed 22 Oct after the club test, snag S-1: auto-scroll made people hit the wrong crew.</td>
+</tr>
+<tr>
+<td data-label="ID">F-S5</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Undo</strong> — available for 30 seconds after a tap without a confirm; after that, it asks "Clear start for 157?" first. Undo writes a "void" record; it never deletes the original tap.</td>
+</tr>
+<tr>
+<td data-label="ID">F-S6</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Re-tap protection</strong>: tapping START on a crew that already has a start asks for confirmation before replacing it.</td>
+</tr>
+<tr>
+<td data-label="ID">F-S7</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Mark DNS</strong> on any row (long-press or a small menu), with confirmation.</td>
+</tr>
+<tr>
+<td data-label="ID">F-S8</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Starts are allowed out of order</strong> — a crew may be sent late. Nothing forces bow order.</td>
+</tr>
+<tr>
+<td data-label="ID">F-S9</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement"><strong>Jump box</strong>: type a bow number to scroll straight to it.</td>
+</tr>
+<tr>
+<td data-label="ID">F-S10</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement">A short vibration on a successful tap (Vibration API, where supported).</td>
+</tr>
+<tr>
+<td data-label="ID">F-S11</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement">Running count: "Started 17 / 42".</td>
+</tr>
+<tr>
+<td data-label="ID">F-S12</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Double-tap guard.</strong> For <strong>2 seconds</strong> after this phone logs a START (or FINISH, see F-F3), the <strong>Undo</strong> button on that row is greyed out and ignores taps (message: "Just logged - Undo is available in a moment"). Undo sits where the START/FINISH button was, so a double tap would otherwise clear the time it just logged. After 2 s Undo works as F-S5. Added 22 Oct 2026.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="brief-e4-finisher-page">E4. Finisher page</h3>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>ID</th>
+<th>Pri</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="ID">F-F1</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">Lists <strong>every crew</strong> in the selected division <strong>in bow-number order</strong>, each with a big bow number and a large <strong>FINISH</strong> button <strong>from the beginning of the race</strong> — whether or not this phone has received that crew's start (it shows "Started 10:02:13.4" or "No start yet"). A finish with no start yet is saved normally; the race time appears when the start arrives. <strong>The list never scrolls, moves or reorders by itself.</strong> Changed 22 Oct after the club test, snags S-1 and S-3.</td>
+</tr>
+<tr>
+<td data-label="ID">F-F2</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>One tap on FINISH logs the finish time</strong> for that crew in the current instance, captured on the phone at the tap. <strong>The row stays exactly where it is</strong>, turns green, shows the finish and race time, and FINISH changes to <strong>Undo</strong> straight away (as F-S3). Changed 22 Oct after the club test, snags S-2 and S-4.</td>
+</tr>
+<tr>
+<td data-label="ID">F-F3</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Undo</strong> and <strong>re-tap protection</strong> — same rules as F-S5 and F-S6, including the double-tap guard (F-S12).</td>
+</tr>
+<tr>
+<td data-label="ID">F-F4</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Mark DNF / DSQ</strong> on any row, with confirmation.</td>
+</tr>
+<tr>
+<td data-label="ID">F-F5</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Jump box</strong>: type a bow number to scroll to that row (rows never move by themselves, so this is the only scrolling the page does — and only when asked).</td>
+</tr>
+<tr>
+<td data-label="ID">F-F6</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement"><strong>"MARK" button</strong> — a large button fixed at the bottom of the screen that logs a finish time with <strong>no crew attached</strong>. Unassigned marks appear in a strip at the top ("Mark 1 · 11:23:45.6 · assign ▸"); the finisher taps one and then taps a crew to attach it. Built for two or three boats crossing together.</td>
+</tr>
+<tr>
+<td data-label="ID">F-F7</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement">Running count: "Finished 12 / 17 started".</td>
+</tr>
+<tr>
+<td data-label="ID">F-F8</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement">Short vibration on a successful tap.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="brief-e5-results-page">E5. Results page</h3>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>ID</th>
+<th>Pri</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="ID">F-R1</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Non-editable table</strong> for the selected instance and division: <strong>Bow#, Event, Crew Name, Club, Division, Start time, Finish time, Race time, Position</strong>. Times shown as <code>HH:MM:SS.s</code> (start/finish) and <code>M:SS.s</code> (race time).</td>
+</tr>
+<tr>
+<td data-label="ID">F-R2</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Position</strong> = finishing order by race time within the division (1 = fastest). Ties share a position. Crews with no finish, or with DNS/DNF/DSQ/Withdrawn, sit at the bottom with their status in place of a time.</td>
+</tr>
+<tr>
+<td data-label="ID">F-R3</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Sort switch</strong>: by Position (default) · by Bow# · by Event (then Position-in-event).</td>
+</tr>
+<tr>
+<td data-label="ID">F-R4</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Position in event</strong> column — rank by race time among crews in the same event and division.</td>
+</tr>
+<tr>
+<td data-label="ID">F-R5</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">Refreshes automatically (at least every 30 seconds, or live).</td>
+</tr>
+<tr>
+<td data-label="ID">F-R6</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement">Header line: "Provisional — subject to penalties and handicaps."</td>
+</tr>
+<tr>
+<td data-label="ID">F-R7</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Export CSV</strong> of the full results (all divisions, both instances side by side: <code>Bow#, Event, Crew Name, Club, Division, Status, A Start, A Finish, A Time, B Start, B Finish, B Time, Position, Position in event</code>). This is the hand-off to BROE and to the spreadsheet for handicaps.</td>
+</tr>
+<tr>
+<td data-label="ID">F-R8</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement"><strong>A/B check column</strong> — difference between instance A and B race times; highlight any crew where they differ by more than 1.0 s, or where one instance has a time and the other doesn't. Visible only when signed in.</td>
+</tr>
+<tr>
+<td data-label="ID">F-R9</td>
+<td data-label="Pri">S</td>
+<td data-label="Requirement">Event filter (drop-down).</td>
+</tr>
+<tr>
+<td data-label="ID">F-R10</td>
+<td data-label="Pri">C</td>
+<td data-label="Requirement">A "Division 3 sculling awards" view: fastest Open and Women 1x across all categories in Division 3, and fastest junior girl and boy (Tom Barras).</td>
+</tr>
+<tr>
+<td data-label="ID">F-R11</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>No way out of Results for the public.</strong> When the viewer is not signed in, Results shows <strong>no Home button / link back to the landing page</strong> and <strong>no "not signed in" note</strong>. Signed-in users still see Home. Added 22 Oct 2026: the public Results link should give no route to the admin pages; the landing page is handed only to starters, finishers and admin.</td>
+</tr>
+<tr>
+<td data-label="ID">F-R12</td>
+<td data-label="Pri">M</td>
+<td data-label="Requirement"><strong>Race Adjudication — when a crew "needs a look", and Resolve.</strong> Signed-in officials only. A crew is listed under <strong>Needs a look</strong> when any of these is true (starts and finishes are compared separately; the A−B race-time column is information only; Withdrawn applies to both instances so never shows as a difference):<br/>1. A and B both have a <strong>start</strong>, more than <strong>1.0 s</strong> apart — "Start differs 1.4 s" — red<br/>2. A and B both have a <strong>finish</strong>, more than <strong>1.0 s</strong> apart — "Finish differs 2.5 s" — red<br/>3. <strong>B has a start or finish that A doesn't</strong> (A is what the public sees) — "A start / finish missing" — red<br/>4. <strong>A has a start or finish that B doesn't</strong> — "B start / finish missing" — amber<br/>5. The <strong>statuses differ</strong> (DNS / DNF / DSQ in one, not the other) — "Status A: DNF / B: –" — red<br/>6. A starter or finisher used <strong>Flag for review</strong> on the crew (A or B), not yet resolved — "⚑ Flagged for review" — red<br/>These rules are shown on the page in an expandable list. A flag clears when its cause is fixed. <strong>Resolve</strong> (on the row, and in the Review window) marks the crew as checked — "A is correct" — with an optional note: it is logged (who, when, note), it closes any open review notes, and the crew leaves Needs a look showing "✓ Resolved". If the crew's differences change afterwards (a new time or status in A or B), it comes back into Needs a look marked "changed since resolved". <strong>Reopen</strong> undoes a Resolve. Added 22 Oct 2026.</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2 id="brief-part-f-technical-requirements">Part F — Technical requirements</h2>
+<h3 id="brief-f1-hosting-and-constraints-what-s-alread">F1. Hosting and constraints (what's already fixed)</h3>
+<ul>
+<li>dewhurst.tech is a <strong>static site on GitHub Pages</strong>, published from the site's publishing folder with GitHub Desktop. There is no server of its own.</li>
+<li><strong>The repository behind GitHub Pages is public.</strong> Anything in the page code — including any keys — is readable by anyone. Security has to come from the backend service, not from hiding things in JavaScript.</li>
+<li>The site's existing form collector (Web3Forms) only sends emails. It can't store or share live timing data, so it is not suitable here.</li>
+<li>So the timing pages must be <strong>plain HTML, CSS and JavaScript</strong>, talking to a <strong>hosted backend service</strong> from the browser.</li>
+</ul>
+<h3 id="brief-f2-backend-recommendation-and-fallback">F2. Backend — recommendation and fallback</h3>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>Option</th>
+<th>How it works</th>
+<th>For</th>
+<th>Against</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Option"><strong>1. Firebase (Cloud Firestore + Firebase Auth) — recommended</strong></td>
+<td data-label="How it works">Free Google service. The JavaScript library loads from Google's CDN. Data syncs live between phones.</td>
+<td data-label="For">Built-in <strong>offline mode</strong>: taps are stored on the phone and sent when signal returns — exactly the river-bank problem. Live updates to Results with no polling. Real sign-in. Free tier is ample (88 crews × 2 instances is a few hundred writes). Set-up is about 20 minutes in the Firebase console.</td>
+<td data-label="Against">New account/project to create. Data lives in Google Cloud, not in the race spreadsheet — needs the CSV export to get it out.</td>
+</tr>
+<tr>
+<td data-label="Option">2. Google Apps Script + Google Sheet</td>
+<td data-label="How it works">A small script published as a web app, writing each tap as a row in a Google Sheet.</td>
+<td data-label="For">Data lands straight in a spreadsheet. No new service.</td>
+<td data-label="Against">No offline mode — the "queue and retry" would have to be built from scratch. 1–3 s round-trip per write. Not live; Results has to poll. More to go wrong in three days.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Recommendation: Option 1.</strong> The offline handling alone is worth it. If Option 2 were chosen, every functional requirement would still stand, with a local queue (T-T4) and polling added.</p>
+<h3 id="brief-f3-data-model-firestore">F3. Data model (Firestore)</h3>
+<pre class="code"><code>config/race              { name, date, divisions: { "1": "10:00", "2": "12:00", "3": "14:00" }, updatedAt }
+entries/{bow}            { bow, event, crew, club, division, status, notes, updatedAt, updatedBy }
+taps/{autoId}            { instance: "A"|"B", bow | null, kind: "start"|"finish"|"mark"|"void"|"status",
+                           value (status text, or id of tap being voided),
+                           tDevice (ms, phone clock), offset (ms), tCorrected (ms),
+                           deviceId, user, createdAt (serverTimestamp) }
+timings/{instance}       { "151": { start: tCorrected, startTap: id, finish: …, finishTap: id, status: … }, … }
+</code></pre>
+<ul>
+<li><code>taps</code> is <strong>append-only</strong> — the audit trail. Nothing is ever deleted or overwritten in it.</li>
+<li><code>timings/A</code> and <code>timings/B</code> are one document each, holding the current start/finish/status per bow. Every tap writes <strong>both</strong> its <code>taps</code> record and the matching field in <code>timings/{instance}</code> in a single batched write (works offline).</li>
+<li>Results reads <code>timings/A</code> or <code>timings/B</code> plus <code>entries</code> — a handful of document reads per viewer, which keeps a busy Results page well inside the free tier.</li>
+<li>Race time is <strong>calculated in the browser</strong> from <code>finish − start</code>, not stored, so a corrected start or finish automatically corrects the race time. (Raceclocker stores it; we don't need to.)</li>
+</ul>
+<h3 id="brief-f4-timing-and-clocks">F4. Timing and clocks</h3>
+<div class="tw"><table class="plain">
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="ID">T-T1</td>
+<td data-label="Requirement">Capture the tap time with <code>Date.now()</code> <strong>inside the click handler, before anything else runs</strong>. Use <code>pointerdown</code>, not <code>click</code>, to save the ~100–300 ms a click event adds on touch screens.</td>
+</tr>
+<tr>
+<td data-label="ID">T-T2</td>
+<td data-label="Requirement"><strong>Server offset</strong>: on page load and every 5 minutes, measure the phone's clock against server time (write a doc with <code>serverTimestamp()</code>, read it back, take the midpoint of the round-trip). Store <code>offset</code>; <code>tCorrected = tDevice + offset</code>. Show the offset in a small settings panel.</td>
+</tr>
+<tr>
+<td data-label="ID">T-T3</td>
+<td data-label="Requirement">If the measured offset is more than ±2 s, show an amber warning: "This phone's clock is X s out — check Settings › Date &amp; time › Automatic". Never block a tap because of it.</td>
+</tr>
+<tr>
+<td data-label="ID">T-T4</td>
+<td data-label="Requirement">Every tap is written to the phone's local storage first, then sent. (Firestore's offline persistence does this; turn it on with <code>persistentLocalCache</code>.) Closing the tab or the phone sleeping must not lose a tap.</td>
+</tr>
+<tr>
+<td data-label="ID">T-T5</td>
+<td data-label="Requirement">Times are stored as UTC milliseconds and displayed in UK local time (BST ends Sun 25 Oct, so Saturday is still BST — the browser handles it). Display to tenths of a second.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="brief-f5-security-and-access">F5. Security and access</h3>
+<div class="tw"><table class="plain">
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="ID">T-S1</td>
+<td data-label="Requirement"><strong>Firebase Email/Password sign-in</strong> with three shared role accounts set up in the Firebase console: <code>starter</code>, <code>finisher</code>, <code>admin</code> (e.g. <code>sbh-starter@dewhurst.tech</code>). Passwords handed out on the day. The phone stays signed in.</td>
+</tr>
+<tr>
+<td data-label="ID">T-S2</td>
+<td data-label="Requirement"><strong>Firestore security rules</strong>: anyone may <em>read</em> <code>entries</code>, <code>config</code> and <code>timings</code>. Only signed-in users may <em>write</em> <code>taps</code> and <code>timings</code>. Only <code>admin</code> may write <code>entries</code> and <code>config</code>. <code>taps</code> may be created, never updated or deleted.</td>
+</tr>
+<tr>
+<td data-label="ID">T-S3</td>
+<td data-label="Requirement">The Firebase web config (apiKey etc.) is public by design and can sit in the repo. The protection is T-S1 and T-S2.</td>
+</tr>
+<tr>
+<td data-label="ID">T-S4</td>
+<td data-label="Requirement">Results shows crew names, clubs and times only — the same data already published in the race order. No personal data beyond that.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="brief-f6-build-rules">F6. Build rules</h3>
+<div class="tw"><table class="plain">
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="ID">T-B1</td>
+<td data-label="Requirement">Plain HTML, CSS and vanilla JavaScript. No framework, no build step. Firebase JS SDK (modular, a pinned version) from <code>gstatic.com</code>.</td>
+</tr>
+<tr>
+<td data-label="ID">T-B2</td>
+<td data-label="Requirement">One shared <code>sbh.js</code> (connection, sign-in, clock, data helpers) and one small script per page. One shared <code>sbh.css</code>.</td>
+</tr>
+<tr>
+<td data-label="ID">T-B3</td>
+<td data-label="Requirement">All files under <code>/community/burway-sbh/</code> in the site so the feature is self-contained and easy to remove later.</td>
+</tr>
+<tr>
+<td data-label="ID">T-B4</td>
+<td data-label="Requirement">Menu change ("Community Support" › "Burway Rowing Club Small Boats Head") made in the site's existing navigation, on every page that carries the menu.</td>
+</tr>
+<tr>
+<td data-label="ID">T-B5</td>
+<td data-label="Requirement">The Website project's own publishing rules apply: a backup of the publishing folder before each change, then commit and push with GitHub Desktop, then check the live site.</td>
+</tr>
+<tr>
+<td data-label="ID">T-B6</td>
+<td data-label="Requirement">Firebase project set-up steps written out as a numbered checklist (create project, enable Firestore in a UK/EU region, enable Email/Password auth, create the three users, paste config, publish rules).</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2 id="brief-part-g-testing-and-acceptance">Part G — Testing and acceptance</h2>
+<p>Run on <strong>two real phones per instance</strong> (four in total if possible) on Friday, ideally on the river bank.</p>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>ID</th>
+<th>Test</th>
+<th>Pass when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="ID">A-1</td>
+<td data-label="Test">Import the CSV</td>
+<td data-label="Pass when">88 rows, Div 1/2/3 = 42/24/22, bow 251 crew name has no trailing space, SWP apostrophe intact.</td>
+</tr>
+<tr>
+<td data-label="ID">A-2</td>
+<td data-label="Test">Start 10 crews on phone 1, finish them in a different order on phone 2</td>
+<td data-label="Pass when">Results shows all 10 with correct race times and positions within 2 s of a stopwatch.</td>
+</tr>
+<tr>
+<td data-label="ID">A-3</td>
+<td data-label="Test">Airplane mode on the starter phone, start 5 crews, wait 2 min, airplane mode off</td>
+<td data-label="Pass when">All 5 starts arrive with their <strong>original</strong> tap times. Sync light goes amber, then green.</td>
+</tr>
+<tr>
+<td data-label="ID">A-4</td>
+<td data-label="Test">Close the browser tab immediately after a tap, reopen</td>
+<td data-label="Pass when">The tap is there.</td>
+</tr>
+<tr>
+<td data-label="ID">A-5</td>
+<td data-label="Test">Undo within 30 s; undo after 30 s; re-tap a started crew</td>
+<td data-label="Pass when">Behaviour matches F-S5 / F-S6. Audit log shows every tap.</td>
+</tr>
+<tr>
+<td data-label="ID">A-6</td>
+<td data-label="Test">Two crews finish 1 s apart (MARK button, if built)</td>
+<td data-label="Pass when">Both get distinct, correct times.</td>
+</tr>
+<tr>
+<td data-label="ID">A-7</td>
+<td data-label="Test">Run instance A and B at the same time</td>
+<td data-label="Pass when">Neither sees the other's times. A/B check flags a deliberate 3 s difference.</td>
+</tr>
+<tr>
+<td data-label="ID">A-8</td>
+<td data-label="Test">Edit a crew name in Configuration</td>
+<td data-label="Pass when">Change shows on Starter, Finisher and Results within 5 s. Bow# edit is blocked for a timed crew.</td>
+</tr>
+<tr>
+<td data-label="ID">A-9</td>
+<td data-label="Test">Open Results signed out on a third phone</td>
+<td data-label="Pass when">Read-only, no undo/edit controls, A/B column hidden, <strong>no Home button and no "not signed in" note</strong> (F-R11).</td>
+</tr>
+<tr>
+<td data-label="ID">A-10</td>
+<td data-label="Test">Try writing a tap while signed out (browser console)</td>
+<td data-label="Pass when">Rejected by security rules.</td>
+</tr>
+<tr>
+<td data-label="ID">A-11</td>
+<td data-label="Test">Export CSV</td>
+<td data-label="Pass when">Opens cleanly in Excel with both instances side by side.</td>
+</tr>
+<tr>
+<td data-label="ID">A-12</td>
+<td data-label="Test">Phone clock deliberately set 10 s wrong</td>
+<td data-label="Pass when">Amber warning shows; race times still correct because of the offset.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>On the day:</strong> both instances live; each starter and finisher keeps a paper back-up sheet (bow number + time of day) as the last line of defence. Phones fully charged, power banks at both ends.</p>
+<hr/>
+<h2 id="brief-part-h-out-of-scope-for-saturday">Part H — Out of scope (for Saturday)</h2>
+<ul>
+<li>Masters handicaps and time penalties — applied afterwards in the spreadsheet from the CSV export.</li>
+<li>Intermediate timing points.</li>
+<li>Automatic upload to BROE.</li>
+<li>Any automated email or notification.</li>
+<li>Multi-event support or reuse for other regattas (keep it to SBH 2026; generalise later if it proves useful).</li>
+<li>Spectator features (live leaderboard animations, push alerts).</li>
+</ul>
+<hr/>
+<h2 id="brief-part-i-open-decisions">Part I — Open decisions</h2>
+<div class="tw"><table class="cards">
+<thead>
+<tr>
+<th>#</th>
+<th>Decision</th>
+<th>Default if not answered</th>
+</tr>
+</thead>
+<tbody>
+<tr class="chk" data-key="brief:D1">
+<td data-label="#"><label class="tg" title="Done"><input data-k="brief:D1" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>D1</td>
+<td data-label="Decision">Backend: Firebase (recommended) or Google Apps Script + Sheet?</td>
+<td data-label="Default if not answered">Firebase</td>
+</tr>
+<tr class="chk" data-key="brief:D2">
+<td data-label="#"><label class="tg" title="Done"><input data-k="brief:D2" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>D2</td>
+<td data-label="Decision">Which Google account owns the Firebase project?</td>
+<td data-label="Default if not answered">The Dewhurst.tech Google account</td>
+</tr>
+<tr class="chk" data-key="brief:D3">
+<td data-label="#"><label class="tg" title="Done"><input data-k="brief:D3" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>D3</td>
+<td data-label="Decision">Is the MARK button (F-F6) worth the extra build time?</td>
+<td data-label="Default if not answered">Yes — it's the one "should" that earns its keep at a bunched finish</td>
+</tr>
+<tr class="chk" data-key="brief:D4">
+<td data-label="#"><label class="tg" title="Done"><input data-k="brief:D4" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>D4</td>
+<td data-label="Decision">If Raceclocker comes back before Saturday, run it as instance A and this as instance B — or drop this entirely?</td>
+<td data-label="Default if not answered">Run both; this becomes the back-up</td>
+</tr>
+<tr class="chk" data-key="brief:D5">
+<td data-label="#"><label class="tg" title="Done"><input data-k="brief:D5" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>D5</td>
+<td data-label="Decision">Should the Burway event page's "Results ↗" link point at the new Results page on the day?</td>
+<td data-label="Default if not answered">Only if Raceclocker is down</td>
+</tr>
+<tr class="chk" data-key="brief:D6">
+<td data-label="#"><label class="tg" title="Done"><input data-k="brief:D6" type="checkbox"/><span aria-hidden="true" class="sl"></span><span class="sr">Done</span></label>D6</td>
+<td data-label="Decision">Start interval and line positions — needed for a realistic Friday test</td>
+<td data-label="Default if not answered">Ask the race committee</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<p><em>End of brief — V00.01</em></p></div>
+    <p class="top"><a href="#top">↑ Back to the top</a></p>
+  </details>
+</section>
+</main>
+<button class="fab" type="button" aria-label="Back to the top" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="menu" role="dialog" aria-modal="true" aria-label="Contents"><div class="sheet">
+  <h2>Jump to</h2>
+  <nav class="nav"><a href="#firebase"><span>Firebase capacity (read first)</span><small>decision</small></a><a href="#test"><span>Friday test script</span><small>57 to check</small></a><a href="#adj"><span>Race Adjudication: how it works</span><small>14 to check</small></a><a href="#snag"><span>Snagging brief (club test)</span><small>reference</small></a><a href="#brief"><span>Design brief (the binding spec)</span><small>6 to check</small></a></nav>
+</div></div>
+<script>
+(function(){
+  var KEY="sbh-race-pack-v1", state={};
+  try { state=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; } catch(e) { state={}; }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
+  var boxes=[].slice.call(document.querySelectorAll('input[data-k]'));
+  function paint(){
+    var done=0;
+    boxes.forEach(function(b){ var on=!!state[b.dataset.k]; b.checked=on; var row=b.closest('.chk'); if(row) row.classList.toggle('on',on); if(on) done++; });
+    document.getElementById('prog').textContent=done+" / "+boxes.length;
+    document.getElementById('pbar').style.width=(boxes.length?100*done/boxes.length:0)+"%";
+    [].forEach.call(document.querySelectorAll('.cnt[data-sec]'),function(c){
+      var s=document.getElementById(c.dataset.sec), bs=s.querySelectorAll('input[data-k]'); if(!bs.length) return;
+      var d=[].filter.call(bs,function(x){return x.checked;}).length; c.textContent=d+" / "+bs.length; c.classList.toggle('done',d===bs.length);
+    });
+  }
+  boxes.forEach(function(b){ b.addEventListener('change',function(){ if(b.checked) state[b.dataset.k]=Date.now(); else delete state[b.dataset.k]; save(); paint(); }); });
+  paint();
+  var menu=document.getElementById('menu');
+  document.getElementById('open-menu').onclick=function(){ menu.classList.add('open'); };
+  menu.addEventListener('click',function(e){ if(e.target===menu || e.target.closest('a')) menu.classList.remove('open'); });
+  // opening a section from a link
+  [].forEach.call(document.querySelectorAll('a[href^="#"]'),function(a){ a.addEventListener('click',function(){ var t=document.querySelector(a.getAttribute('href')); var d=t&&(t.tagName==='DETAILS'?t:t.querySelector('details')||t.closest('details')); if(d) d.open=true; }); });
+  var hide=document.getElementById('hide-done');
+  hide.onclick=function(){ var on=document.body.classList.toggle('filter-on'); hide.textContent=on?"Show ticked items":"Hide ticked items"; };
+  document.getElementById('expand').onclick=function(){ [].forEach.call(document.querySelectorAll('.doc details'),function(d){d.open=true;}); };
+  document.getElementById('collapse').onclick=function(){ [].forEach.call(document.querySelectorAll('.doc details'),function(d){d.open=false;}); };
+  document.getElementById('reset').onclick=function(){ if(confirm("Clear all ticks on this phone?")){ state={}; save(); paint(); } };
+})();
+</script>
+</body></html>
