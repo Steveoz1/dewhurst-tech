@@ -23,7 +23,7 @@ export const ROLE_EMAIL = {
   finisher: "sbh-finisher@dewhurst.tech"
 };
 export const DIVS = [1, 2, 3];
-export const DIV_STARTS = { 1: "10:00", 2: "12:00", 3: "14:00" };   // F-K8 defaults
+export const DIV_STARTS = { 1: "10:00", 2: "11:30", 3: "13:30" };   // F-K8. Race committee 23 Oct: Div 2 and 3 moved 30 min earlier (forecast rain)
 export const STATUSES = ["", "DNS", "DNF", "DSQ", "Withdrawn"];
 const UNDO_FREE_MS   = 30000;               // F-S5
 const OFFSET_WARN_MS = 2000;                // T-T3
@@ -208,6 +208,10 @@ async function firebaseBackend(cfg) {
       const snap = await fs.getDocFromServer(r);
       return { server: snap.data().t.toMillis(), t0, t1 };
     },
+    watchTapsOfKind(kind, cb) {               // live list of one kind of record from the audit log (issues tracker)
+      return fs.onSnapshot(fs.query(fs.collection(db, "taps"), fs.where("kind", "==", kind)),
+        snap => cb(snap.docs.map(d => ({ id: d.id, ...d.data() }))), err => { console.error("taps " + kind, err); noteError(err); });
+    },
     async tapsFor(instance, bow) {
       const q = fs.query(fs.collection(db, "taps"), fs.where("instance", "==", instance), fs.where("bow", "==", Number(bow)));
       const r = await fs.getDocs(q); return r.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -359,6 +363,23 @@ export function resetSystem(level) {
     { path: "config/entries", replace: true, data: keep }, { path: "config/race", replace: true, data: race }], tap);
 }
 export const reauth = pw => S.backend.reauth(pw);
+
+/* Updates / issues tracker (23 Oct). Each new issue and each later change is a new record in the audit log
+   (kind "issue"), so nothing is overwritten and every change keeps who and when. Officials only can read it.
+   fields: { id: "7", cat: "Crew"|"System"|"Other", bow: 157|null, text, status: "Open"|"In progress"|"Resolved" } */
+export const ISSUE_CATS = ["Crew", "System", "Other"], ISSUE_STATUSES = ["Open", "In progress", "Resolved"];
+export function logIssue(fields) {
+  const id = S.backend.newId();
+  const bow = fields.bow == null || fields.bow === "" ? null : Number(fields.bow);
+  const tap = { ...baseTap("issue", "A", bow, null), value: String(fields.id), issue: { ...fields, bow }, at: Date.now() };
+  writeOps(id, [{ path: "taps/" + id, create: true, data: tap }], tap);
+  return { id, ...tap };                      // the record itself, so the page can show it straight away
+}
+/** Issue records from this phone that haven't reached the server yet (shown straight away) */
+export function pendingIssueRecords() {
+  return ledger().flatMap(x => x.ops.filter(o => o.create && o.data && o.data.kind === "issue").map(o => ({ id: o.path.slice(5), ...o.data, pending: true })));
+}
+export const watchIssueRecords = cb => S.backend.watchTapsOfKind("issue", cb);
 
 export function saveRace(patch) { writeOps("r" + rid(12), [{ path: "config/race", data: patch }], null); }
 
