@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos } from "./sbh.js?v=20261022l";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox } from "./sbh.js?v=20261023m";
 
 S.instance = "A";                                    // the public only ever sees A; officials can switch once signed in
 await boot({ watch: ["entries"] });
@@ -36,6 +36,10 @@ $$("button", vseg).forEach(b => b.addEventListener("click", () => { view = b.dat
 
 const app = $("#app");
 app.innerHTML = `
+  <div class="pubbar" id="pubbar" hidden>
+    <span class="seg light pubseg" role="group" aria-label="Who can see these results"><button type="button" data-p="hidden">Hidden</button><button type="button" data-p="public">Public</button></span>
+    <span class="pubnote" id="pubnote"></span>
+  </div>
   <p class="prov">Provisional - subject to penalties and handicaps.</p>
   <div class="rfilters">
     <input class="q" type="search" placeholder="Search crew name, e.g. smi" aria-label="Search crew name" autocomplete="off">
@@ -81,15 +85,36 @@ function hl(s, t) {                                  // highlight the search tex
 }
 const timeOr = (v, r) => v != null ? fmtRace(v) : esc(r.note);
 
+/* Results hidden / public (23 Oct): until the admin makes them public, the public sees an empty table - so test
+   times are never shown. Signed-in officials (admin, starter, finisher) always see results; only the admin can switch. Stored in config/race.resultsPublic (admin-only write);
+   no setting yet counts as hidden. Note: this hides the times on the page; it does not lock the data itself. */
+const isAdmin = () => !!S.user && S.role === "admin";
+const isPublic = () => S.race.resultsPublic === true;
+$$(".pubseg button").forEach(b => b.addEventListener("click", async () => {
+  const want = b.dataset.p === "public"; if (want === isPublic()) return;
+  const ok = await confirmBox(want ? "Make results public?" : "Hide results from the public?",
+    want ? "Everyone who opens Results will see the times straight away." : "The public will see an empty table until results are made public again. Signed-in officials still see them.",
+    want ? "Make public" : "Hide");
+  if (ok) saveRace({ resultsPublic: want });
+}));
+function paintPub() {
+  $("#pubbar").hidden = !isAdmin();
+  $$(".pubseg button").forEach(b => b.classList.toggle("on", (b.dataset.p === "public") === isPublic()));
+  $("#pubnote").innerHTML = isPublic() ? "Results: <b>public</b> - everyone can see these times." : "Results: <b>hidden</b> - only signed-in officials can see these times.";
+  $("#pubbar").classList.toggle("is-hidden", !isPublic());
+}
+
 function draw() {
-  fillOptions();
+  fillOptions(); paintPub();
   $$("button", vseg).forEach(b => b.classList.toggle("on", b.dataset.v === view));
   const t = q.value.trim().toLowerCase();
-  const all = compute(S.instance);
+  const shut = !isPublic() && !S.user;               // not public yet, and not a signed-in official: an empty table
+  const all = shut ? [] : compute(S.instance);
   let rows = all.filter(r => (!t || String(r.e.crew).toLowerCase().includes(t))
     && (!fc.value || r.e.club === fc.value)
     && (!fe.value || (fe.value.startsWith("combo:") ? r.combo && r.combo.id === fe.value.slice(6) : r.e.event === fe.value.slice(6))));
-  $("#rstatus").textContent = (t || fc.value || fe.value) ? `Showing ${rows.length} of ${all.length} crews` : `${all.length} crews`;
+  if (shut) $("#rstatus").textContent = "";
+  else $("#rstatus").textContent = (t || fc.value || fe.value) ? `Showing ${rows.length} of ${all.length} crews` : `${all.length} crews`;
   if (sort === "bow") rows.sort((a, b) => a.e.bow - b.e.bow);
   else if (sort === "event") rows.sort((a, b) => gname(a).localeCompare(gname(b)) || (a.posEv == null) - (b.posEv == null) || (a.posEv || 0) - (b.posEv || 0) || a.e.bow - b.e.bow);
   else rows.sort(byPos);
@@ -114,7 +139,7 @@ function draw() {
           <div class="tm">${timeOr(r.adj, r)}</div></div>`;
     }).join("");
     $("#cards").innerHTML = `<div class="rh"><div class="p">Pos</div><div class="bw">Bow#</div><div class="ev">Event</div><div class="nm">Crew name</div><div class="cl">Club</div><div class="dv">Div</div><div class="tm">Adjusted time</div></div>` +
-      (html || `<div class="empty">${all.length ? "No crews match these filters." : "No crews loaded yet."}</div>`);
+      (html || `<div class="empty">${shut ? "Results will be published here on race day." : all.length ? "No crews match these filters." : "No crews loaded yet."}</div>`);
     return;
   }
   const body = rows.map(r => {
@@ -126,7 +151,7 @@ function draw() {
       <td class="t">${r.pt != null ? `<b>${fmtRace(r.pt)}</b>${r.pen ? `<br><small>penalty +${r.pen} s</small>` : ""}` : ""}</td>
       <td class="t">${r.adj != null ? `<b>${fmtRace(r.adj)}</b>${r.hc ? `<br><small>handicap -${r.hc} s</small>` : ""}` : ""}</td><td class="n">${r.posEv ?? ""}</td></tr>`;
   }).join("");
-  $("#tbl").innerHTML = `<thead><tr><th class="n" title="Overall, all divisions, on Adjusted time">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th>Start</th><th>Finish</th><th>Race time</th><th title="Race time plus any penalty">Time + penalty</th><th title="Time + penalty, minus any handicap - decides Pos and Pos in event">Adjusted time</th><th class="n" title="On adjusted time, within the event or its event combination">Pos in event</th></tr></thead><tbody>${body || `<tr><td colspan="12" class="empty">${all.length ? "No crews match these filters." : "No crews loaded yet."}</td></tr>`}</tbody>`;
+  $("#tbl").innerHTML = `<thead><tr><th class="n" title="Overall, all divisions, on Adjusted time">Pos</th><th class="n">Bow#</th><th>Event</th><th>Crew name</th><th>Club</th><th class="n">Div</th><th>Start</th><th>Finish</th><th>Race time</th><th title="Race time plus any penalty">Time + penalty</th><th title="Time + penalty, minus any handicap - decides Pos and Pos in event">Adjusted time</th><th class="n" title="On adjusted time, within the event or its event combination">Pos in event</th></tr></thead><tbody>${body || `<tr><td colspan="12" class="empty">${shut ? "Results will be published here on race day." : all.length ? "No crews match these filters." : "No crews loaded yet."}</td></tr>`}</tbody>`;
 }
 onChange(draw); draw();
 
