@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>App Documentation · Burway Race Timer</title>
+<meta name="description" content="How to set up and run a race with the Burway Rowing Club Race Timer (race officials only).">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#222c4a">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="sbh.css?v=20261031a">
+</head>
+<body class="sbh" data-page="docs">
+<header class="bbanner"><a href="./" aria-label="Burway Rowing Club Race Timer">
+  <img src="burway-emblem.png" alt="Burway Rowing Club" width="146" height="48" onerror="this.remove()">
+  <span>Burway Rowing Club Race Timer</span></a></header>
+<main class="sbh-main" id="main">
+  <nav class="sbh-tools" aria-label="Timing pages"><a class="admin" href="./">Race Admin</a><b class="pt">App Documentation</b><span class="who" id="who"></span></nav>
+  <div id="gate" hidden></div>
+  <div id="docs" hidden>
+    <h1>App Documentation</h1>
+    <p class="note">How to set up and run a race, for race officials. You see the sections for your login. Tick boxes are kept on this phone, for this race.</p>
+    <nav class="doctoc"><ol><li data-for="admin raceadmin starter finisher"><a href="#what">What the Race Timer is</a></li><li data-for="admin raceadmin starter finisher"><a href="#who">Logins — who does what</a></li><li data-for="admin raceadmin"><a href="#setup">Setting up a race</a></li><li data-for="admin raceadmin"><a href="#links">Sending the links</a></li><li data-for="admin raceadmin starter finisher"><a href="#phone">Phone checklist — before the first crew</a></li><li data-for="admin raceadmin starter "><a href="#starter">Starter</a></li><li data-for="admin raceadmin finisher"><a href="#finisher">Finisher</a></li><li data-for="admin raceadmin starter finisher"><a href="#rules">Race-day rules</a></li><li data-for="admin raceadmin starter finisher"><a href="#issues">Updates / Issues</a></li><li data-for="admin raceadmin"><a href="#adjudication">Race Adjudication</a></li><li data-for="admin raceadmin"><a href="#after">After the race</a></li><li data-for="admin raceadmin"><a href="#test">Trying it out — a test race</a></li><li data-for="admin raceadmin starter finisher"><a href="#trouble">Troubleshooting</a></li><li data-for="admin"><a href="#firebase">Managing Firebase (Admin only)</a></li></ol></nav>
+    <section id="what" class="doc" data-for="admin raceadmin starter finisher"><h2>What the Race Timer is</h2>
+<p>A timing system for head races and time trials, run on phones. Crews start one at a time and race the clock: a <b>starter</b> taps START as each crew crosses the start line, a <b>finisher</b> taps FINISH as it crosses the finish, and race time = finish − start. Results update live.</p>
+<ul>
+<li><b>Two independent copies, A and B.</b> Each has its own starter and finisher on their own phones. <b>A is the official record</b> and the only one the public sees; B is the check copy. Race Adjudication compares them.</li>
+<li><b>Every race is kept separately.</b> Each race has its own crews, times, tap log, issues and results, and its own links. A tap made on one race's page can only ever go to that race.</li>
+<li><b>Works without signal.</b> A tap is stored on the phone the instant it's made and sent when signal returns. The dot at the top right shows <b>All saved</b> (green), <b>Sending…</b> (amber) or <b>Offline</b> (red).</li>
+<li><b>One clock.</b> Every phone's time is corrected to the race database's clock, so the start and finish phones agree even if their own clocks don't.</li>
+<li><b>Nothing is ever lost.</b> Undo, corrections and swaps add a record; the original tap stays in the log.</li>
+</ul></section><section id="who" class="doc" data-for="admin raceadmin starter finisher"><h2>Logins — who does what</h2>
+<table class="sbh-t wrapt"><thead><tr><th>Login</th><th>Used by</th><th>Can</th></tr></thead><tbody>
+<tr><td><b>Admin</b></td><td>The system's owner</td><td>Everything, on every race: create, duplicate, archive and <b>delete</b> races, change a race's owner, manage Firebase.</td></tr>
+<tr><td><b>RaceAdmin</b></td><td>Whoever runs a race</td><td>Create races and run the races it owns: Race Setup, Race Configuration, Handicap, Race Adjudication, results Public/Hidden, links. Can archive but not delete. Never sees other owners' races.</td></tr>
+<tr><td><b>Starter</b></td><td>Both starters (A and B)</td><td>Starter page and Updates / Issues of the race in their link, while it's Live.</td></tr>
+<tr><td><b>Finisher</b></td><td>Both finishers (A and B)</td><td>Finisher page and Updates / Issues of the race in their link, while it's Live.</td></tr>
+</tbody></table>
+<p class="note">Passwords are handed out by the race admin and are never written in this document. Starters and finishers only ever get links to one race. Results need no login.</p></section><section id="setup" class="doc" data-for="admin raceadmin"><h2>Setting up a race</h2>
+<ol>
+<li><b>Races page</b> (Community Support › Burway Rowing Club Race Timer › Races). Either <b>+ New race</b> (empty), or <b>⋯ › Duplicate</b> on an earlier race to reuse its crews, divisions, event combinations, handicaps and details. Duplicate never copies times, taps, statuses, notes, penalties or issues, and the new race starts as <b>Draft</b> with results <b>Hidden</b>.</li>
+<li><b>Race Setup</b>: title, short name (for the top bar), date, first start time, location, course, notes for officials. The <b>race ID</b> goes into every link and can't be changed once the race is created — e.g. <code>2026-11-07-training</code>.</li>
+<li><b>Divisions</b>: how many (1–9) and each one's start time; first boating time is optional. Crews with no boating time of their own use their division's.</li>
+<li><b>Crews</b>: open the race menu › <b>Race Configuration</b> › Import CSV. Columns: <code>Bow#, Event, Crew Name, Club, Division</code>. Or add crews one at a time. Withdraw a crew with its Status — crews are never deleted.</li>
+<li><b>Handicaps</b>: race menu › Handicap Configuration — group events that race each other and give each its handicap in seconds.</li>
+<li><b>Set Live</b> on Race Setup when you're ready to time. It refuses until there's a title, a date, a division start time and at least one crew, and says which is missing.</li>
+</ol><ul class="ck"><li><label><input type="checkbox" data-k="setup:details"> <span>Race details and date checked</span></label></li><li><label><input type="checkbox" data-k="setup:divs"> <span>Divisions and start times set</span></label></li><li><label><input type="checkbox" data-k="setup:crews"> <span>Crew list loaded and the count line looks right</span></label></li><li><label><input type="checkbox" data-k="setup:hc"> <span>Handicap groups set (if any)</span></label></li><li><label><input type="checkbox" data-k="setup:live"> <span>Race set Live</span></label></li></ul></section><section id="links" class="doc" data-for="admin raceadmin"><h2>Sending the links</h2>
+<p>Race menu › <b>Share links</b> gives every link for the race, each with <b>Copy</b>: Starter A, Starter B, Finisher A, Finisher B, Results (public) and the race menu.</p>
+<ul>
+<li>Send each official <b>only their own link</b>. A Starter B link opens the Starter page already set to B for that race.</li>
+<li>The <b>short link</b> (<code>…/r/&lt;race-id&gt;/starter-b</code>) is easier to type. The <b>long link</b> always works and is the one to bookmark or Add to Home Screen.</li>
+<li>Send the Results link to anyone. Until you switch results to <b>Public</b>, it shows "Results will be published here on race day".</li>
+<li>Never send Race Setup or the Races page — they're for race admins only.</li>
+</ul></section><section id="phone" class="doc" data-for="admin raceadmin starter finisher"><h2>Phone checklist — before the first crew</h2><p>Do this with signal, ideally the evening before and again on the morning.</p><ul class="ck"><li><label><input type="checkbox" data-k="ph:browser"> <span>Open your link in <b>Chrome</b> (Android) or <b>Safari</b> (iPhone) — not inside WhatsApp or email.</span></label></li><li><label><input type="checkbox" data-k="ph:bookmark"> <span>Bookmark it, or use <b>Add to Home Screen</b>.</span></label></li><li><label><input type="checkbox" data-k="ph:signin"> <span>Sign in with the login you were given.</span></label></li><li><label><input type="checkbox" data-k="ph:ab"> <span>Check <b>A</b> or <b>B</b> is lit at the top and the bar under the clock is the right colour: <b>blue = A, orange = B</b>. A new or cleared phone starts on A.</span></label></li><li><label><input type="checkbox" data-k="ph:results"> <span>Open <b>Results</b> once too, so the phone keeps a copy of that page.</span></label></li><li><label><input type="checkbox" data-k="ph:green"> <span>The dot top right shows <b>All saved</b> (green).</span></label></li><li><label><input type="checkbox" data-k="ph:clock"> <span>Phone settings › Date &amp; time › <b>Automatic</b> is on. The page checks the clock itself; if it says <i>clock not checked</i>, keep the page open with signal for a moment.</span></label></li><li><label><input type="checkbox" data-k="ph:date"> <span>No yellow line saying the race is dated another day. If there is one, you may have last week's link.</span></label></li><li><label><input type="checkbox" data-k="ph:div"> <span>Tap your <b>division</b> (or All). Otherwise the list switches by itself at each division's start time.</span></label></li><li><label><input type="checkbox" data-k="ph:power"> <span>Phone charged, power bank, and a paper back-up sheet (bow number + time of day).</span></label></li></ul></section><section id="starter" class="doc" data-for="admin raceadmin starter "><h2>Starter</h2>
+<ul>
+<li>Crews are listed in bow-number order; the next to start is highlighted. <b>The list never moves by itself</b> — only you scroll. Type a bow number in the jump box to go straight to it.</li>
+<li><b>One finger, one tap</b> on START as the crew crosses the line. The row turns green with <b>Undo</b> straight away. If it doesn't, the tap didn't count (a sliding finger counts as a scroll).</li>
+<li><b>Undo</b> works for 30 seconds without a question; after that it asks first. It's greyed for 2 seconds after a tap so a double tap can't undo it.</li>
+<li><b>⚑</b> next to Undo flags the crew for the race admin to look at — one tap, no questions. <b>⋯</b> has Mark DNS, Swap start time (only while the dot is green) and Add note.</li>
+<li>Crews can start out of order. Tapping START on a crew that already has a start asks before replacing it.</li>
+</ul></section><section id="finisher" class="doc" data-for="admin raceadmin finisher"><h2>Finisher</h2>
+<ul>
+<li>Every crew has a <b>FINISH</b> button from the beginning — finish a crew even if its start hasn't reached your phone yet; the race time appears when it does.</li>
+<li><b>One finger, one tap</b> as the bow crosses the line. The row stays where it is, turns green and shows the finish and race time.</li>
+<li>Two or three crews crossing together: tap each one in turn, calmly — each tap gets its own time.</li>
+<li>Undo, ⚑ and ⋯ work as on the Starter page; ⋯ has Mark DNF / DSQ and Swap finish time.</li>
+</ul></section><section id="rules" class="doc" data-for="admin raceadmin starter finisher"><h2>Race-day rules</h2>
+<ul>
+<li><b>Nobody signs out</b> on race day. If a red banner appears, tell the race admin and keep the paper sheet going.</li>
+<li>If the dot shows <b>"N waiting"</b> for more than a minute while there's signal: airplane mode on, then off. <b>Don't reload</b> a page showing "waiting".</li>
+<li>Only use <b>Swap</b> while the dot is green.</li>
+<li>Log anything that happens — crew changes, problems — on <b>Updates / Issues</b> rather than on paper.</li>
+<li>Nothing is published to the website on a day a race is being timed.</li>
+</ul></section><section id="issues" class="doc" data-for="admin raceadmin starter finisher"><h2>Updates / Issues</h2><p>Race menu › <b>Updates / Issues</b>. Log a crew change, a system problem or anything else as it comes in: category, bow number (optional), what happened, status (Open / In progress / Resolved). Shared live between officials' phones and works without signal. Every change is kept with who and when. An open issue on a crew shows <b>Check</b> on public Results until it's resolved.</p></section><section id="adjudication" class="doc" data-for="admin raceadmin"><h2>Race Adjudication</h2>
+<p>Two independent sets of times: A (official, public) and B (the check). The page compares them for every crew and lists any that disagree under <b>Needs a look</b>. You decide which is right.</p>
+<ul>
+<li>A crew needs a look when: starts or finishes differ by more than 2.0 s; one copy has a time the other doesn't; the statuses differ; someone flagged it; A has it as DNF or DSQ; it has an open issue; a finish is earlier than its start; or a finish has no start in A or B. The full list is on the page.</li>
+<li>If A is right: <b>Resolve</b> (with an optional note). If A is wrong: <b>Review</b> › change A — usually <b>Use B's start / finish</b>, or type the right time — with a reason. Every change is added to the crew's tap list; nothing is deleted.</li>
+<li>A crew is done when it's no longer under Needs a look. If its times change afterwards it comes back, marked "changed since resolved".</li>
+<li>Public Results show <b>Check</b> only for flags, DNF/DSQ not yet resolved and open issues — never for A/B differences.</li>
+</ul></section><section id="after" class="doc" data-for="admin raceadmin"><h2>After the race</h2><ul class="ck"><li><label><input type="checkbox" data-k="af:finished"> <span>Race Setup › <b>Set Finished</b> as soon as timing ends — timing closes, adjudication and handicaps still work.</span></label></li><li><label><input type="checkbox" data-k="af:adj"> <span>Race Adjudication: nothing left under Needs a look.</span></label></li><li><label><input type="checkbox" data-k="af:issues"> <span>Updates / Issues: everything Resolved.</span></label></li><li><label><input type="checkbox" data-k="af:public"> <span>Results › <b>Public</b> (or on Race Setup) once you're happy.</span></label></li><li><label><input type="checkbox" data-k="af:export"> <span>Results › Export CSV, and race menu › <b>Export everything</b>; keep both.</span></label></li><li><label><input type="checkbox" data-k="af:archive"> <span>Later: Races page › ⋯ › <b>Archive</b>. Archived races are read-only; public results stay up if they were Public.</span></label></li></ul><p class="note">TV in the clubhouse: open Results signed out and set <b>Cycle through pages?</b> to On — pages change every 10 seconds, with the start/finish lists and the river.</p></section><section id="test" class="doc" data-for="admin raceadmin"><h2>Trying it out — a test race</h2><p>About 30 minutes with four phones (A starter, A finisher, B starter, B finisher) and a laptop for the race admin.</p><ul class="ck"><li><label><input type="checkbox" data-k="t:dup"> <span>Races › ⋯ on a real race › <b>Duplicate</b> as "Test race — delete me", dated today. Set it Live.</span></label></li><li><label><input type="checkbox" data-k="t:links"> <span>Send each phone its own link from Share links. Check A/B colours.</span></label></li><li><label><input type="checkbox" data-k="t:ten"> <span>Start 10 crews ~15 s apart on both starters; finish them in a different order on both finishers. Results show all 10 with times and positions.</span></label></li><li><label><input type="checkbox" data-k="t:air"> <span>Starter A: airplane mode on, start 5 crews, wait 2 min, airplane mode off. The dot goes red then green; the starts arrive with their original times.</span></label></li><li><label><input type="checkbox" data-k="t:close"> <span>Starter A: start a crew and immediately close the browser; reopen from the bookmark — it's there.</span></label></li><li><label><input type="checkbox" data-k="t:undo"> <span>Undo within 30 s (no question), and after 30 s (asks first).</span></label></li><li><label><input type="checkbox" data-k="t:ab"> <span>Finisher B: finish one crew 3 s later than A. Race Adjudication shows "Finish differs"; Resolve it.</span></label></li><li><label><input type="checkbox" data-k="t:pub"> <span>Signed-out phone: Results show "published on race day" while Hidden; switch Public and check again.</span></label></li><li><label><input type="checkbox" data-k="t:clock"> <span>Race menu › Clock check: every timing phone OK.</span></label></li><li><label><input type="checkbox" data-k="t:clear"> <span>Race Configuration › Clear this race — the race empties; other races are untouched.</span></label></li><li><label><input type="checkbox" data-k="t:delete"> <span>Races › ⋯ › Archive, then (Admin) Delete with the typed phrase. Its links now say the link isn't valid.</span></label></li></ul></section><section id="trouble" class="doc" data-for="admin raceadmin starter finisher"><h2>Troubleshooting</h2>
+<table class="sbh-t wrapt"><tbody>
+<tr><th>"This race link isn't valid"</th><td>The race was deleted or the link is mistyped. Ask the race admin for a new link.</td></tr>
+<tr><th>"Timing is closed for this race"</th><td>The race isn't Live (Draft, Finished or Archived). The race admin sets it Live on Race Setup.</td></tr>
+<tr><th>Yellow line about the race date</th><td>The race is dated another day — check you have this week's link.</td></tr>
+<tr><th>Dot red "Offline · N waiting"</th><td>No signal. Keep tapping; the taps are on the phone and send when signal returns. Don't reload.</td></tr>
+<tr><th>Dot amber "N waiting" for over a minute with signal</th><td>Airplane mode on, then off.</td></tr>
+<tr><th>Red "Server refused a tap" banner</th><td>Tell the race admin; don't sign out; keep the paper sheet going. Usually the race isn't Live or the wrong login is in use.</td></tr>
+<tr><th>Blank page with no signal</th><td>The phone has never opened that page. Open every page once with signal beforehand.</td></tr>
+<tr><th>"Can't reach the race database"</th><td>Check the signal. If other phones are fine, use <b>try safe mode</b> in the banner (no on-phone database copy for 12 hours).</td></tr>
+<tr><th>Opens with no crews and "Offline" on an iPad/iPhone</th><td>Settings › Apps › Safari › Advanced › Website Data › search <i>dewhurst</i> › swipe left › Delete. Reopen and sign in.</td></tr>
+<tr><th>"clock not checked" under the clock</th><td>Keep the page open with signal; it checks on opening and every 5 minutes. Tap the dot › Check now.</td></tr>
+<tr><th>A B phone shows A</th><td>New or cleared phones start on A. Open your B link again, or tap B at the top.</td></tr>
+</tbody></table></section><section id="firebase" class="doc" data-for="admin"><h2>Managing Firebase (Admin only)</h2>
+<p>The race data and the logins live in Google Firebase, project <b>burway-sbh-2026</b>. Use a laptop. <b>No passwords are written here</b> — keep them in your password manager.</p>
+<h4>Signing in</h4>
+<p><b>https://console.firebase.google.com</b> → sign in with the Google account that owns the project → open <b>burway-sbh-2026</b>.</p>
+<h4>Logins (Authentication › Users)</h4>
+<ul>
+<li><b>Add a login</b>: Add user → email (e.g. <code>sbh-raceadmin@dewhurst.tech</code>; it needn't be a real mailbox) → password → Add user. A new RaceAdmin or other role also needs its email adding to the security rules before it can do anything.</li>
+<li><b>Change a password</b>: "Reset password" in the user's ⋮ menu sends an email, so it only works if the address is a real mailbox. Otherwise: ⋮ › <b>Delete account</b>, then <b>Add user</b> again with the same email and the new password. Nothing in the race data changes — permissions follow the email address.</li>
+<li><b>Stop a login working</b>: ⋮ → <b>Disable account</b>. Do this for Starter and Finisher after a big race if their passwords were shared widely.</li>
+<li><b>Self sign-up must stay off</b>: Authentication › <b>Settings</b> › User actions › <i>Enable create (sign-up)</i> and <i>Enable delete</i> both unticked; <i>Email enumeration protection</i> on.</li>
+</ul>
+<h4>Security rules (Firestore Database › Rules)</h4>
+<ul>
+<li>The rules decide who can read and write what. The current rules box is kept in <code>Rowing\Burway Race Timer\Firebase rules\</code> on Steve's computer.</li>
+<li>To change them: open the rules file → copy all of it → in the console Rules tab, click in the editor, Ctrl+A, paste → <b>Publish</b>. They take about a minute.</li>
+<li>Never publish rules on a day a race is being timed.</li>
+</ul>
+<h4>Plan, usage and cost</h4>
+<ul>
+<li>The project is on <b>Blaze</b> (pay as you go): the free daily allowance applies first; beyond it, about $0.03 per 100,000 reads. Usage: Firestore Database › <b>Usage</b>.</li>
+<li>Keep a <b>budget alert</b> (e.g. £10): Google Cloud console › <b>Billing</b> › <b>Budgets &amp; alerts</b>. It emails you; it doesn't stop anything.</li>
+</ul>
+<h4>The web key</h4>
+<p>Google Cloud console (<b>https://console.cloud.google.com</b>) › project burway-sbh-2026 › APIs &amp; Services › Credentials › <i>Browser key</i> › Application restrictions: Websites — <code>https://www.dewhurst.tech/*</code> and <code>https://dewhurst.tech/*</code>. Leave it like that; it stops other websites using the project.</p>
+<h4>Looking at the data</h4>
+<p>Firestore Database › <b>Data</b>. Each race is under <code>races › &lt;race-id&gt;</code> with <code>config</code>, <code>timings</code>, <code>taps</code> and <code>clocks</code> inside. Look, don't edit — change data through the Race Timer pages so it's logged.</p>
+<h4>Deleting the original SBH 2026 data (later)</h4>
+<p>The 24 Oct race was copied into race <code>sbh-2026</code>; the original top-level <code>config</code>, <code>timings</code> and <code>taps</code> are kept read-only until you decide (not before 30 Nov 2026). Then: make sure you have the export file, and in Firestore › Data delete those three top-level collections (⋮ › Delete collection). The tap log can only be deleted here, never from the website.</p></section>
+    <p class="note">Generic guide, written 31 Oct 2026 from the SBH 2026 Race Pack (archived separately).</p>
+  </div>
+  <noscript><p class="prov">This page needs JavaScript switched on.</p></noscript>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <a class="brand" href="../../index.html"><img src="../../brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech" width="279" height="84"></a>
+    <div class="c">© 2026 Dewhurst.tech Ltd · Registered in England &amp; Wales, company no. 17373526<br>Registered office: 71-75 Shelton Street, Covent Garden, London WC2H 9JQ · <a href="../../privacy.html">Privacy</a> · <a href="../../data-policy.html">Calculator data</a></div>
+  </div>
+</footer>
+<script type="module" src="page-docs.js?v=20261031a"></script>
+<script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function (e) { console.warn("offline copy not available", e); });</script>
+</body>
+</html>

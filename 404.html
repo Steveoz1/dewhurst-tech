@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found · Dewhurst.tech</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<script>
+/* Burway Rowing Club Race Timer short links (multi-race brief B2):
+   /community/burway-race-timer/r/<raceId>[/<page>]  ->  the real page with ?race=<raceId>.
+   GitHub Pages serves this file for any address that doesn't exist; everything else gets the page below. */
+(function () {
+  var m = location.pathname.match(/^\/community\/burway-race-timer\/r\/([^\/]+)(?:\/([^\/]*))?\/?$/i);
+  if (!m) return;
+  var id = decodeURIComponent(m[1]).toLowerCase(), p = (m[2] || "").toLowerCase();
+  var map = { "": ["home.html", ""], "starter": ["start.html", ""], "starter-a": ["start.html", "&i=A"], "starter-b": ["start.html", "&i=B"],
+    "finisher": ["finish.html", ""], "finisher-a": ["finish.html", "&i=A"], "finisher-b": ["finish.html", "&i=B"], "results": ["results.html", ""] };
+  var t = map.hasOwnProperty(p) ? map[p] : ["home.html", "&bad=1"];
+  location.replace("/community/burway-race-timer/" + t[0] + "?race=" + encodeURIComponent(id) + t[1] + location.hash);
+})();
+</script>
+<link rel="stylesheet" href="/assets/site.css">
+<style>.nf{max-width:640px;margin:0 auto;padding:80px 20px 120px;text-align:center}.nf h1{font-size:34px;margin:0 0 12px}.nf p{color:#4b5563}</style>
+</head>
+<body>
+<main class="nf" id="main">
+  <h1>Page not found</h1>
+  <p>Sorry — there's nothing at this address.</p>
+  <p><a href="/">Go to the Dewhurst.tech home page</a></p>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <a class="brand" href="/index.html"><img src="/brand-lockup-2.w338-h84-c0.jpg" alt="Dewhurst.tech" width="279" height="84"></a>
+    <div class="c">© 2026 Dewhurst.tech Ltd · Registered in England &amp; Wales, company no. 17373526<br>Registered office: 71-75 Shelton Street, Covent Garden, London WC2H 9JQ · <a href="/privacy.html">Privacy</a> · <a href="/data-policy.html">Calculator data</a></div>
+  </div>
+</footer>
+</body>
+</html>
