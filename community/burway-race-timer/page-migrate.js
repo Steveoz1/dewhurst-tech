@@ -2,7 +2,7 @@
    Step 1 Export (M-2) -> Step 2 Copy, only when Steve says go (M-3) -> Step 3 Check (M-4) on ?race=sbh-2026&check=1.
    Admin only. The original data is never changed or deleted here (M-5, M-6). */
 import { boot, bootRaceless, mountBar, requireRole, S, $, esc, toast, typedConfirm, computeResults, fmtRace, statusOf, entryList, ROLE_EMAIL } from "./sbh.js?v=20261031a";
-import { EXPECTED, BOATING } from "./sbh2026-reference.js?v=20261031a";
+import { EXPECTED, BOATING, AGREED_WITHDRAWN } from "./sbh2026-reference.js?v=20261101a";
 
 const ID = "sbh-2026";
 const CHECK = new URLSearchParams(location.search).get("check") === "1";
@@ -88,18 +88,20 @@ if (!CHECK) {
   const cfgOld = { ...old["config/race"] }; delete cfgOld.resultsPublic;
   add("Handicaps, event combinations and reset marker identical", stable(cfgOld) === stable(cn["config/race"]));
   bad = [];
-  for (const [k, e] of Object.entries(old["config/entries"])) { const n = { ...(cn["config/entries"][k] || {}) }; const boat = n.boat; if (BOATING[k] && !e.boat) { if (boat !== BOATING[k]) bad.push(k + " boat"); delete n.boat; } if (stable(e) !== stable(n)) bad.push(k); }
-  add("Crew list identical (plus each crew's boating time)", !bad.length && Object.keys(cn["config/entries"]).length === Object.keys(old["config/entries"]).length, bad.slice(0, 8).join(", "));
+  for (const [k, e0] of Object.entries(old["config/entries"])) { const n = { ...(cn["config/entries"][k] || {}) }; const boat = n.boat; if (BOATING[k] && !e0.boat) { if (boat !== BOATING[k]) bad.push(k + " boat"); delete n.boat; }
+    let e = e0; if (AGREED_WITHDRAWN.includes(k) && n.status === "Withdrawn") { e = { ...e0 }; delete e.status; delete e.updatedAt; delete e.updatedBy; delete n.status; delete n.updatedAt; delete n.updatedBy; }   // agreed 1 Nov
+    if (stable(e) !== stable(n)) bad.push(k); }
+  add("Crew list identical (plus each crew's boating time; 267, 270, 273, 386 Withdrawn as agreed)", !bad.length && Object.keys(cn["config/entries"]).length === Object.keys(old["config/entries"]).length, bad.slice(0, 8).join(", "));
   const byId = Object.fromEntries(cn.taps.map(t => [t.id, t])); bad = old.taps.filter(t => !byId[t.id] || stable(t) !== stable(byId[t.id])).map(t => t.id);
   add("Every tap-log record identical (IDs, values, server times)", !bad.length, bad.length ? bad.length + " differ, e.g. " + bad.slice(0, 3).join(", ") : "");
   // Results against Burway SBH 2026 Results.html
   const res = computeResults("A"); const byBow = Object.fromEntries(res.map(r => [String(r.e.bow), r]));
   const withTimes = res.filter(r => r.rt != null).length, wd = res.filter(r => r.st === "Withdrawn").length, dnf = res.filter(r => r.st === "DNF").length;
-  add("Results: 68 crews with times, 89 entries, 20 Withdrawn, 1 DNF", withTimes === 68 && res.length === 89 && wd === 20 && dnf === 1, `${withTimes} with times, ${res.length} entries, ${wd} Withdrawn, ${dnf} DNF`);
+  add("Results: 69 crews with times, 89 entries, 19 Withdrawn, 1 DNF (published page + bow 173 corrected)", withTimes === 69 && res.length === 89 && wd === 19 && dnf === 1, `${withTimes} with times, ${res.length} entries, ${wd} Withdrawn, ${dnf} DNF`);
   bad = [];
   for (const [bow, pos, pie, rt, st] of EXPECTED) { const r = byBow[String(bow)]; if (!r) { bad.push(bow + " missing"); continue; }
     if ((r.pos ?? null) !== (pos ?? null) || (r.posEv ?? null) !== (pie ?? null) || (rt ? fmtRace(r.rt) : "") !== rt || (st || "") !== (OUTS(r.st))) bad.push(`${bow}: ${r.pos}/${r.posEv}/${fmtRace(r.rt)}/${r.st}`); }
-  add("Results: every position, race time and position-in-event as published", !bad.length, bad.slice(0, 6).join("; "));
+  add("Results: every position, race time and position-in-event as published (with bow 173 corrected)", !bad.length, bad.slice(0, 6).join("; "));
   const allOk = rows.every(r => r.ok);
   app.innerHTML = `<h1>Check the move of SBH 2026</h1>
     <table class="sbh-t"><tbody>${rows.map(r => `<tr><td>${r.ok ? "✅" : "❌"}</td><th>${esc(r.what)}</th><td>${esc(r.detail)}</td></tr>`).join("")}</tbody></table>
