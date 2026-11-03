@@ -1,5 +1,5 @@
 /* Public results list (multi-race brief F-P1, D3): races whose results are Public. Nothing else on the page. */
-import { bootRaceless, mountMenu, S, $, esc } from "./sbh.js?v=20261031a";
+import { bootRaceless, mountMenu, S, $, esc } from "./sbh.js?v=20261101b";
 await bootRaceless();
 mountMenu($("#menu"), "results");
 const app = $("#app");

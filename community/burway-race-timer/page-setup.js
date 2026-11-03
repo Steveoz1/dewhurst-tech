@@ -1,7 +1,7 @@
 /* Race Setup (multi-race brief Part D). ?new=1 = a new, empty race (saved when "Create race" is pressed);
    ?race=<id> = that race, every field saved as it's changed. Admin, or the RaceAdmin who owns the race (Part O). */
-import { boot, bootRaceless, mountBar, requireRole, onChange, S, $, $$, esc, toast, confirmBox, RACE_ID, ROLE_EMAIL, raceStatus, isArchived, saveRaceDoc } from "./sbh.js?v=20261031a";
-import { STATUS_NAME, isSuper, blankRace, suggestId, idProblem, createRace, liveBlockers, RACEADMINS } from "./races.js?v=20261031a";
+import { boot, bootRaceless, mountBar, requireRole, onChange, S, $, $$, esc, toast, confirmBox, RACE_ID, ROLE_EMAIL, raceStatus, isArchived, saveRaceDoc } from "./sbh.js?v=20261101b";
+import { STATUS_NAME, isSuper, blankRace, suggestId, idProblem, createRace, liveBlockers, RACEADMINS } from "./races.js?v=20261101b";
 
 const NEW = new URLSearchParams(location.search).get("new") === "1";
 if (NEW) await bootRaceless(); else await boot({ watch: ["entries"] });

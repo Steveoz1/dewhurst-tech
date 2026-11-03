@@ -1,6 +1,6 @@
 /* Results page (brief E5: F-R1 to F-R7). Open to anyone; read only. */
 import { boot, mountBar, onChange, S, officialInstance, computeResults as compute, $, $$, esc, entryList, currentDivision, timing, statusOf, watchTimings,
-         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox, serverNow, preStartNote , rkey, riverMs, resultsNote, resultsPublic, saveRaceDoc, getRaceRecord, csvName } from "./sbh.js?v=20261031a";
+         raceTenths, fmtRace, fmtClock, downloadCSV, DIVS, LS, combos, saveRace, confirmBox, serverNow, preStartNote , rkey, riverMs, resultsNote, resultsPublic, saveRaceDoc, getRaceRecord, csvName } from "./sbh.js?v=20261101b";
 
 S.instance = "A";                                    // the public only ever sees A; officials can switch once signed in
 await boot({ watch: ["entries"] });

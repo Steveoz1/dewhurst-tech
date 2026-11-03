@@ -2,7 +2,7 @@
    Used by the Races page, Race Setup and the race hub. Admin / RaceAdmin only; every action is also
    checked by the Firestore rules. These write straight to the server (no offline queue): they are
    desk jobs done with signal, and each one reports success or failure on the page. */
-import { S, ROLE_EMAIL } from "./sbh.js?v=20261031a";
+import { S, ROLE_EMAIL } from "./sbh.js?v=20261101b";
 
 export const STATUS = ["draft", "live", "finished", "archived"];
 export const STATUS_NAME = { draft: "Draft", live: "Live", finished: "Finished", archived: "Archived" };

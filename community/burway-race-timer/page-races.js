@@ -1,7 +1,7 @@
 /* Races page (multi-race brief Part C). Admin sees every race; RaceAdmin sees the races it owns (Part O).
    Starter, Finisher and the public see a sign-in box only (F-RL1). */
-import { bootRaceless, mountBar, mountMenu, requireRole, onChange, S, $, $$, esc, toast, confirmBox, typedConfirm, menuBox, reauth, ROLE_EMAIL, LS } from "./sbh.js?v=20261031a";
-import { STATUS_NAME, isSuper, canRun, suggestId, idProblem, duplicateRace, archiveRace, unarchiveRace, deleteRace, exportRace, changeOwner, RACEADMINS } from "./races.js?v=20261031a";
+import { bootRaceless, mountBar, mountMenu, requireRole, onChange, markServerOk, S, $, $$, esc, toast, confirmBox, typedConfirm, menuBox, reauth, ROLE_EMAIL, LS } from "./sbh.js?v=20261101b";
+import { STATUS_NAME, isSuper, canRun, suggestId, idProblem, duplicateRace, archiveRace, unarchiveRace, deleteRace, exportRace, changeOwner, RACEADMINS } from "./races.js?v=20261101b";
 
 await bootRaceless();
 mountMenu($("#menu"), "races");
@@ -27,7 +27,7 @@ $$("#vseg button").forEach(b => b.addEventListener("click", () => { view = b.dat
 async function load() {
   try {
     races = isSuper() ? await S.backend.query("races") : await S.backend.query("races", { owner: S.authUser.email.toLowerCase() });
-    $("#rlnote").textContent = "";
+    $("#rlnote").textContent = ""; markServerOk();
   } catch (e) { $("#rlnote").textContent = "Couldn't load the races (" + (e.code || e.message || e) + "). Check the signal."; }
   draw();
 }

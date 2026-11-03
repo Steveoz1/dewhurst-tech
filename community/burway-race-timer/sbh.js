@@ -409,6 +409,8 @@ export async function boot({ watch = ["entries", "A", "B"] } = {}) {
 
 const watching = {};
 function noteMeta(meta) { S.fromCache = meta.fromCache; }
+/** Pages above a race (no live race feed): call after any successful read from the database, so the light shows connected. */
+export function markServerOk() { if (RACELESS && S.fromCache) { S.fromCache = false; changed(); } }
 export function watchEntries() {
   if (watching.entries) return; watching.entries = true;
   S.backend.watchDoc(RP("config/entries"), (data, meta) => {
@@ -898,6 +900,7 @@ export async function measureOffset() {
     }
     if (best) {
       S.offset = { ...best, at: Date.now(), race: RACE_ID }; LS.set("sbh.offset", S.offset);   // phone-level (D8): the error is in the phone's clock
+      if (RACELESS) S.fromCache = false;      // pages above a race have no live race feed: a completed round trip to the database is what shows "connected"
       if (S.raceDoc && !isArchived())         // D8: each check is also recorded with the race, for the hub's Clock check panel
         S.backend.commit([{ path: RP("clocks/" + id), data: { deviceId: S.deviceId, user: S.user.email, role: S.realRole, page: S.page, instance: S.instance, offset: best.ms, rtt: best.rtt, at: Date.now() } }]).catch(e => console.warn("clock record", e));
     }

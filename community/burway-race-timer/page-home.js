@@ -1,7 +1,7 @@
 /* Race hub (today's home page, for one race - multi-race brief Part G): show only the pages the signed-in role can use,
    plus, for this race's admin, Race Setup, All races, Share links (F-H3), the Clock check panel (D8) and Export (F-H5). */
-import { boot, onChange, S, $, $$, esc, toast, DIVS, DIV_STARTS, raceTitle, RACE_ID, ROLE_LABEL } from "./sbh.js?v=20261031a";
-import { exportRace } from "./races.js?v=20261031a";
+import { boot, onChange, S, $, $$, esc, toast, DIVS, DIV_STARTS, raceTitle, RACE_ID, ROLE_LABEL } from "./sbh.js?v=20261101b";
+import { exportRace } from "./races.js?v=20261101b";
 await boot({ watch: [] });
 const longDate = d => d ? new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }) : "";
 const base = location.origin + location.pathname.replace(/[^/]*$/, "");

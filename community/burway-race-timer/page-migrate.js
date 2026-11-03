@@ -1,8 +1,8 @@
 /* One-off: move SBH 2026 from the original single-race layout into race "sbh-2026" (multi-race brief E2).
    Step 1 Export (M-2) -> Step 2 Copy, only when Steve says go (M-3) -> Step 3 Check (M-4) on ?race=sbh-2026&check=1.
    Admin only. The original data is never changed or deleted here (M-5, M-6). */
-import { boot, bootRaceless, mountBar, requireRole, S, $, esc, toast, typedConfirm, computeResults, fmtRace, statusOf, entryList, ROLE_EMAIL } from "./sbh.js?v=20261031a";
-import { EXPECTED, BOATING, AGREED_WITHDRAWN } from "./sbh2026-reference.js?v=20261101a";
+import { boot, bootRaceless, mountBar, requireRole, S, $, esc, toast, typedConfirm, computeResults, fmtRace, statusOf, entryList, ROLE_EMAIL } from "./sbh.js?v=20261101b";
+import { EXPECTED, BOATING, AGREED_WITHDRAWN } from "./sbh2026-reference.js?v=20261101b";
 
 const ID = "sbh-2026";
 const CHECK = new URLSearchParams(location.search).get("check") === "1";

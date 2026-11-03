@@ -2,7 +2,7 @@
    Scope: /community/burway-race-timer/ only. Each page is kept once, whatever race it's opened for (the race ID is
    in the query, and the kept copy is matched ignoring the query - multi-race brief B3). Race data itself is handled by Firebase's own offline cache.
    Bump VERSION on every publish so phones pick up the new files. */
-const VERSION = "brt-20261031a";
+const VERSION = "brt-20261101b";
 const FB = "https://www.gstatic.com/firebasejs/12.19.0/";
 const LOCAL = [
   "./", "index.html", "setup.html", "results-list.html", "home.html", "config.html", "start.html", "finish.html", "results.html", "adjudicate.html", "handicap.html", "issues.html", "burway-emblem.png",
