@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html lang="en-GB">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Burway RC — site index</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="assets/favicon.png" rel="icon" type="image/png"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+
+  :root{
+    --ink:#1A2340; --teal:#2E3A63; --water:#5A6894;
+    --mist:#F2F3F7; --paper:#FCFCFD; --line:#D2D6E2;
+    --amber:#C9A227; --amber-soft:#FBF2D6; --amber-ink:#8A6D0B;
+    --sage:#E2E5EF; --sage-ink:#4A5680; --green:#3E4D7A; --blue:#5A6894;
+    --warn:#B23B2E; --warn-soft:#F6E1DE;
+    --navy:#222C4A; --gold:#F0CE00;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:"Barlow",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--mist);line-height:1.5;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .sheet{max-width:1060px;margin:0 auto;background:var(--paper);}
+  .pad{padding:0 26px;}
+  a{color:var(--teal);}
+  h2.eyebrow{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.14em;
+    font-size:11.5px;color:var(--water);margin:0 0 10px;font-weight:700;}
+  .crest{display:block;}
+
+  /* ---- site chrome ---- */
+  .topbar{background:var(--navy);color:#fff;}
+  .topbar-in{max-width:1060px;margin:0 auto;padding:12px 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .topbar .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:#fff;}
+  .topbar .brand img.logo{height:44px;width:auto;display:block;border-radius:4px;}
+  .topbar .brand .tag{font-size:10px;letter-spacing:.17em;color:#C9B26A;text-transform:uppercase;
+    font-weight:600;border-left:1px solid rgba(255,255,255,.22);padding-left:11px;margin-left:2px;}
+  .topbar .brand b{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.05em;font-size:19px;line-height:1;display:block;}
+  .topbar .brand small{display:block;font-size:10px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;
+    font-weight:600;margin-top:3px;}
+  nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;}
+  nav a{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:12.5px;
+    font-weight:600;color:#C8CEE4;text-decoration:none;padding:7px 11px;border-radius:6px;}
+  nav a:hover{background:rgba(255,255,255,.1);color:#fff;}
+  nav a.here{background:var(--teal);color:#fff;}
+  .draftstrip{background:var(--amber-soft);color:var(--amber-ink);font-size:11.5px;text-align:center;
+    padding:6px 26px;letter-spacing:.02em;border-bottom:1px solid #eddac4;}
+
+  /* ---- hero ---- */
+  .hero{background:linear-gradient(155deg,#222C4A 0%,#2C3860 55%,#3A4778 100%);color:#fff;padding:40px 26px 38px;}
+  .hero-in{max-width:1060px;margin:0 auto;display:flex;gap:26px;align-items:center;flex-wrap:wrap;}
+  .hero h1{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em;
+    font-size:44px;line-height:.96;margin:0 0 10px;}
+  .hero p{margin:0;font-size:16px;color:#C8CEE4;max-width:640px;line-height:1.5;}
+  .hero .kicker{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.2em;
+    font-size:11.5px;color:var(--gold);font-weight:700;margin-bottom:9px;}
+
+  /* ---- blocks ---- */
+  section{padding:30px 26px;max-width:1060px;margin:0 auto;}
+  section.alt{background:#fff;max-width:none;}
+  section.alt > .inner{max-width:1060px;margin:0 auto;}
+  h2.sec{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.03em;
+    font-size:27px;margin:0 0 6px;line-height:1.05;}
+  h3.sub{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+    font-size:19px;margin:22px 0 6px;}
+  p.lead{font-size:16.5px;color:#333640;margin:0 0 14px;max-width:760px;}
+  p{font-size:14.5px;color:#333640;}
+  .rule{height:3px;width:56px;background:var(--amber);border-radius:2px;margin:0 0 16px;}
+
+  .cards{display:flex;gap:14px;flex-wrap:wrap;}
+  .card{border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:16px 18px 17px;flex:1 1 300px;}
+  .card h4{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:16px;
+    margin:0 0 6px;color:var(--ink);}
+  .card p{margin:0;font-size:13.5px;line-height:1.5;color:#3A3E4A;}
+  .card ul{margin:6px 0 0;padding-left:17px;font-size:13.5px;line-height:1.5;color:#3A3E4A;}
+  .card ul li{margin-bottom:4px;}
+
+  .chip{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:18px;display:inline-flex;align-items:center;
+    gap:5px;white-space:nowrap;}
+  .chip .sw{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .i-easy{background:#E8EBF3;color:#25366B;}.i-easy .sw{background:var(--green);}
+  .i-steady{background:#E6EAF4;color:#233774;}.i-steady .sw{background:var(--blue);}
+  .i-race{background:var(--amber-soft);color:var(--amber-ink);}.i-race .sw{background:var(--amber);}
+  .i-rec{background:var(--sage);color:var(--sage-ink);}.i-rec .sw{background:var(--sage-ink);}
+  .i-land{background:#efe9f4;color:#54407a;}.i-land .sw{background:#6b4fa0;}
+
+  .foot{background:var(--navy);color:#B4BCD6;padding:26px;}
+  .foot-in{max-width:1060px;margin:0 auto;display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;}
+  .foot-in > div{flex:1 1 240px;}
+  .foot h5{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.09em;font-size:11px;
+    color:var(--gold);margin:0 0 6px;}
+  .foot p{margin:0;font-size:12.5px;line-height:1.5;color:#B4BCD6;}
+  .foot a{color:var(--gold);}
+  .sign{text-align:center;font-size:11px;color:#8a93ad;padding:14px 26px 26px;background:var(--navy);letter-spacing:.03em;}
+
+  @media (max-width:700px){
+    .hero h1{font-size:32px;}
+    nav{width:100%;margin-left:0;}
+  }
+  @media print{ body{background:#fff;} nav,.draftstrip{display:none;} @page{size:A4;margin:10mm;} }
+
+
+  
+
+  .wrap2{max-width:1100px;margin:0 auto;padding:26px;}
+  .tiles{display:flex;gap:13px;flex-wrap:wrap;margin-bottom:8px;}
+  .tile{flex:1 1 165px;border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:14px 16px;}
+  .tile b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:31px;line-height:1;color:var(--teal);}
+  .tile.warn b{color:var(--amber-ink);}
+  .tile span{display:block;font-size:12px;color:#5E6580;margin-top:5px;line-height:1.35;}
+  .bar{margin:16px 0 6px;border:1.5px solid var(--line);border-radius:9px;background:#fff;
+    padding:10px 15px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5;}
+  .bar input{font-family:"Barlow",sans-serif;font-size:13.5px;border:1.5px solid var(--line);
+    border-radius:6px;padding:7px 11px;min-width:240px;color:var(--ink);}
+  .bar button{font-family:"Barlow",sans-serif;font-size:12.5px;border:1.5px solid var(--line);
+    background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;color:var(--ink);}
+  .bar button.on{background:var(--amber);border-color:var(--amber);color:#fff;}
+  .bar .count{margin-left:auto;font-size:12px;color:#5E6580;}
+  h3.sec{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.06em;
+    font-size:16px;color:var(--water);margin:26px 0 8px;border-bottom:2px solid var(--line);padding-bottom:5px;}
+  h3.sec em{font-style:normal;color:#9AA1B8;font-size:12px;letter-spacing:.04em;margin-left:8px;}
+  .rows{border:1.5px solid var(--line);border-radius:9px;background:#fff;overflow:hidden;}
+  a.row{display:grid;grid-template-columns:minmax(150px,1.5fr) minmax(150px,1.6fr) 96px 92px auto;
+    gap:12px;align-items:center;padding:10px 15px;border-bottom:1px solid #EFF1F6;text-decoration:none;color:inherit;}
+  a.row:last-child{border-bottom:none;}
+  a.row:hover{background:var(--mist);}
+  a.row .t{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+    font-size:15px;letter-spacing:.02em;color:var(--ink);}
+  a.row .p code{font-size:11.5px;color:var(--teal);background:#F1F2F8;padding:2px 6px;border-radius:4px;}
+  a.row .m{font-size:11.5px;color:#6E7590;}
+  a.row .w{font-size:11.5px;color:#6E7590;text-align:right;}
+  a.row .bs{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;}
+  .b{font-size:10px;font-weight:600;padding:2px 7px;border-radius:12px;white-space:nowrap;}
+  .b-empty{background:var(--warn-soft);color:var(--warn);}
+  .b-stale{background:var(--amber-soft);color:var(--amber-ink);}
+  .b-stag{background:#efe9f4;color:#54407a;}
+  .b-big{background:#E6EAF4;color:#233774;}
+  .b-new{background:var(--amber);color:#fff;}
+  a.row.newrow{background:#fffaf4;}
+  a.row.newrow:hover{background:#fdf1e2;}
+  a.row.newrow .p{font-size:12.5px;color:#5E6580;}
+  .note{border-left:4px solid var(--amber);background:#fff;border:1px solid var(--line);
+    border-left:4px solid var(--amber);border-radius:0 9px 9px 0;padding:14px 18px;margin:18px 0;}
+  .note p{margin:0 0 8px;font-size:14px;color:#3B4260;line-height:1.55;}
+  .note p:last-child{margin-bottom:0;}
+  .extras{display:flex;gap:13px;flex-wrap:wrap;margin-top:22px;}
+  .extras div{flex:1 1 280px;border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:14px 17px;}
+  .extras h4{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.06em;
+    font-size:12px;color:var(--water);margin:0 0 7px;}
+  .extras p,.extras li{font-size:13px;color:#3B4260;line-height:1.5;margin:0 0 6px;}
+  .extras ul{margin:0;padding-left:17px;}
+  @media (max-width:820px){ a.row{grid-template-columns:1fr;gap:4px;} a.row .w,a.row .bs{text-align:left;justify-content:flex-start;} }
+
+</style>
+<meta content="noindex, nofollow" name="robots"/></head>
+<body>
+<div class="v2note"><b>V2.0 working baseline — 7 Nov 2026.</b> This index is the 22 Sep master index, unchanged. Since then the menu has changed: Vision and Who We Are sit under The Club; Training Plans, Racing Calendar, Socials and Home Training sit under Members; a placeholder Members' login page is new. The V2.0 architecture map, page purposes and style guide are in the brief (<code>Burway Website — V2.0 Brief (V00.04).md</code>, Part B). Every page now has an editorial margin with live comments.</div>
+<div class="topbar">
+<div class="topbar-in">
+<a class="brand" href="index.html"><img alt="Burway Rowing Club" class="logo" src="assets/burway-logo.png"/><span class="tag">Est. 1921 · River Thames</span><span style="display:none"><b>Burway Rowing Club</b><small>Est. 1921 · River Thames</small></span></a>
+<nav><a href="index.html">Open the site →</a></nav>
+</div>
+</div>
+<div class="draftstrip"><b>DRAFT for review</b> — the proposed new Burway Rowing Club website, for the website sub-committee. This is not the club's website (that is burwayrowingclub.co.uk). Switch <b>Comments &amp; notes</b> on to see the editorial notes and to comment on any block. </div>
+<div class="hero">
+<div class="hero-in">
+<div>
+<div class="kicker">Master index</div>
+<h1>The whole site,<br/>on one page</h1>
+<p>All 26 published pages, at the same web addresses they use today. Click any row to open that page. Everything works offline — no internet needed except to load images, which still come from the live server.</p>
+</div>
+</div>
+</div>
+<div class="wrap2">
+<div class="tiles">
+<div class="tile"><b>26</b><span>published pages imported</span></div>
+<div class="tile"><b>8,981</b><span>words of content across the whole site</span></div>
+<div class="tile warn"><b>3%</b><span>of all those words sit on the homepage alone</span></div>
+<div class="tile warn"><b>13</b><span>pages not edited since 2021 or earlier</span></div>
+<div class="tile warn"><b>2</b><span>menu sections with no content at all</span></div>
+<div class="tile"><b>161</b><span>images and PDFs in the media library</span></div>
+<div class="tile"><b>4</b><span>new pages added to the menu, not yet on the live site</span></div>
+</div>
+<div class="note">
+<p><b>Start with the homepage row.</b> It holds 232 words — 3% of the entire website — with 50 images and 10 PDF links on a single page. Everything in the content plan follows from that one number.</p>
+<p>The badges mark what needs attention: <span class="b b-empty">no content</span> a menu item leading nowhere, <span class="b b-stale">not edited since…</span> content older than the last four seasons, <span class="b b-stag">staging server refs</span> images loading from a leftover server that will take them with it when it goes, <span class="b b-big">oversized</span> a page doing too many jobs.</p>
+</div>
+<div class="bar">
+<input autocomplete="off" id="q" placeholder="Filter by page name or address…" type="search"/>
+<button id="attn">Only pages needing attention</button>
+<button onclick="window.print()">Print</button>
+<span class="count" id="count"></span>
+</div>
+<h3 class="sec">New pages from the coaches workshop <em>7 pages</em></h3><div class="rows">
+<a class="row newrow" data-attn="no" data-find="vision manifesto the club manifesto — who we are, what we promise, and how we carry ourselves" href="manifesto/index.html">
+<span class="t">Vision</span>
+<span class="p">The club manifesto — who we are, what we promise, and how we carry ourselves</span>
+<span class="m">new</span>
+<span class="w"></span>
+<span class="bs"><span class="b b-new">not on the live site</span></span>
+</a>
+<a class="row newrow" data-attn="no" data-find="who we are who-we-are the eight member types, what each can expect, and where we say so honestly" href="who-we-are/index.html">
+<span class="t">Who We Are</span>
+<span class="p">The eight member types, what each can expect, and where we say so honestly</span>
+<span class="m">new</span>
+<span class="w"></span>
+<span class="bs"><span class="b b-new">not on the live site</span></span>
+</a>
+<a class="row newrow" data-attn="no" data-find="training plans training-plans twelve-week published plans for three squads, tabbed" href="training-plans/index.html">
+<span class="t">Training Plans</span>
+<span class="p">Twelve-week published plans for three squads, tabbed</span>
+<span class="m">new</span>
+<span class="w"></span>
+<span class="bs"><span class="b b-new">not on the live site</span></span>
+</a>
+<a class="row newrow" data-attn="no" data-find="racing calendar racing-calendar 2026–27 target events, published early" href="racing-calendar/index.html">
+<span class="t">Racing Calendar</span>
+<span class="p">2026–27 target events, published early</span>
+<span class="m">new</span>
+<span class="w"></span>
+<span class="bs"><span class="b b-new">not on the live site</span></span>
+</a>
+<a class="row newrow" data-attn="no" data-find="socials socials the social calendar, with flyers ready to print" href="socials/index.html">
+<span class="t">Socials</span>
+<span class="p">The social calendar, with flyers ready to print</span>
+<span class="m">new</span>
+<span class="w"></span>
+<span class="bs"><span class="b b-new">not on the live site</span></span>
+</a>
+<a class="row newrow" data-attn="no" data-find="club news news 66 dated items lifted off the homepage, filterable by category and year" href="news/index.html">
+<span class="t">Club News</span>
+<span class="p">66 dated items lifted off the homepage, filterable by category and year</span>
+<span class="m">new</span>
+<span class="w"></span>
+<span class="bs"><span class="b b-new">not on the live site</span></span>
+</a>
+<a class="row newrow" data-attn="no" data-find="home training home-training four club circuits and every exercise behind them" href="home-training/index.html">
+<span class="t">Home Training</span>
+<span class="p">Four club circuits and every exercise behind them</span>
+<span class="m">new</span>
+<span class="w"></span>
+<span class="bs"><span class="b b-new">not on the live site</span></span>
+</a></div><h3 class="sec">Home <em>1 pages</em></h3><div class="rows">
+<a class="row" data-attn="yes" data-find="home /" href="index.html">
+<span class="t">Home</span>
+<span class="p"><code>/</code></span>
+<span class="m">2026-08-31</span>
+<span class="w">232 words</span>
+<span class="bs"><span class="b b-stag">staging server refs</span></span>
+</a></div><h3 class="sec">The Club <em>8 pages</em></h3><div class="rows">
+<a class="row" data-attn="yes" data-find="the club /the-club/" href="the-club/index.html">
+<span class="t">The Club</span>
+<span class="p"><code>/the-club/</code></span>
+<span class="m">2019-11-19</span>
+<span class="w">32 words</span>
+<span class="bs"><span class="b b-empty">no content</span><span class="b b-stale">not edited since 2019</span></span>
+</a>
+<a class="row" data-attn="yes" data-find="boathouse /the-club/boathouse/" href="the-club/boathouse/index.html">
+<span class="t">Boathouse</span>
+<span class="p"><code>/the-club/boathouse/</code></span>
+<span class="m">2020-03-01</span>
+<span class="w">50 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2020</span></span>
+</a>
+<a class="row" data-attn="no" data-find="captains /the-club/captains/" href="the-club/captains/index.html">
+<span class="t">Captains</span>
+<span class="p"><code>/the-club/captains/</code></span>
+<span class="m">2024-01-30</span>
+<span class="w">148 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="no" data-find="club officers /the-club/club-officers/" href="the-club/club-officers/index.html">
+<span class="t">Club Officers</span>
+<span class="p"><code>/the-club/club-officers/</code></span>
+<span class="m">2026-01-19</span>
+<span class="w">78 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="no" data-find="history /the-club/history/" href="the-club/history/index.html">
+<span class="t">History</span>
+<span class="p"><code>/the-club/history/</code></span>
+<span class="m">2025-11-14</span>
+<span class="w">271 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="no" data-find="honours board /the-club/honours-board/" href="the-club/honours-board/index.html">
+<span class="t">Honours Board</span>
+<span class="p"><code>/the-club/honours-board/</code></span>
+<span class="m">2026-01-19</span>
+<span class="w">1,225 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="yes" data-find="presidents /the-club/presidents/" href="the-club/presidents/index.html">
+<span class="t">Presidents</span>
+<span class="p"><code>/the-club/presidents/</code></span>
+<span class="m">2020-03-01</span>
+<span class="w">68 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2020</span></span>
+</a>
+<a class="row" data-attn="yes" data-find="sponsorship /the-club/sponsorship/" href="the-club/sponsorship/index.html">
+<span class="t">Sponsorship</span>
+<span class="p"><code>/the-club/sponsorship/</code></span>
+<span class="m">2020-02-08</span>
+<span class="w">45 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2020</span></span>
+</a></div><h3 class="sec">Events <em>3 pages</em></h3><div class="rows">
+<a class="row" data-attn="no" data-find="events /events/" href="events/index.html">
+<span class="t">Events</span>
+<span class="p"><code>/events/</code></span>
+<span class="m">2024-08-18</span>
+<span class="w">114 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="no" data-find="burway regatta /events/burway-regatta/" href="events/burway-regatta/index.html">
+<span class="t">Burway Regatta</span>
+<span class="p"><code>/events/burway-regatta/</code></span>
+<span class="m">2023-12-06</span>
+<span class="w">1 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="yes" data-find="training &amp; challenges /events/training-challenges/" href="events/training-challenges/index.html">
+<span class="t">Training &amp; Challenges</span>
+<span class="p"><code>/events/training-challenges/</code></span>
+<span class="m">2021-10-26</span>
+<span class="w">434 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2021</span></span>
+</a></div><h3 class="sec">Racing — standalone pages <em>4 pages</em></h3><div class="rows">
+<a class="row" data-attn="no" data-find="burway head /burway-head/" href="burway-head/index.html">
+<span class="t">Burway Head</span>
+<span class="p"><code>/burway-head/</code></span>
+<span class="m">2026-09-22</span>
+<span class="w">304 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="no" data-find="burway small boats head - legacy /burway-small-boats-head-legacy/" href="burway-small-boats-head-legacy/index.html">
+<span class="t">Burway Small Boats Head - Legacy</span>
+<span class="p"><code>/burway-small-boats-head-legacy/</code></span>
+<span class="m">2026-09-22</span>
+<span class="w">408 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="no" data-find="burway small boats head /burway-small-boats-head/" href="burway-small-boats-head/index.html">
+<span class="t">Burway Small Boats Head</span>
+<span class="p"><code>/burway-small-boats-head/</code></span>
+<span class="m">2026-09-22</span>
+<span class="w">467 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="yes" data-find="results /results/" href="results/index.html">
+<span class="t">Results</span>
+<span class="p"><code>/results/</code></span>
+<span class="m">2019-07-22</span>
+<span class="w">479 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2019</span></span>
+</a></div><h3 class="sec">Welfare &amp; Safety <em>7 pages</em></h3><div class="rows">
+<a class="row" data-attn="yes" data-find="safety notices /safety-notices/" href="safety-notices/index.html">
+<span class="t">Safety Notices</span>
+<span class="p"><code>/safety-notices/</code></span>
+<span class="m">2021-03-27</span>
+<span class="w">77 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2021</span></span>
+</a>
+<a class="row" data-attn="yes" data-find="welfare &amp; safety /welfare-safety/" href="welfare-safety/index.html">
+<span class="t">Welfare &amp; Safety</span>
+<span class="p"><code>/welfare-safety/</code></span>
+<span class="m">2019-03-21</span>
+<span class="w">32 words</span>
+<span class="bs"><span class="b b-empty">no content</span><span class="b b-stale">not edited since 2019</span></span>
+</a>
+<a class="row" data-attn="yes" data-find="fire policy /welfare-safety/fire-policy/" href="welfare-safety/fire-policy/index.html">
+<span class="t">Fire Policy</span>
+<span class="p"><code>/welfare-safety/fire-policy/</code></span>
+<span class="m">2020-03-01</span>
+<span class="w">575 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2020</span></span>
+</a>
+<a class="row" data-attn="yes" data-find="risk assessment head races safety policy /welfare-safety/risk-assessment-head-races-safety-policy/" href="welfare-safety/risk-assessment-head-races-safety-policy/index.html">
+<span class="t">Risk Assessment Head Races Safety Policy</span>
+<span class="p"><code>/welfare-safety/risk-assessment-head-races-safety-policy/</code></span>
+<span class="m">2020-03-01</span>
+<span class="w">16 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2020</span><span class="b b-stag">staging server refs</span></span>
+</a>
+<a class="row" data-attn="yes" data-find="safety plan /welfare-safety/safety-plan/" href="welfare-safety/safety-plan/index.html">
+<span class="t">Safety Plan</span>
+<span class="p"><code>/welfare-safety/safety-plan/</code></span>
+<span class="m">2020-03-01</span>
+<span class="w">1,197 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2020</span><span class="b b-stag">staging server refs</span></span>
+</a>
+<a class="row" data-attn="yes" data-find="steering rules /welfare-safety/steering-rules/" href="welfare-safety/steering-rules/index.html">
+<span class="t">Steering Rules</span>
+<span class="p"><code>/welfare-safety/steering-rules/</code></span>
+<span class="m">2020-03-01</span>
+<span class="w">390 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2020</span><span class="b b-stag">staging server refs</span></span>
+</a>
+<a class="row" data-attn="yes" data-find="welfare and child protection /welfare-safety/welfare-and-child-protection/" href="welfare-safety/welfare-and-child-protection/index.html">
+<span class="t">Welfare and Child Protection</span>
+<span class="p"><code>/welfare-safety/welfare-and-child-protection/</code></span>
+<span class="m">2020-03-01</span>
+<span class="w">979 words</span>
+<span class="bs"><span class="b b-stale">not edited since 2020</span></span>
+</a></div><h3 class="sec">Joining &amp; members <em>3 pages</em></h3><div class="rows">
+<a class="row" data-attn="no" data-find="contact us /contact-us/" href="contact-us/index.html">
+<span class="t">Contact us</span>
+<span class="p"><code>/contact-us/</code></span>
+<span class="m">2025-01-22</span>
+<span class="w">215 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="no" data-find="join burway /join/" href="join/index.html">
+<span class="t">Join Burway</span>
+<span class="p"><code>/join/</code></span>
+<span class="m">2026-01-19</span>
+<span class="w">1,084 words</span>
+<span class="bs"></span>
+</a>
+<a class="row" data-attn="no" data-find="members area /members/" href="members/index.html">
+<span class="t">Members Area</span>
+<span class="p"><code>/members/</code></span>
+<span class="m">2024-08-18</span>
+<span class="w">60 words</span>
+<span class="bs"></span>
+</a></div>
+<div class="extras">
+<div>
+<h4>Also in the export, not built as pages</h4>
+<ul>
+<li><b>2 draft pages</b> — “Elementor #439” and “Burway Head 2020”</li>
+<li><b>4 draft posts</b> — all test content from 2019–2020 (“Post title”, “New Post”)</li>
+<li><b>12 Elementor templates</b> — reusable blocks, not pages</li>
+<li><b>46 menu items</b> across 5 menus — used to rebuild the navigation</li>
+</ul>
+</div>
+<div>
+<h4>Files alongside this one</h4>
+<ul>
+<li><code>CONTENT-PLAN.md</code> — where every piece of content should move to</li>
+<li><code>_media-manifest.csv</code> — all 161 media files and their destination paths</li>
+<li><code>_inventory.json</code> — this audit as data</li>
+<li><code>_build.py</code> — the converter; re-run it against a fresh export any time</li>
+</ul>
+</div>
+<div>
+<h4>Before this goes anywhere</h4>
+<p>Images and PDFs still load from the live server, so this preview needs internet to look complete. The media manifest handles that at cutover.</p>
+<p>The crest is still the placeholder — same as everywhere else.</p>
+</div>
+</div>
+</div>
+<div class="sign" style="background:var(--ink);color:#8890AE;padding:22px;">Burway Rowing Club · static rebuild · imported 22 September 2026 · not published · review copy</div>
+<script>
+  var rows = Array.prototype.slice.call(document.querySelectorAll('a.row'));
+  var q = document.getElementById('q'), attn = document.getElementById('attn'),
+      count = document.getElementById('count'), onlyAttn = false;
+  function apply(){
+    var t = q.value.trim().toLowerCase(), n = 0;
+    rows.forEach(function(r){
+      var ok = (!t || r.dataset.find.indexOf(t) > -1) && (!onlyAttn || r.dataset.attn === 'yes');
+      r.style.display = ok ? '' : 'none';
+      if (ok) n++;
+    });
+    count.textContent = n + ' of ' + rows.length + ' pages shown';
+    document.querySelectorAll('.rows').forEach(function(g){
+      var any = Array.prototype.some.call(g.querySelectorAll('a.row'), function(r){ return r.style.display !== 'none'; });
+      g.style.display = any ? '' : 'none';
+      if (g.previousElementSibling) g.previousElementSibling.style.display = any ? '' : 'none';
+    });
+  }
+  q.addEventListener('input', apply);
+  attn.addEventListener('click', function(){ onlyAttn = !onlyAttn; attn.classList.toggle('on', onlyAttn); apply(); });
+  apply();
+</script>
+</body>
+</html>
